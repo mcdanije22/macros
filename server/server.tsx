@@ -3,6 +3,14 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+mongoose.connect(
+  "mongodb+srv://josh:josh123@macrosocial-yeplw.mongodb.net/test?retryWrites=true&w=majority",
+  { useNewUrlParser: true },
+  () => {
+    console.log("db connected");
+  }
+);
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 

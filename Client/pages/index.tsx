@@ -2,8 +2,8 @@ import React from 'react'
 import Layout from '../components/Layout'
 
 const Home: React.FC = () => (
-  <Layout title="home | Macro">
-    <div></div>
+  <Layout title="Home Page | Next App">
+    <style jsx>{``}</style>
   </Layout>
 )
 

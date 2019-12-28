@@ -1,22 +1,18 @@
 import React from 'react'
+import Nav from './nav/Nav'
 import Head from 'next/head'
-import NavBar from './NavBar'
 
-interface Props {
-  title: string
+type Props = {
+  title?: string
 }
 
-const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
+const Layout: React.FC<Props> = ({ children, title = 'Next App' }) => {
   return (
     <div>
       <Head>
         <title>{title}</title>
-        <link
-          href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
-          rel="stylesheet"
-        ></link>
       </Head>
-      <NavBar />
+      <Nav />
       {children}
       <style jsx global>{`
         * {
@@ -29,5 +25,4 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
     </div>
   )
 }
-
 export default Layout

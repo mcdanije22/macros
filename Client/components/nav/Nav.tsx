@@ -91,7 +91,6 @@ const NavBar: React.FC = () => {
           padding: 1rem;
           font-size: 1.5rem;
         }
-
         .navIcon {
           color: white;
           border: none;

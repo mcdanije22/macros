@@ -71,24 +71,25 @@ const NavBar: React.FC = () => {
         </nav>
       </div>
       <style jsx>{`
-        #mobileNav {
-          display: ${navBarStatus ? 'none' : ''};
-        }
         #navContainer {
           background-color: #504761;
-          box-shadow: 0 6px 24px #aaaaaa;
           color: white;
+          position: fixed;
+          width: 100%;
         }
         #navContainer a {
           text-decoration: none;
           color: white;
+        }
+        #mobileNav {
+          display: ${navBarStatus ? 'none' : ''};
         }
         #navBarTop {
           color: white;
           display: flex;
           justify-content: space-between;
           list-style: none;
-          padding: 1rem;
+          padding: 1rem 1rem 0.5rem 1rem;
           font-size: 1.5rem;
         }
         .navIcon {
@@ -101,7 +102,7 @@ const NavBar: React.FC = () => {
           display: flex;
           list-style: none;
           justify-content: space-evenly;
-          padding: 1rem 0 2rem 0;
+          padding: 1rem 0;
         }
         #appDrawer {
           display: ${navBarStatus ? 'block' : 'none'};

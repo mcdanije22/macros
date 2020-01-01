@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '../../components/Layout'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const FoodPost: React.FC = () => {
+  const [currentInfo, setCurrentInfo] = useState<String>('overview')
+  const changeView = e => {
+    setCurrentInfo(e.target.id)
+  }
   const router = useRouter()
   const { id } = router.query
   return (
@@ -30,13 +35,25 @@ const FoodPost: React.FC = () => {
         <h1 className="macroStats">30p 20c 5f</h1>
         <nav className="postNav">
           <ul>
-            <li>Overview</li>
-            <li>Ingredients</li>
-            <li>Directions</li>
-            <li>Comments</li>
+            <li id="overview" onClick={changeView}>
+              Overview
+              <hr />
+            </li>
+            <li id="ingredients" onClick={changeView}>
+              Ingredients
+              <hr />
+            </li>
+            <li id="directions" onClick={changeView}>
+              Directions
+              <hr />
+            </li>
+            <li id="comments" onClick={changeView}>
+              Comments
+              <hr />
+            </li>
           </ul>
         </nav>
-        <hr />
+        {/* <hr /> */}
         <div className="mainInfo">
           <div className="overview">
             <h1>Summary</h1>
@@ -50,7 +67,7 @@ const FoodPost: React.FC = () => {
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
-          <div className="Ingredients">
+          <div className="ingredients">
             <h1>Ingredients</h1>
             <p>1lb skim cheese</p>
             <p>1lb skim cheese</p>
@@ -61,15 +78,15 @@ const FoodPost: React.FC = () => {
             <p>1lb skim cheese</p>
             <p>1lb skim cheese</p>
           </div>
-          <div className="Direction ">
-            <h1>Summary</h1>
+          <div className="directions">
+            <h1>Directions</h1>
             <ul>
               <li>
-                <h1>1</h1>
+                <h1>1.</h1>
                 <p>test</p>
               </li>
               <li>
-                <h1>2</h1>
+                <h1>2.</h1>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -78,10 +95,29 @@ const FoodPost: React.FC = () => {
                 </p>
               </li>
               <li>
-                <h1>3</h1>
+                <h1>3.</h1>
                 <p>done</p>
               </li>
             </ul>
+          </div>
+          <div className="comments">
+            <h1>Comments</h1>
+            <div className="postArthur">
+              <img
+                src="https://via.placeholder.com/60"
+                alt="John Smith Profile"
+              />
+              <h3>John Smith</h3>
+            </div>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
           </div>
         </div>
       </div>
@@ -132,23 +168,68 @@ const FoodPost: React.FC = () => {
           color: #707070;
         }
         hr {
-          margin: 1rem 0;
-          color: #707070;
+          margin: 0.1rem 0.7rem;
+          border: 0.5px black solid;
         }
         .mainInfo p {
           color: #707070;
+          line-height: 2rem;
         }
-        .Ingredients p {
+        .ingredients p {
           margin: 1rem 0;
         }
-        .Direction ul {
+        .directions ul {
           list-style: none;
         }
-        .Direction li {
+        .directions li {
           display: flex;
         }
-        .Direction h1 {
-          margin-right: 1rem;
+        .directions p {
+          margin: 0 1rem;
+          align-self: center;
+        }
+        .comments p {
+          margin-top: 1.5rem;
+        }
+        .overview {
+          display: ${currentInfo === 'overview' ? '' : 'none'};
+        }
+        #overview {
+          color: ${currentInfo === 'overview' ? 'black' : ''};
+          cursor: pointer;
+        }
+        #overview hr {
+          display: ${currentInfo === 'overview' ? '' : 'none'};
+        }
+        .ingredients {
+          display: ${currentInfo === 'ingredients' ? '' : 'none'};
+        }
+        #ingredients {
+          color: ${currentInfo === 'ingredients' ? 'black' : ''};
+          cursor: pointer;
+        }
+        #ingredients hr {
+          display: ${currentInfo === 'ingredients' ? '' : 'none'};
+        }
+        .directions {
+          display: ${currentInfo === 'directions' ? '' : 'none'};
+        }
+        #directions {
+          color: ${currentInfo === 'directions' ? 'black' : ''};
+          cursor: pointer;
+        }
+        #directions hr {
+          display: ${currentInfo === 'directions' ? '' : 'none'};
+        }
+        .comments {
+          display: ${currentInfo === 'comments' ? '' : 'none'};
+        }
+        #comments {
+          color: ${currentInfo === 'comments' ? 'black' : ''};
+          cursor: pointer;
+        }
+        #comments hr {
+          display: ${currentInfo === 'comments' ? '' : 'none'};
         }
       `}</style>
     </Layout>

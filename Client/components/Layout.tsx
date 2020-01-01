@@ -21,7 +21,6 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          font-family: 'Open Sans', sans-serif;
         }
         h1,
         h2,
@@ -29,6 +28,7 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
         h4,
         h5 {
           font-weight: lighter;
+          font-family: 'Darker Grotesque', sans-serif;
         }
         #pageContent {
           padding: 8rem 1rem;

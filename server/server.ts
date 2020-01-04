@@ -3,8 +3,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 
-const app = express();
-
 mongoose.connect(
   "mongodb+srv://josh:josh123@macrosocial-yeplw.mongodb.net/test?retryWrites=true&w=majority",
   { useNewUrlParser: true },
@@ -13,10 +11,13 @@ mongoose.connect(
   }
 );
 
-// const app = express();
+const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 app.use(cors());
+
+import postsRoute from "./routes/posts";
+app.use("/foodposts", postsRoute);
 
 app.listen(PORT, () => console.log(`server started successfully on ${PORT}`));

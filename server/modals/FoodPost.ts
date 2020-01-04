@@ -1,6 +1,6 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
-const FoodPostSchema = new Schema({
+const FoodPostSchema: Schema = new Schema({
   user: {
     type: String,
     required: true
@@ -34,4 +34,4 @@ const FoodPostSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("foodPosts", FoodPostSchema);
+export default model("foodPost", FoodPostSchema);

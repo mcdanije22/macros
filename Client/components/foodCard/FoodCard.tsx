@@ -65,7 +65,7 @@ const FoodCard = () => {
             text-align: right;
           }
           .mainInfo {
-            padding: 3rem 0 0.5rem 0.5rem;
+            padding: 1.5rem 0 0.5rem 0.5rem;
           }
           ,
           mainInfo h1 {

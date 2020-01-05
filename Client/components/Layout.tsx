@@ -22,6 +22,10 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
           padding: 0;
           box-sizing: border-box;
         }
+        html,
+        body {
+          height: 100%;
+        }
         h1,
         h2,
         h3,
@@ -32,6 +36,7 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
         }
         #pageContent {
           padding: 8rem 1rem;
+          min-height: 100vh;
         }
       `}</style>
     </div>

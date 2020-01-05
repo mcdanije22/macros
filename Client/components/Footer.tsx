@@ -10,6 +10,7 @@ const Footer: React.FC = () => (
         color: white;
         width: 100%;
         padding: 1rem 0;
+        bottom: 0;
       }
     `}</style>
   </div>

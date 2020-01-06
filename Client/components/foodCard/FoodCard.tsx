@@ -9,33 +9,49 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
-const FoodCard = () => {
+interface Post {
+  id: String
+  user: String
+  title: String
+  tags: Array<String>
+  saves: Number
+  macros: Object
+}
+
+type MacroObject = {
+  protein: Number
+  carbs: Number
+  fats: Number
+}
+
+const FoodCard: React.FC<Post> = ({ user, id, title, tags, saves, macros }) => {
+  const { protein, fats, carbs }: any = macros
   return (
-    <Link href="/foodpost/1">
+    <Link href={`/foodpost/${id}`}>
       <div className="cardContainer">
         <div className="topBar">
-          <p>200 Saves</p>
+          <p>{saves} saves</p>
         </div>
         <div className="mainInfo">
-          <h1>Keto Pizza</h1>
-          <h2>30p 20c 5f</h2>
-          <h5>John Smith</h5>
+          <h1>{title}</h1>
+          <h2>{`${protein}p ${carbs}c ${fats}f`}</h2>
+          <h5>{user}</h5>
         </div>
         <div className="bottomBar">
           <div className="bottomTags">
-            <Link href="test">
-              <button type="button">Keto</button>
-            </Link>
-            <Link href="test">
-              <button type="button">Protein</button>
-            </Link>
+            {tags.map((tag, i) => {
+              return (
+                <Link href="test" key={i}>
+                  <button type="button">{tag}</button>
+                </Link>
+              )
+            })}
           </div>
           <ul className="bottomSocial">
             <li>
               <FontAwesomeIcon icon={faFacebook} />
             </li>
             <li>
-              {' '}
               <FontAwesomeIcon icon={faInstagram} />
             </li>
             <li>
@@ -93,7 +109,7 @@ const FoodCard = () => {
             text-align: center;
             margin-right: 0.5rem;
             color: white;
-            padding: 0.1rem;
+            padding: 0.2rem;
           }
         `}</style>
       </div>

@@ -32,7 +32,26 @@ const FoodPost: React.FC = () => {
         <div className="heroImage">
           <img src="https://via.placeholder.com/400" alt="Keto Pizza Hero" />
         </div>
-        <h1 className="macroStats">30p 20c 5f</h1>
+        <div className="tags">
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+          <p>#test</p>
+        </div>
+        <div className="stats">
+          <h1>30p 20c 5f</h1>
+          <h1>500 Calories</h1>
+        </div>
         <nav className="postNav">
           <ul>
             <li id="overview" onClick={changeView}>
@@ -53,7 +72,6 @@ const FoodPost: React.FC = () => {
             </li>
           </ul>
         </nav>
-        {/* <hr /> */}
         <div className="mainInfo">
           <div className="overview">
             <h1>Summary</h1>
@@ -158,8 +176,16 @@ const FoodPost: React.FC = () => {
           width: 100%;
           border-radius: 2rem;
         }
-        .macroStats {
+        .tags {
           color: #262626;
+          display: flex;
+          flex-wrap: wrap;
+          font-size: 1.5rem;
+        }
+        .stats {
+          color: #262626;
+          display: flex;
+          justify-content: space-between;
         }
         .postNav ul {
           list-style: none;

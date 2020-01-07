@@ -30,12 +30,13 @@ const FoodCard: React.FC<Post> = ({ user, id, title, tags, saves, macros }) => {
     <Link href={`/foodpost/${id}`}>
       <div className="cardContainer">
         <div className="topBar">
-          <p>{saves} saves</p>
+          <p>500 Calories</p>
+          <p> 50 Saves</p>
         </div>
         <div className="mainInfo">
           <h1>{title}</h1>
           <h2>{`${protein}p ${carbs}c ${fats}f`}</h2>
-          <h5>{user}</h5>
+          <h5>{`by ${user}`}</h5>
         </div>
         <div className="bottomBar">
           <div className="bottomTags">
@@ -81,7 +82,7 @@ const FoodCard: React.FC<Post> = ({ user, id, title, tags, saves, macros }) => {
             text-align: right;
           }
           .mainInfo {
-            padding: 1.5rem 0 0.5rem 0.5rem;
+            padding: 0 0 0.5rem 0.5rem;
           }
           ,
           mainInfo h1 {

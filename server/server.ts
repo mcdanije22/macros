@@ -17,7 +17,10 @@ const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
 
-import postsRoute from "./routes/posts";
-app.use("/foodposts", postsRoute);
+import postsRoutes from "./routes/postRoutes";
+import userRoutes from "./routes/users";
+
+app.use("/foodposts", postsRoutes);
+app.use("/users", userRoutes);
 
 app.listen(PORT, () => console.log(`server started successfully on ${PORT}`));

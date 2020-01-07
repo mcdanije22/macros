@@ -1,13 +1,14 @@
 import express, { Application, Router, Response, Request } from "express";
+import User from "../modals/user";
 import FoodPost from "../modals/FoodPost";
 
 const router: Router = Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const allFoodPosts = await FoodPost.find();
-    res.send(allFoodPosts);
-    console.log(allFoodPosts);
+    const allUsers = await User.find();
+    res.send(allUsers);
+    console.log(allUsers);
   } catch (error) {
     console.log(error);
   }
@@ -15,17 +16,16 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/add", async (req: Request, res: Response) => {
   try {
-    const newFoodPost = new FoodPost({
-      user: req.body.user,
-      title: req.body.title,
-      tags: req.body.tags,
-      saves: req.body.saves,
-      macros: req.body.macros,
-      ingredients: req.body.ingredients,
-      directions: req.body.directions,
-      comments: req.body.comments
+    const newUser = new User({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      userName: req.body.userName,
+      password: req.body.password,
+      posts: req.body.posts,
+      likes: req.body.likes
     });
-    const result = await newFoodPost.save();
+    const result = await newUser.save();
     res.send(result);
     console.log(result);
   } catch (error) {

@@ -31,6 +31,10 @@ const FoodPostSchema: Schema = new Schema({
   },
   comments: {
     type: Array
+  },
+  summary: {
+    type: String,
+    required: true
   }
 });
 

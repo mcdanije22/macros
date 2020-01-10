@@ -1,6 +1,5 @@
 import express, { Application, Router, Response, Request } from "express";
 import User from "../modals/user";
-import FoodPost from "../modals/FoodPost";
 
 const router: Router = Router();
 

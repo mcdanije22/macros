@@ -22,8 +22,7 @@ const UserSchema: Schema = new Schema({
     required: true
   },
   posts: {
-    type: [{ type: Schema.Types.ObjectId, ref: "foodPost" }],
-    default: []
+    type: [{ type: Schema.Types.ObjectId, ref: "foodPost" }]
   },
   likes: {
     type: Array,

@@ -1,9 +1,24 @@
 import mongoose, { Schema, model } from "mongoose";
 
-const FoodPostSchema: Schema = new Schema({
+const CommentSchema: Schema = new Schema({
   user: {
     type: String,
     required: true
+  },
+  comment: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: Date,
+    default: Date.now()
+  }
+});
+
+const FoodPostSchema: Schema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "user"
   },
   title: {
     type: String,
@@ -30,7 +45,7 @@ const FoodPostSchema: Schema = new Schema({
     required: true
   },
   comments: {
-    type: Array
+    type: [CommentSchema]
   },
   summary: {
     type: String,

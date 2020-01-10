@@ -1,5 +1,6 @@
 import express, { Application, Router, Response, Request } from "express";
 import FoodPost from "../modals/FoodPost";
+import User from "../modals/user";
 
 const router: Router = Router();
 
@@ -13,22 +14,19 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/add", async (req: Request, res: Response) => {
+router.post("/:userid/add", async (req: Request, res: Response) => {
+  const { userid } = req.params;
+  console.log(userid);
   try {
-    const newFoodPost = new FoodPost({
-      user: req.body.user,
-      title: req.body.title,
-      tags: req.body.tags,
-      saves: req.body.saves,
-      macros: req.body.macros,
-      ingredients: req.body.ingredients,
-      directions: req.body.directions,
-      comments: req.body.comments,
-      summary: req.body.summary
-    });
-    const result = await newFoodPost.save();
-    res.send(result);
-    console.log(result);
+    const newFoodPost: any = new FoodPost(req.body);
+
+    const user: any = await User.findById(userid);
+    newFoodPost.user = user;
+    await newFoodPost.save();
+    user.posts.push(newFoodPost);
+    await user.save();
+    res.send(newFoodPost);
+    console.log(newFoodPost);
   } catch (error) {
     console.log(error);
   }

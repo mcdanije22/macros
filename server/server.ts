@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 import postsRoutes from "./routes/postRoutes";
-import userRoutes from "./routes/users";
+import userRoutes from "./routes/userRoutes";
 
 app.use("/foodposts", postsRoutes);
 app.use("/users", userRoutes);

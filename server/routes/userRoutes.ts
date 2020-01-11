@@ -1,5 +1,5 @@
 import express, { Application, Router, Response, Request } from "express";
-import User from "../modals/user";
+import User from "../modals/UserModal";
 
 const router: Router = Router();
 
@@ -15,15 +15,7 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/add", async (req: Request, res: Response) => {
   try {
-    const newUser = new User({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      userName: req.body.userName,
-      password: req.body.password,
-      posts: req.body.posts,
-      likes: req.body.likes
-    });
+    const newUser = new User(req.body);
     const result = await newUser.save();
     res.send(result);
     console.log(result);

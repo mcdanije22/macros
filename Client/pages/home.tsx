@@ -15,13 +15,11 @@ import FoodCard from '../components/foodCard/FoodCard'
 //   comments: Array<String>
 // }
 
-const NewsFeed: React.FC = () => {
+const Home: React.FC = () => {
   const [currentPosts, getPosts] = useState([])
-
+  const url = 'http://localhost:5000'
   const fetchPosts = async () => {
-    const response: AxiosResponse = await axios.get(
-      'http://localhost:5000/foodposts'
-    )
+    const response: AxiosResponse = await axios.get(`${url}/foodposts`)
     const postsList = await response.data
     getPosts(postsList)
   }
@@ -42,7 +40,7 @@ const NewsFeed: React.FC = () => {
             <FoodCard
               key={i}
               id={post._id}
-              user={post.user}
+              userName={post.user.userName}
               title={post.title}
               tags={post.tags}
               macros={post.macros}
@@ -56,4 +54,4 @@ const NewsFeed: React.FC = () => {
   )
 }
 
-export default NewsFeed
+export default Home

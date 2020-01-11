@@ -11,7 +11,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 interface Post {
   id: String
-  user: String
+  userName: String
   title: String
   tags: Array<String>
   saves: Number
@@ -24,19 +24,26 @@ type MacroObject = {
   fats: Number
 }
 
-const FoodCard: React.FC<Post> = ({ user, id, title, tags, saves, macros }) => {
+const FoodCard: React.FC<Post> = ({
+  userName,
+  id,
+  title,
+  tags,
+  saves,
+  macros,
+}) => {
   const { protein, fats, carbs }: any = macros
   return (
     <Link href={`/foodpost/${id}`}>
       <div className="cardContainer">
         <div className="topBar">
           <p>500 Calories</p>
-          <p> 50 Saves</p>
+          <p> {saves} Saves</p>
         </div>
         <div className="mainInfo">
           <h1>{title}</h1>
           <h2>{`${protein}p ${carbs}c ${fats}f`}</h2>
-          <h5>{`by ${user}`}</h5>
+          <h5>{`by ${userName}`}</h5>
         </div>
         <div className="bottomBar">
           <div className="bottomTags">

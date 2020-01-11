@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../components/Layout'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
+import axios, { AxiosResponse } from 'axios'
 
 const FoodPost: React.FC = () => {
   const [currentInfo, setCurrentInfo] = useState<String>('overview')
+  const [currentPost, setCurrentPost] = useState<object>({})
   const changeView = e => {
     setCurrentInfo(e.target.id)
   }
   const router = useRouter()
   const { id } = router.query
+  const url = 'http://localhost:5000'
+  const fetchCurrentFoodPost = async () => {
+    const response: AxiosResponse = await axios.get(`${url}`)
+  }
+
   return (
     <Layout title={`${id} | Next App`}>
       <div className="postContainer">

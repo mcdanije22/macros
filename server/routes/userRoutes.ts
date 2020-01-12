@@ -3,6 +3,7 @@ import User from "../modals/UserModal";
 
 const router: Router = Router();
 
+//get all users in collection
 router.get("/", async (req: Request, res: Response) => {
   try {
     const allUsers = await User.find();
@@ -13,6 +14,7 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+//add user to collection
 router.post("/add", async (req: Request, res: Response) => {
   try {
     const newUser = new User(req.body);

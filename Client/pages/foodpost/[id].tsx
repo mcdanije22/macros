@@ -2,34 +2,47 @@ import React, { useState, useEffect } from 'react'
 import Layout from '../../components/Layout'
 import { useRouter } from 'next/router'
 import axios, { AxiosResponse } from 'axios'
+import { NextPage, NextPageContext } from 'next'
 
-const FoodPost: React.FC = () => {
+interface Post {
+  id: String
+  userName: String
+  title: String
+  tags: Array<String>
+  saves: Number
+  macros: Object
+}
+
+const FoodPost: NextPage<any> = props => {
+  console.log(props.data)
   const [currentInfo, setCurrentInfo] = useState<String>('overview')
-  const [currentPost, setCurrentPost] = useState<object>({})
   const changeView = e => {
     setCurrentInfo(e.target.id)
   }
-  const router = useRouter()
-  const { id } = router.query
-  const url = 'http://localhost:5000'
-  const fetchCurrentFoodPost = async () => {
-    const response: AxiosResponse = await axios.get(`${url}`)
-  }
 
+  const {
+    title,
+    saves,
+    tags,
+    ingredients,
+    directions,
+    macros,
+    summary,
+  } = props.data
+  const { userName, photo } = props.data.user
+  console.log(props.data.tags)
+  console.log(userName)
   return (
-    <Layout title={`${id} | Next App`}>
+    <Layout title={`${title} | Next App`}>
       <div className="postContainer">
         <div className="topInfo">
           <div className="postArthur">
-            <img
-              src="https://via.placeholder.com/60"
-              alt="John Smith Profile"
-            />
-            <h3>John Smith</h3>
+            <img src={photo} alt={`${userName}'s profile`} />
+            <h3>{userName}</h3>
           </div>
-          <h5>200 Saves</h5>
+          <h5>{saves} Saves</h5>
         </div>
-        <h1>Keto Pizza</h1>
+        <h1>{title}</h1>
         <div className="topButtons">
           <button type="button">Save</button>
           <button type="button">share</button>
@@ -39,24 +52,15 @@ const FoodPost: React.FC = () => {
           <img src="https://via.placeholder.com/400" alt="Keto Pizza Hero" />
         </div>
         <div className="tags">
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
-          <p>#test</p>
+          {tags.map((tag, i) => {
+            return <p key={i}>{tag}</p>
+          })}
         </div>
         <div className="stats">
-          <h1>30p 20c 5f</h1>
-          <h1>500 Calories</h1>
+          <h1>
+            {macros.protein}p {macros.carbs}c {macros.fats}f
+          </h1>
+          <h1>{macros.calories} Calories</h1>
         </div>
         <nav className="postNav">
           <ul>
@@ -93,35 +97,21 @@ const FoodPost: React.FC = () => {
           </div>
           <div className="ingredients">
             <h1>Ingredients</h1>
-            <p>1lb skim cheese</p>
-            <p>1lb skim cheese</p>
-            <p>1lb skim cheese</p>
-            <p>1lb skim cheese</p>
-            <p>1lb skim cheese</p>
-            <p>1lb skim cheese</p>
-            <p>1lb skim cheese</p>
-            <p>1lb skim cheese</p>
+            {ingredients.map((ingredient, i) => {
+              return <p key={i}>{ingredient}</p>
+            })}
           </div>
           <div className="directions">
             <h1>Directions</h1>
             <ul>
-              <li>
-                <h1>1.</h1>
-                <p>test</p>
-              </li>
-              <li>
-                <h1>2.</h1>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </li>
-              <li>
-                <h1>3.</h1>
-                <p>done</p>
-              </li>
+              {directions.map((direction, i) => {
+                return (
+                  <li key={i}>
+                    <h1>{i + 1}.</h1>
+                    <p>{direction}</p>
+                  </li>
+                )
+              })}
             </ul>
           </div>
           <div className="comments">
@@ -146,6 +136,10 @@ const FoodPost: React.FC = () => {
         </div>
       </div>
       <style jsx>{`
+        .postContainer p,
+        h5 {
+          font-size: 1.2rem;
+        }
         h1 {
           margin: 1.5rem 0;
         }
@@ -187,6 +181,9 @@ const FoodPost: React.FC = () => {
           display: flex;
           flex-wrap: wrap;
           font-size: 1.5rem;
+        }
+        .tags p {
+          margin-right: 0.5rem;
         }
         .stats {
           color: #262626;
@@ -266,6 +263,16 @@ const FoodPost: React.FC = () => {
       `}</style>
     </Layout>
   )
+}
+
+FoodPost.getInitialProps = async ({ query }) => {
+  const { id } = query
+  const url = 'http://localhost:5000'
+  const response: AxiosResponse = await axios.get(`${url}/foodposts/${id}`)
+  const currentPost = await response.data
+  return {
+    data: currentPost,
+  }
 }
 
 export default FoodPost

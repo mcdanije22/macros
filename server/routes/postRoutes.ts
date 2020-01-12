@@ -4,6 +4,7 @@ import User from "../modals/UserModal";
 
 const router: Router = Router();
 
+//return all food post in collection
 router.get("/", async (req: Request, res: Response) => {
   try {
     const allFoodPosts = await FoodPost.find().populate({
@@ -16,6 +17,7 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+//return specific food post by id
 router.get("/:foodpostid", async (req: Request, res: Response) => {
   const { foodpostid } = req.params;
   console.log(foodpostid);
@@ -31,6 +33,7 @@ router.get("/:foodpostid", async (req: Request, res: Response) => {
   }
 });
 
+//add food post from specific user using user id
 router.post("/:userid/add", async (req: Request, res: Response) => {
   const { userid } = req.params;
   console.log(userid);

@@ -30,8 +30,6 @@ const FoodPost: NextPage<any> = props => {
     summary,
   } = props.data
   const { userName, photo } = props.data.user
-  console.log(props.data.tags)
-  console.log(userName)
   return (
     <Layout title={`${title} | Next App`}>
       <div className="postContainer">
@@ -53,7 +51,7 @@ const FoodPost: NextPage<any> = props => {
         </div>
         <div className="tags">
           {tags.map((tag, i) => {
-            return <p key={i}>{tag}</p>
+            return <p key={i}>#{tag}</p>
           })}
         </div>
         <div className="stats">

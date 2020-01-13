@@ -1,20 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
 
-const CommentSchema: Schema = new Schema({
-  user: {
-    type: String,
-    required: true
-  },
-  comment: {
-    type: String,
-    required: true
-  },
-  date: {
-    type: Date,
-    default: Date.now()
-  }
-});
-
 const FoodPostSchema: Schema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -45,7 +30,8 @@ const FoodPostSchema: Schema = new Schema({
     required: true
   },
   comments: {
-    type: [CommentSchema]
+    type: Array,
+    default: []
   },
   summary: {
     type: String,

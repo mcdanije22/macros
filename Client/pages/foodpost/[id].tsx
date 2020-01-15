@@ -28,6 +28,7 @@ const FoodPost: NextPage<any> = props => {
     directions,
     macros,
     summary,
+    comments,
   } = props.data
   const { userName, photo } = props.data.user
   return (

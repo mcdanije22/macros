@@ -28,7 +28,6 @@ router.get("/:foodpostid", async (req: Request, res: Response) => {
       select: "userName photo"
     });
     res.send(currentFoodPost);
-    console.log(currentFoodPost);
   } catch (error) {
     console.log(error);
   }
@@ -40,8 +39,9 @@ router.post("/:userid/addpost", async (req: Request, res: Response) => {
   console.log(userid);
   try {
     const newFoodPost: any = new FoodPostModel(req.body);
-    const user: any = await UserModel.findById(userid);
+    let user: any = await UserModel.findById(userid);
     newFoodPost.user = user;
+    console.log(newFoodPost.user);
     await newFoodPost.save();
     user.posts.push(newFoodPost);
     await user.save();
@@ -60,6 +60,7 @@ router.post(
       path: "user",
       select: "userName photo"
     });
+    console.log(user);
     try {
       const newComment: any = new CommentModel(req.body);
       const currentPost: any = await FoodPostModel.findById(postid);

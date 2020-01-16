@@ -5,6 +5,10 @@ const FoodPostSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "user"
   },
+  foodPhoto: {
+    type: String,
+    defualt: "https://via.placeholder.com/400"
+  },
   title: {
     type: String,
     required: true

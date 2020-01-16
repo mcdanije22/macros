@@ -16,6 +16,7 @@ interface Post {
   tags: Array<String>
   saves: Number
   macros: Object
+  foodPhoto: String
 }
 
 type MacroObject = {
@@ -31,6 +32,7 @@ const FoodCard: React.FC<Post> = ({
   tags,
   saves,
   macros,
+  foodPhoto,
 }) => {
   const { protein, fats, carbs }: any = macros
   return (
@@ -73,11 +75,12 @@ const FoodCard: React.FC<Post> = ({
                 rgba(0, 0, 0, 0.5),
                 rgba(0, 0, 0, 0.5)
               ),
-              url('https://nobunplease.com/wp-content/uploads/bb-plugin/cache/keto-low-carb-pizza-dip-landscape.jpg');
+              url(${foodPhoto});
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
             height: 12rem;
+            max-width: 350px;
             border: 1px #707070 solid;
             border-radius: 1rem;
             color: white;

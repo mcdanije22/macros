@@ -1,4 +1,6 @@
 import express, { Router, Response, Request } from "express";
+import mongoose, { Schema, model } from "mongoose";
+
 import FoodPostModel from "../models/FoodPostModel";
 import UserModel from "../models/UserModel";
 import CommentModel from "../models/PostCommentModel";
@@ -21,7 +23,6 @@ router.get("/", async (req: Request, res: Response) => {
 //return specific food post by id
 router.get("/:foodpostid", async (req: Request, res: Response) => {
   const { foodpostid } = req.params;
-  console.log(foodpostid);
   try {
     const currentFoodPost = await FoodPostModel.findById(foodpostid).populate({
       path: "user",
@@ -36,10 +37,9 @@ router.get("/:foodpostid", async (req: Request, res: Response) => {
 //add food post from specific user using user id
 router.post("/:userid/addpost", async (req: Request, res: Response) => {
   const { userid } = req.params;
-  console.log(userid);
   try {
     const newFoodPost: any = new FoodPostModel(req.body);
-    let user: any = await UserModel.findById(userid);
+    const user: any = await UserModel.findById(userid);
     newFoodPost.user = user;
     console.log(newFoodPost.user);
     await newFoodPost.save();
@@ -56,9 +56,9 @@ router.post(
   "/:userid/:postid/addcomment",
   async (req: Request, res: Response) => {
     const { userid, postid } = req.params;
-    const user: any = await UserModel.findById(userid).populate({
-      path: "user",
-      select: "userName photo"
+    const user: any = await UserModel.findById(userid, {
+      userName: 1,
+      photo: 1
     });
     console.log(user);
     try {

@@ -2,8 +2,6 @@ import mongoose, { model, Schema } from "mongoose";
 
 const CommentSchema: Schema = new Schema({
   user: {
-    // type: Schema.Types.ObjectId,
-    // ref: "user"
     type: Object,
     required: true
   },

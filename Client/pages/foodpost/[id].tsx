@@ -4,15 +4,6 @@ import { useRouter } from 'next/router'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
 
-interface Post {
-  id: String
-  userName: String
-  title: String
-  tags: Array<String>
-  saves: Number
-  macros: Object
-}
-
 const FoodPost: NextPage<any> = props => {
   console.log(props.data)
   const [currentInfo, setCurrentInfo] = useState<String>('overview')
@@ -29,6 +20,7 @@ const FoodPost: NextPage<any> = props => {
     macros,
     summary,
     comments,
+    foodPhoto /*min-height: 400px*/,
   } = props.data
   const { userName, photo } = props.data.user
   return (
@@ -48,7 +40,7 @@ const FoodPost: NextPage<any> = props => {
           <button type="button">share</button>
         </div>
         <div className="heroImage">
-          <img src="https://via.placeholder.com/400" alt="Keto Pizza Hero" />
+          <img src={foodPhoto} alt="Keto Pizza Hero" />
         </div>
         <div className="tags">
           {tags.map((tag, i) => {
@@ -84,15 +76,7 @@ const FoodPost: NextPage<any> = props => {
         <div className="mainInfo">
           <div className="overview">
             <h1>Summary</h1>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+            <p>{summary}</p>
           </div>
           <div className="ingredients">
             <h1>Ingredients</h1>
@@ -115,22 +99,21 @@ const FoodPost: NextPage<any> = props => {
           </div>
           <div className="comments">
             <h1>Comments</h1>
-            <div className="postArthur">
-              <img
-                src="https://via.placeholder.com/60"
-                alt="John Smith Profile"
-              />
-              <h3>John Smith</h3>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+            <h3 className="noComments">No Comments</h3>
+            {comments.map((comment, i) => {
+              return (
+                <div className="comment" key={i}>
+                  <div className="postArthur">
+                    <img
+                      src={comment.user.photo}
+                      alt={`${comment.user.userName} Profile`}
+                    />
+                    <h3>{comment.user.userName}</h3>
+                  </div>
+                  <p>{comment.comment}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -215,6 +198,12 @@ const FoodPost: NextPage<any> = props => {
         .directions p {
           margin: 0 1rem;
           align-self: center;
+        }
+        .noComments {
+          display: ${comments.length === 0 ? '' : 'none'};
+        }
+        .comment {
+          margin-top: 2rem;
         }
         .comments p {
           margin-top: 1.5rem;

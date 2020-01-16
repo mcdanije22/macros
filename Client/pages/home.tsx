@@ -45,6 +45,7 @@ const Home: React.FC = () => {
               tags={post.tags}
               macros={post.macros}
               saves={post.saves}
+              foodPhoto={post.foodPhoto}
             />
           )
         })}

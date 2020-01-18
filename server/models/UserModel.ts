@@ -25,8 +25,7 @@ const UserSchema: Schema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: "foodPost" }]
   },
   likes: {
-    type: Array,
-    default: []
+    type: [{ type: Schema.Types.ObjectId, ref: "foodPost" }]
   },
   photo: {
     type: String,

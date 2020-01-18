@@ -9,6 +9,9 @@ function MyApp({ Component, pageProps }) {
       <style jsx global>{`
         * {
           font-family: 'Darker Grotesque', sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
         }
       `}</style>
     </div>

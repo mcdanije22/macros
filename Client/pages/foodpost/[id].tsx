@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../components/Layout'
-import { useRouter } from 'next/router'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
+import Link from 'next/link'
 
 const FoodPost: NextPage<any> = props => {
   console.log(props.data)
@@ -21,16 +21,19 @@ const FoodPost: NextPage<any> = props => {
     summary,
     comments,
     foodPhoto /*min-height: 400px*/,
+    id,
   } = props.data
   const { userName, photo } = props.data.user
   return (
-    <Layout title={`${title} | Next App`}>
+    <Layout title={title}>
       <div className="postContainer">
         <div className="topInfo">
-          <div className="postArthur">
-            <img src={photo} alt={`${userName}'s profile`} />
-            <h3>{userName}</h3>
-          </div>
+          <Link href="/">
+            <div className="postArthur">
+              <img src={photo} alt={`${userName}'s profile`} />
+              <h3>{userName}</h3>
+            </div>
+          </Link>
           <h5>{saves} Saves</h5>
         </div>
         <h1>{title}</h1>
@@ -40,11 +43,15 @@ const FoodPost: NextPage<any> = props => {
           <button type="button">share</button>
         </div>
         <div className="heroImage">
-          <img src={foodPhoto} alt="Keto Pizza Hero" />
+          <img src={foodPhoto} alt={`${title} hero`} />
         </div>
         <div className="tags">
           {tags.map((tag, i) => {
-            return <p key={i}>#{tag}</p>
+            return (
+              <Link href="/" key={i}>
+                <p>#{tag}</p>
+              </Link>
+            )
           })}
         </div>
         <div className="stats">
@@ -159,7 +166,7 @@ const FoodPost: NextPage<any> = props => {
           border-radius: 2rem;
         }
         .tags {
-          color: #262626;
+          color: black;
           display: flex;
           flex-wrap: wrap;
           font-size: 1.5rem;

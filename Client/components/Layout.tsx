@@ -11,17 +11,12 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
   return (
     <div>
       <Head>
-        <title>{title}</title>
+        <title>{`${title} | Macros`}</title>
       </Head>
       <Nav />
       <div id="pageContent">{children}</div>
       <Footer />
       <style jsx global>{`
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
         html,
         body {
           height: 100%;

@@ -8,7 +8,6 @@ router.get("/", async (req: Request, res: Response) => {
   try {
     const allUsers = await UserModel.find();
     res.send(allUsers);
-    console.log(allUsers);
   } catch (error) {
     console.log(error);
   }
@@ -21,13 +20,13 @@ router.get("/:userid", async (req: Request, res: Response) => {
     userName: 1,
     photo: 1,
     posts: 1,
-    likes: 1
+    saves: 1,
+    followingCount: 1,
+    followersCount: 1
   })
     .populate("posts")
-    .populate("likes");
+    .populate("saves");
   res.send(user);
-
-  console.log(user);
 });
 
 //add user to collection
@@ -36,7 +35,6 @@ router.post("/add", async (req: Request, res: Response) => {
     const newUser = new UserModel(req.body);
     const result = await newUser.save();
     res.send(result);
-    console.log(result);
   } catch (error) {
     console.log(error);
   }

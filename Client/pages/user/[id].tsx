@@ -5,13 +5,22 @@ import { NextPage, NextPageContext } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
 import Nav from '../../components/nav/Nav'
+import FoodCard from '../../components/foodCard/FoodCard'
 
-const UserPage: NextPage<any> = () => {
+const UserPage: NextPage<any> = props => {
   const [activeNav, setActiveNav] = useState('myPost')
   const toggleNav = e => {
     setActiveNav(e.target.id)
-    console.log(e.target.id)
   }
+  const {
+    userName,
+    photo,
+    posts,
+    saves,
+    followingCount,
+    followersCount,
+  } = props.data
+  console.log(saves)
 
   return (
     <div className="userPage">
@@ -22,25 +31,29 @@ const UserPage: NextPage<any> = () => {
         <Nav />
       </div>
       <div className="heroHeader">
-        <img className="heroUserImage" src="https://via.placeholder.com/400" />
-        <h1>Josh McDaniel</h1>
+        <img
+          className="heroUserImage"
+          src={photo}
+          alt={`${userName} profile photo`}
+        />
+        <h1>{userName}</h1>
         <button className="followButton">Follow</button>
       </div>
       <div className="mainSection">
         <div className="profileStats">
           <ul className="statList">
             <li>
-              <p>500</p>
+              <p>{followersCount}</p>
               <p>Followers</p>
             </li>
             <hr />
             <li>
-              <p>500</p>
+              <p>{followingCount}</p>
               <p>Following</p>
             </li>
             <hr />
             <li>
-              <p>500</p>
+              <p>{posts.length}</p>
               <p>Post</p>
             </li>
           </ul>
@@ -58,7 +71,38 @@ const UserPage: NextPage<any> = () => {
           </ul>
         </nav>
         <div className="galleryList">
-          <div className="postList">t</div>
+          <div className="postList">
+            {posts.map((post, i) => {
+              return (
+                <FoodCard
+                  key={i}
+                  id={post._id}
+                  userName={post.user.userName}
+                  title={post.title}
+                  tags={post.tags}
+                  macros={post.macros}
+                  saves={post.saves}
+                  foodPhoto={post.foodPhoto}
+                />
+              )
+            })}
+          </div>
+          <div className="saveList">
+            {saves.map((post, i) => {
+              return (
+                <FoodCard
+                  key={i}
+                  id={post._id}
+                  userName={post.user.userName}
+                  title={post.title}
+                  tags={post.tags}
+                  macros={post.macros}
+                  saves={post.saves}
+                  foodPhoto={post.foodPhoto}
+                />
+              )
+            })}
+          </div>
         </div>
       </div>
       <style jsx>{`
@@ -149,9 +193,34 @@ const UserPage: NextPage<any> = () => {
         .galleryList {
           margin: 2rem;
         }
+        .postList {
+          display: ${activeNav === 'myPost' ? '' : 'none'};
+        }
+        .savesList {
+          display: ${activeNav === 'saves' ? '' : 'none'};
+        }
       `}</style>
     </div>
   )
 }
 
+// UserPage.getInitialProps = async ({ query }) => {
+//   const { id } = query
+//   const url = 'http://localhost:5000'
+//   const response: AxiosResponse = await axios.get(`${url}/user/${id}`)
+//   const currentUser = await response.data
+//   return {
+//     data: currentUser,
+//   }
+// }
+
+UserPage.getInitialProps = async ({ query }) => {
+  const { id } = query
+  const url = 'http://localhost:5000'
+  const response: AxiosResponse = await axios.get(`${url}/users/${id}`)
+  const currentUser = await response.data
+  return {
+    data: currentUser,
+  }
+}
 export default UserPage

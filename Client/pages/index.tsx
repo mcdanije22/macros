@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 
 const index: React.FC = () => (
   <Layout title="Home Page | Next App">
-    <style jsx>{``}</style>
+    t<style jsx>{``}</style>
   </Layout>
 )
 

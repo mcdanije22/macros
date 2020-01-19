@@ -24,12 +24,20 @@ const UserSchema: Schema = new Schema({
   posts: {
     type: [{ type: Schema.Types.ObjectId, ref: "foodPost" }]
   },
-  likes: {
+  saves: {
     type: [{ type: Schema.Types.ObjectId, ref: "foodPost" }]
   },
   photo: {
     type: String,
     default: "https://via.placeholder.com/400"
+  },
+  followingCount: {
+    type: Number,
+    default: 0
+  },
+  followerCount: {
+    type: Number,
+    default: 0
   }
 });
 export default model("user", UserSchema);

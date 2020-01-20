@@ -38,6 +38,10 @@ const UserSchema: Schema = new Schema({
   followerCount: {
     type: Number,
     default: 0
+  },
+  startDate: {
+    type: Date,
+    default: Date.now()
   }
 });
 export default model("user", UserSchema);

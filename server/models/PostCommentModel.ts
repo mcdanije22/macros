@@ -9,7 +9,7 @@ const CommentSchema: Schema = new Schema({
     type: String,
     required: true
   },
-  date: {
+  commentDate: {
     type: Date,
     default: Date.now()
   }

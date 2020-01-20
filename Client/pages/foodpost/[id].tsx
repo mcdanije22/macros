@@ -24,11 +24,12 @@ const FoodPost: NextPage<any> = props => {
     id,
   } = props.data
   const { userName, photo } = props.data.user
+  console.log(props.data.user._id)
   return (
     <Layout title={title}>
       <div className="postContainer">
         <div className="topInfo">
-          <Link href="/">
+          <Link href={`/user/${props.data.user._id}`}>
             <div className="postArthur">
               <img src={photo} alt={`${userName}'s profile`} />
               <h3>{userName}</h3>

@@ -25,7 +25,7 @@ const UserPage: NextPage<any> = props => {
   return (
     <div className="userPage">
       <Head>
-        <title>title</title>
+        <title>{userName}</title>
       </Head>
       <div id="topNav">
         <Nav />

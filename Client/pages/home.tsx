@@ -3,18 +3,6 @@ import axios, { AxiosResponse } from 'axios'
 import Layout from '../components/Layout'
 import FoodCard from '../components/foodCard/FoodCard'
 
-// interface Post {
-//   id: String
-//   user: String
-//   title: String
-//   tags: Array<String>
-//   saves: Number
-//   macros: Object
-//   ingredients: Array<String>
-//   directions: Array<Object>
-//   comments: Array<String>
-// }
-
 const Home: React.FC = () => {
   const [currentPosts, getPosts] = useState([])
   const url = 'http://localhost:5000'
@@ -31,7 +19,6 @@ const Home: React.FC = () => {
       console.log(error)
     }
   }, [])
-  console.log(currentPosts)
   return (
     <Layout title="NewsFeed | Macros">
       <div id="cardList">

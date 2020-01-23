@@ -13,7 +13,11 @@ const CreatePost: React.FC = () => {
     ingredients: Array<String>
     directions: Array<String>
   }
-  const tagRef: any = useRef(null)
+
+  const tagInputRef = useRef<HTMLInputElement>()
+  const ingredientInputRef = useRef<HTMLInputElement>()
+  const directionInputRef = useRef<HTMLInputElement>()
+
   const [draftPost, setDraftPost] = useState<Post>({
     title: '',
     tags: [],
@@ -21,7 +25,10 @@ const CreatePost: React.FC = () => {
     ingredients: [],
     directions: [],
   })
-  const [tempValue, setValue] = useState<String>('')
+  const [tempTagValue, setTempTag] = useState<String>('')
+  const [tempIngredientValue, setTempIngredient] = useState<String>('')
+  const [tempDirectionValue, setTempDirection] = useState<String>('')
+
   const handleInputChange = e => {
     const name = e.target.name
     setDraftPost({
@@ -29,24 +36,38 @@ const CreatePost: React.FC = () => {
       [name]: e.target.value,
     })
   }
-  const handleTempValue = e => {
-    const name = e.target.name
+
+  //logic for handling lists
+  const handleTempTagValue = e => {
     const value = e.target.value
-    setValue(value)
+    setTempTag(value)
   }
 
   const addValue = () => {
     const orgArray = draftPost.tags
-    const newArray = [...orgArray, tempValue]
+    const newArray = [...orgArray, tempTagValue]
     setDraftPost({
       ...draftPost,
       tags: newArray,
     })
-    clearField()
+    tagInputRef.current.value = ''
   }
-  const clearField = () => {
-    tagRef.current.value = ''
+
+  const handleTempIngredientValue = e => {
+    const value = e.target.value
+    setTempIngredient(value)
   }
+
+  const addIngredientValue = () => {
+    const orgArray = draftPost.tags
+    const newArray = [...orgArray, tempIngredientValue]
+    setDraftPost({
+      ...draftPost,
+      ingredients: newArray,
+    })
+    ingredientInputRef.current.value = ''
+  }
+  console.log(draftPost.ingredients)
   return (
     <Layout title="New Post">
       <div id="createPage">
@@ -71,18 +92,23 @@ const CreatePost: React.FC = () => {
           <input
             type="text"
             name="tags"
-            onChange={handleTempValue}
-            ref={tagRef}
+            onChange={handleTempTagValue}
+            ref={tagInputRef}
           />
-          <h4 onClick={addValue}>+ Add new ingredient</h4>
+          <h4 onClick={addValue}>+ Add new tag</h4>
           <label>Summary</label>
           <textarea name="summary" onChange={handleInputChange} />
           <label>Ingredients</label>
-          <input type="text" name="ingredient" />
-          <h4>+ Add new ingredient</h4>
+          <input
+            type="text"
+            name="ingredient"
+            ref={ingredientInputRef}
+            onChange={handleTempIngredientValue}
+          />
+          <h4 onClick={addIngredientValue}>+ Add new ingredient</h4>
           <h2>500 Calories 50P 100C 20F</h2>
           <label>Directions</label>
-          <input type="text" name="direction" />
+          <input type="text" name="direction" ref={directionInputRef} />
           <h4>+ Add new direction</h4>
           <hr />
           <div id="formButtons">

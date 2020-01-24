@@ -37,7 +37,7 @@ const CreatePost: React.FC = () => {
     })
   }
 
-  //logic for handling lists
+  //logic for handling tags list
   const handleTempTagValue = e => {
     const value = e.target.value
     setTempTag(value)
@@ -51,23 +51,42 @@ const CreatePost: React.FC = () => {
       tags: newArray,
     })
     tagInputRef.current.value = ''
+    setTempTag('')
   }
 
+  //logic for handling Ingredients list
   const handleTempIngredientValue = e => {
     const value = e.target.value
     setTempIngredient(value)
   }
 
   const addIngredientValue = () => {
-    const orgArray = draftPost.tags
+    const orgArray = draftPost.ingredients
     const newArray = [...orgArray, tempIngredientValue]
     setDraftPost({
       ...draftPost,
       ingredients: newArray,
     })
     ingredientInputRef.current.value = ''
+    setTempIngredient('')
   }
-  console.log(draftPost.ingredients)
+  //logic for handling directions list
+  const handleTempDirectionsValue = e => {
+    const value = e.target.value
+    setTempDirection(value)
+  }
+
+  const addDirectionsValue = () => {
+    const orgArray = draftPost.directions
+    const newArray = [...orgArray, tempDirectionValue]
+    setDraftPost({
+      ...draftPost,
+      directions: newArray,
+    })
+    directionInputRef.current.value = ''
+    setTempDirection('')
+  }
+  console.log(draftPost)
   return (
     <Layout title="New Post">
       <div id="createPage">
@@ -76,10 +95,8 @@ const CreatePost: React.FC = () => {
           <h3>Go back</h3>
         </div>
         <h1>Create New Post</h1>
-
         <form className="newPost">
-          {/* <TextField id="outlined-basic" label="Title" variant="outlined" /> */}
-          <label>Title*</label>
+          <label>Title</label>
           <input type="text" name="title" onChange={handleInputChange} />
           <label>Cover Photo</label>
           <div className="imageUpload">
@@ -95,21 +112,42 @@ const CreatePost: React.FC = () => {
             onChange={handleTempTagValue}
             ref={tagInputRef}
           />
-          <h4 onClick={addValue}>+ Add new tag</h4>
+          <h4 onClick={addValue}>+ Add tag</h4>
           <label>Summary</label>
           <textarea name="summary" onChange={handleInputChange} />
           <label>Ingredients</label>
+          {draftPost.ingredients.map((ingredient, i) => {
+            return (
+              <li className="tempList" key={i}>
+                <h1>{i + 1}.</h1>
+                <p>{ingredient}</p>
+              </li>
+            )
+          })}
           <input
             type="text"
             name="ingredient"
             ref={ingredientInputRef}
             onChange={handleTempIngredientValue}
           />
-          <h4 onClick={addIngredientValue}>+ Add new ingredient</h4>
+          <h4 onClick={addIngredientValue}>+ Add ingredient</h4>
           <h2>500 Calories 50P 100C 20F</h2>
           <label>Directions</label>
-          <input type="text" name="direction" ref={directionInputRef} />
-          <h4>+ Add new direction</h4>
+          {draftPost.directions.map((direction, i) => {
+            return (
+              <li className="tempList" key={i}>
+                <h1>{i + 1}.</h1>
+                <p>{direction}</p>
+              </li>
+            )
+          })}
+          <input
+            type="text"
+            name="direction"
+            ref={directionInputRef}
+            onChange={handleTempDirectionsValue}
+          />
+          <h4 onClick={addDirectionsValue}>+ Add direction</h4>
           <hr />
           <div id="formButtons">
             <button type="button" id="submitButton">
@@ -190,6 +228,14 @@ const CreatePost: React.FC = () => {
         }
         p {
           margin-bottom: 0.5rem;
+        }
+        .tempList {
+          list-style: none;
+          display: flex;
+        }
+        .tempList p {
+          align-self: center;
+          margin-left: 0.5rem;
         }
       `}</style>
     </Layout>

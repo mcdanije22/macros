@@ -70,6 +70,10 @@ const FoodCard: React.FC<Post> = ({
           </ul>
         </div>
         <style jsx>{`
+          * {
+            color: white;
+            margin: 0;
+          }
           .cardContainer {
             background-image: linear-gradient(
                 rgba(0, 0, 0, 0.5),

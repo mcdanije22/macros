@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { Modal } from 'antd'
 
 const CreatePost: React.FC = () => {
   interface Post {
@@ -43,7 +44,7 @@ const CreatePost: React.FC = () => {
     setTempTag(value)
   }
 
-  const addValue = () => {
+  const addTagValue = () => {
     const orgArray = draftPost.tags
     const newArray = [...orgArray, tempTagValue]
     setDraftPost({
@@ -111,16 +112,20 @@ const CreatePost: React.FC = () => {
             name="tags"
             onChange={handleTempTagValue}
             ref={tagInputRef}
+            onKeyUp={e => {
+              if (e.key === 'Enter') {
+                addTagValue()
+              }
+            }}
           />
-          <h4 onClick={addValue}>+ Add tag</h4>
+          <h4 onClick={addTagValue}>+ Add tag</h4>
           <label>Summary</label>
           <textarea name="summary" onChange={handleInputChange} />
           <label>Ingredients</label>
           {draftPost.ingredients.map((ingredient, i) => {
             return (
               <li className="tempList" key={i}>
-                <h1>{i + 1}.</h1>
-                <p>{ingredient}</p>
+                <h1>{ingredient}</h1>
               </li>
             )
           })}
@@ -129,6 +134,11 @@ const CreatePost: React.FC = () => {
             name="ingredient"
             ref={ingredientInputRef}
             onChange={handleTempIngredientValue}
+            onKeyUp={e => {
+              if (e.key === 'Enter') {
+                addIngredientValue()
+              }
+            }}
           />
           <h4 onClick={addIngredientValue}>+ Add ingredient</h4>
           <h2>500 Calories 50P 100C 20F</h2>
@@ -146,6 +156,11 @@ const CreatePost: React.FC = () => {
             name="direction"
             ref={directionInputRef}
             onChange={handleTempDirectionsValue}
+            onKeyUp={e => {
+              if (e.key === 'Enter') {
+                addDirectionsValue()
+              }
+            }}
           />
           <h4 onClick={addDirectionsValue}>+ Add direction</h4>
           <hr />

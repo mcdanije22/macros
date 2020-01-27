@@ -87,12 +87,15 @@ const CreatePost: React.FC = () => {
     directionInputRef.current.value = ''
     setTempDirection('')
   }
+
+  const fetchFoodSearch = () => {}
+
   console.log(draftPost)
+  console.log(process.env.NUTRITION_API_KEY)
   return (
     <Layout title="New Post">
       <div id="createPage">
         <div id="topInfo">
-          {/* <FontAwesomeIcon icon={faChevronLeft} className="backBtn" /> */}
           <h3>Go back</h3>
         </div>
         <h1>Create New Post</h1>
@@ -140,7 +143,7 @@ const CreatePost: React.FC = () => {
               }
             }}
           />
-          <h4 onClick={addIngredientValue}>+ Add ingredient</h4>
+          <h4 onClick={addIngredientValue}>+ Search new ingredient</h4>
           <h2>500 Calories 50P 100C 20F</h2>
           <label>Directions</label>
           {draftPost.directions.map((direction, i) => {

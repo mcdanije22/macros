@@ -54,9 +54,7 @@ const NavBar: React.FC = () => {
         <nav>
           <ul id="menuList">
             <Link href="/">
-              <a>
-                <p>Home</p>
-              </a>
+              <a>Home</a>
             </Link>
             <Link href="/">
               <a>Favorites</a>

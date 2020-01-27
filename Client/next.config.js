@@ -14,6 +14,9 @@ const withFonts = require('next-fonts')
 require('dotenv').config()
 
 module.exports = withCss({
+  env: {
+    NUTRITION_API_KEY: process.env.NUTRITION_API_KEY,
+  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       const antStyles = /antd\/.*?\/style\/css.*?/

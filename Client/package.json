@@ -16,6 +16,7 @@
     "@zeit/next-css": "^1.0.1",
     "antd": "^3.26.7",
     "axios": "^0.19.0",
+    "babel-plugin-import": "^1.13.0",
     "dotenv": "^8.2.0",
     "fontawesome-react": "^2.0.0",
     "next": "9.1.6",

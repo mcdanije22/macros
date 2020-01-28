@@ -19,9 +19,7 @@ const NavBar: React.FC = () => {
           </li>
           <li>
             <Link href="/">
-              <a>
-                <h3>Macro</h3>
-              </a>
+              <a>Macro</a>
             </Link>
           </li>
           <li>
@@ -30,13 +28,13 @@ const NavBar: React.FC = () => {
             </button>
           </li>
         </ul>
-        <ul id="navbarBottom">
+        {/* <ul id="navbarBottom">
           <li>Top</li>
           <li>New</li>
           <li>Protein</li>
           <li>Carbs</li>
           <li>Fats</li>
-        </ul>
+        </ul> */}
       </div>
       <div id="appDrawer">
         <ul id="topIcons">
@@ -89,7 +87,7 @@ const NavBar: React.FC = () => {
           list-style: none;
           padding: 1rem 1rem 0.5rem 1rem;
           font-size: 1.5rem;
-          margin: 0;
+          margin-bottom: 0.5rem;
         }
         .navIcon {
           border: none;

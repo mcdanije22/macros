@@ -15,6 +15,11 @@ const CreatePost: React.FC = () => {
     directions: Array<String>
   }
 
+  interface ingredientItem {
+    fdcId: Number
+    description: String
+    brandOwner: String
+  }
   const tagInputRef = useRef<HTMLInputElement>()
   const ingredientInputRef = useRef<HTMLInputElement>()
   const directionInputRef = useRef<HTMLInputElement>()
@@ -26,9 +31,16 @@ const CreatePost: React.FC = () => {
     ingredients: [],
     directions: [],
   })
+  const [modalStatus, toggleModal] = useState<boolean>(false)
+
   const [tempTagValue, setTempTag] = useState<String>('')
   const [tempIngredientValue, setTempIngredient] = useState<String>('')
   const [tempDirectionValue, setTempDirection] = useState<String>('')
+  const [searchFoodList, setFoodList] = useState<ingredientItem[]>([])
+
+  const toggle = () => {
+    toggleModal(modalStatus ? false : true)
+  }
 
   const handleInputChange = e => {
     const name = e.target.name
@@ -55,22 +67,6 @@ const CreatePost: React.FC = () => {
     setTempTag('')
   }
 
-  //logic for handling Ingredients list
-  const handleTempIngredientValue = e => {
-    const value = e.target.value
-    setTempIngredient(value)
-  }
-
-  const addIngredientValue = () => {
-    const orgArray = draftPost.ingredients
-    const newArray = [...orgArray, tempIngredientValue]
-    setDraftPost({
-      ...draftPost,
-      ingredients: newArray,
-    })
-    ingredientInputRef.current.value = ''
-    setTempIngredient('')
-  }
   //logic for handling directions list
   const handleTempDirectionsValue = e => {
     const value = e.target.value
@@ -88,12 +84,46 @@ const CreatePost: React.FC = () => {
     setTempDirection('')
   }
 
-  const fetchFoodSearch = () => {}
+  //logic for handling Ingredients list
+  const handleTempIngredientValue = e => {
+    const value = e.target.value
+    setTempIngredient(value)
+  }
 
-  console.log(draftPost)
-  console.log(process.env.NUTRITION_API_KEY)
+  const addIngredientValue = () => {
+    const orgArray = draftPost.ingredients
+    const newArray = [...orgArray, tempIngredientValue]
+    setDraftPost({
+      ...draftPost,
+      ingredients: newArray,
+    })
+    ingredientInputRef.current.value = ''
+    setTempIngredient('')
+  }
+
+  const fetchFoodSearch = async () => {
+    const apiKey = process.env.NUTRITION_API_KEY
+    const search = tempIngredientValue
+    const searchList = await axios.get(
+      `https://api.nal.usda.gov/fdc/v1/search?api_key=${apiKey}&generalSearchInput=${search}`
+    )
+    setFoodList(searchList.data.foods)
+    ingredientInputRef.current.value = ''
+    toggle()
+  }
+  console.log(searchFoodList)
   return (
     <Layout title="New Post">
+      <Modal title="Search Ingredients" visible={modalStatus}>
+        {searchFoodList.map((ingredient, i) => {
+          return (
+            <li key={i}>
+              <h5>{ingredient.description}</h5>
+              <p>{ingredient.brandOwner}</p>
+            </li>
+          )
+        })}
+      </Modal>
       <div id="createPage">
         <div id="topInfo">
           <h3>Go back</h3>
@@ -139,11 +169,11 @@ const CreatePost: React.FC = () => {
             onChange={handleTempIngredientValue}
             onKeyUp={e => {
               if (e.key === 'Enter') {
-                addIngredientValue()
+                fetchFoodSearch()
               }
             }}
           />
-          <h4 onClick={addIngredientValue}>+ Search new ingredient</h4>
+          <h4 onClick={fetchFoodSearch}>+ Search new ingredient</h4>
           <h2>500 Calories 50P 100C 20F</h2>
           <label>Directions</label>
           {draftPost.directions.map((direction, i) => {

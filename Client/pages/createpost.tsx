@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
-import { Modal } from 'antd'
+import { Modal, Button } from 'antd'
 
 const CreatePost: React.FC = () => {
   interface Post {
@@ -19,7 +19,19 @@ const CreatePost: React.FC = () => {
     fdcId: Number
     description: String
     brandOwner: String
+    labelNutrients: {
+      fats: {
+        value: Number
+      }
+      carbohydrates: {
+        value: Number
+      }
+      protein: {
+        value: Number
+      }
+    }
   }
+
   const tagInputRef = useRef<HTMLInputElement>()
   const ingredientInputRef = useRef<HTMLInputElement>()
   const directionInputRef = useRef<HTMLInputElement>()
@@ -37,6 +49,7 @@ const CreatePost: React.FC = () => {
   const [tempIngredientValue, setTempIngredient] = useState<String>('')
   const [tempDirectionValue, setTempDirection] = useState<String>('')
   const [searchFoodList, setFoodList] = useState<ingredientItem[]>([])
+  const apiKey = process.env.NUTRITION_API_KEY
 
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
@@ -102,27 +115,51 @@ const CreatePost: React.FC = () => {
   }
 
   const fetchFoodSearch = async () => {
-    const apiKey = process.env.NUTRITION_API_KEY
+    let foodOptions = []
     const search = tempIngredientValue
     const searchList = await axios.get(
       `https://api.nal.usda.gov/fdc/v1/search?api_key=${apiKey}&generalSearchInput=${search}`
     )
-    setFoodList(searchList.data.foods)
+    searchList.data.foods.forEach(async el => {
+      const food: any = await axios.get(
+        `https://api.nal.usda.gov/fdc/v1/${el.fdcId}/?api_key=${apiKey}`
+      )
+      if (typeof food.data.labelNutrients !== 'undefined') {
+        foodOptions = [...foodOptions, food.data]
+        setFoodList(foodOptions)
+      }
+    })
     ingredientInputRef.current.value = ''
     toggle()
+    // setFoodList(searchList.data.foods)
+    // ingredientInputRef.current.value = ''
+    // toggle()
   }
-  console.log(searchFoodList)
   return (
     <Layout title="New Post">
-      <Modal title="Search Ingredients" visible={modalStatus}>
-        {searchFoodList.map((ingredient, i) => {
-          return (
-            <li key={i}>
-              <h5>{ingredient.description}</h5>
-              <p>{ingredient.brandOwner}</p>
-            </li>
-          )
-        })}
+      <Modal title="Search Ingredients" visible={modalStatus} footer={null}>
+        {searchFoodList
+          .slice(0, 4)
+          //   .filter(el => el.labelNutrients == 'undefined')
+          .map((ingredient, i) => {
+            //   console.log(ingredient.labelNutrients, ingredient)
+            return (
+              <li key={i} className="modalFood">
+                <div className="topInfo">
+                  <div className="leftInfo">
+                    <h3>{ingredient.description}</h3>
+                    <p>{ingredient.brandOwner}</p>
+                  </div>
+                  <div className="rightInfo">
+                    <Button type="primary"> Add</Button>
+                  </div>
+                </div>
+                <div className="macroInfo">
+                  {/* <p>{ingredient.labelNutrients.carbohydrates.value}</p> */}
+                </div>
+              </li>
+            )
+          })}
       </Modal>
       <div id="createPage">
         <div id="topInfo">
@@ -138,7 +175,11 @@ const CreatePost: React.FC = () => {
           </div>
           <label>Tags</label>
           {draftPost.tags.map((tag, i) => {
-            return <p key={i}>#{tag}</p>
+            return (
+              <p key={i} className="tagList">
+                #{tag}
+              </p>
+            )
           })}
           <input
             type="text"
@@ -233,6 +274,10 @@ const CreatePost: React.FC = () => {
           border-radius: 0.3rem;
           font-size: 1.2rem;
         }
+        .tagList {
+          font-size: 1.2rem;
+          margin-bottom: 0.5rem;
+        }
         textarea {
           border: 1px #707070 solid;
           height: 150px;
@@ -284,6 +329,27 @@ const CreatePost: React.FC = () => {
         .tempList p {
           align-self: center;
           margin-left: 0.5rem;
+        }
+        .modalFood {
+          margin: 0.5rem 0;
+          border: 1px solid #e7e7e9;
+          padding: 1rem;
+          border-radius: 4px;
+          box-shadow: 0 2px 14px #aaaaaa;
+
+          min-height: 6rem;
+        }
+        .topInfo {
+          display: flex;
+          justify-content: space-between;
+        }
+        .modalFood .rightInfo {
+          align-self: center;
+        }
+
+        .modalFood h3,
+        p {
+          margin: 0;
         }
       `}</style>
     </Layout>

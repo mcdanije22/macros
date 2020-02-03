@@ -11,25 +11,36 @@ const CreatePost: React.FC = () => {
     title: String
     tags: Array<String>
     summary: String
-    ingredients: Array<String>
+    ingredients: Array<Object>
     directions: Array<String>
+    macros: {
+      calories: number
+      protein: number
+      carbohydrates: number
+      fat: number
+    }
   }
 
   interface ingredientItem {
-    fdcId: Number
+    fdcId: number
     description: String
     brandOwner: String
     labelNutrients: {
-      fats: {
-        value: Number
+      fat: {
+        value: number
       }
       carbohydrates: {
-        value: Number
+        value: number
       }
       protein: {
-        value: Number
+        value: number
+      }
+      calories: {
+        value: number
       }
     }
+    servingSize: number
+    servingSizeUnit: String
   }
 
   const tagInputRef = useRef<HTMLInputElement>()
@@ -42,6 +53,12 @@ const CreatePost: React.FC = () => {
     summary: '',
     ingredients: [],
     directions: [],
+    macros: {
+      calories: 0,
+      protein: 0,
+      carbohydrates: 0,
+      fat: 0,
+    },
   })
   const [modalStatus, toggleModal] = useState<boolean>(false)
 
@@ -53,6 +70,8 @@ const CreatePost: React.FC = () => {
 
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
+    ingredientInputRef.current.value = ''
+    setTempIngredient('')
   }
 
   const handleInputChange = e => {
@@ -103,17 +122,39 @@ const CreatePost: React.FC = () => {
     setTempIngredient(value)
   }
 
-  const addIngredientValue = () => {
+  const addFoodToIngredientList = ingredient => {
     const orgArray = draftPost.ingredients
-    const newArray = [...orgArray, tempIngredientValue]
+    orgArray.push(ingredient)
     setDraftPost({
       ...draftPost,
-      ingredients: newArray,
+      ingredients: orgArray,
     })
-    ingredientInputRef.current.value = ''
-    setTempIngredient('')
+    updateMacroStats(ingredient)
+    toggle()
   }
 
+  const updateMacroStats = ingredient => {
+    const carbohydrates =
+      Math.round(ingredient.labelNutrients.carbohydrates.value) +
+      draftPost.macros.carbohydrates
+    const protein =
+      Math.round(ingredient.labelNutrients.protein.value) +
+      draftPost.macros.protein
+    const fat =
+      Math.round(ingredient.labelNutrients.fat.value) + draftPost.macros.fat
+    const calories =
+      Math.round(ingredient.labelNutrients.calories.value) +
+      draftPost.macros.calories
+    setDraftPost({
+      ...draftPost,
+      macros: {
+        calories,
+        protein,
+        carbohydrates,
+        fat,
+      },
+    })
+  }
   const fetchFoodSearch = async () => {
     let foodOptions = []
     const search = tempIngredientValue
@@ -124,6 +165,7 @@ const CreatePost: React.FC = () => {
       const food: any = await axios.get(
         `https://api.nal.usda.gov/fdc/v1/${el.fdcId}/?api_key=${apiKey}`
       )
+      //only add item to list if it has nutrients listed
       if (typeof food.data.labelNutrients !== 'undefined') {
         foodOptions = [...foodOptions, food.data]
         setFoodList(foodOptions)
@@ -131,35 +173,61 @@ const CreatePost: React.FC = () => {
     })
     ingredientInputRef.current.value = ''
     toggle()
-    // setFoodList(searchList.data.foods)
-    // ingredientInputRef.current.value = ''
-    // toggle()
   }
+  const submitPost = () => {
+    const url = 'http://localhost:5000'
+    const user = '5e13e61fb6cf56d8cb97a0aa'
+    axios.post(`${url}/foodposts/${user}/addpost`, {
+      draftPost,
+    })
+  }
+
   return (
     <Layout title="New Post">
-      <Modal title="Search Ingredients" visible={modalStatus} footer={null}>
-        {searchFoodList
-          .slice(0, 4)
-          //   .filter(el => el.labelNutrients == 'undefined')
-          .map((ingredient, i) => {
-            //   console.log(ingredient.labelNutrients, ingredient)
-            return (
-              <li key={i} className="modalFood">
-                <div className="topInfo">
-                  <div className="leftInfo">
-                    <h3>{ingredient.description}</h3>
-                    <p>{ingredient.brandOwner}</p>
-                  </div>
-                  <div className="rightInfo">
-                    <Button type="primary"> Add</Button>
-                  </div>
+      <Modal
+        title="Search Ingredients"
+        visible={modalStatus}
+        footer={null}
+        onCancel={toggle}
+      >
+        {searchFoodList.slice(0, 5).map((ingredient, i) => {
+          const carbohydrates = Math.round(
+            ingredient.labelNutrients.carbohydrates.value
+          )
+          const protein = Math.round(ingredient.labelNutrients.protein.value)
+          const fat = Math.round(ingredient.labelNutrients.fat.value)
+          const calories = Math.round(ingredient.labelNutrients.calories.value)
+          return (
+            <li key={i} className="modalFood">
+              <div className="topInfo">
+                <div className="leftInfo">
+                  <h3>
+                    <b>{ingredient.description}</b>
+                  </h3>
+                  <p>{ingredient.brandOwner}</p>
+                  <p>
+                    Serving size: {ingredient.servingSize}
+                    {ingredient.servingSizeUnit}
+                  </p>
                 </div>
-                <div className="macroInfo">
-                  {/* <p>{ingredient.labelNutrients.carbohydrates.value}</p> */}
+                <div className="rightInfo">
+                  <Button
+                    type="primary"
+                    onClick={() => addFoodToIngredientList(ingredient)}
+                  >
+                    Add
+                  </Button>
                 </div>
-              </li>
-            )
-          })}
+              </div>
+              <div className="macroInfo">
+                <p>
+                  Calories: {calories} | Protein: {protein} | Carbs:{' '}
+                  {carbohydrates} | Fats: {fat}
+                </p>
+              </div>
+            </li>
+          )
+        })}
       </Modal>
       <div id="createPage">
         <div id="topInfo">
@@ -196,10 +264,14 @@ const CreatePost: React.FC = () => {
           <label>Summary</label>
           <textarea name="summary" onChange={handleInputChange} />
           <label>Ingredients</label>
-          {draftPost.ingredients.map((ingredient, i) => {
+          {draftPost.ingredients.map((ingredient: ingredientItem, i) => {
             return (
-              <li className="tempList" key={i}>
-                <h1>{ingredient}</h1>
+              <li className="tempIngredientsList" key={i}>
+                <h2>{ingredient.description}</h2>
+                <p>
+                  {ingredient.brandOwner}, {ingredient.servingSize}
+                  {ingredient.servingSizeUnit}
+                </p>
               </li>
             )
           })}
@@ -215,7 +287,7 @@ const CreatePost: React.FC = () => {
             }}
           />
           <h4 onClick={fetchFoodSearch}>+ Search new ingredient</h4>
-          <h2>500 Calories 50P 100C 20F</h2>
+
           <label>Directions</label>
           {draftPost.directions.map((direction, i) => {
             return (
@@ -237,9 +309,13 @@ const CreatePost: React.FC = () => {
             }}
           />
           <h4 onClick={addDirectionsValue}>+ Add direction</h4>
+          <h2>
+            {draftPost.macros.calories} Calories {draftPost.macros.protein}P{' '}
+            {draftPost.macros.carbohydrates}C {draftPost.macros.fat}F
+          </h2>
           <hr />
           <div id="formButtons">
-            <button type="button" id="submitButton">
+            <button type="button" id="submitButton" onClick={submitPost}>
               Save
             </button>
             <button type="button" id="cancelButton">
@@ -292,7 +368,7 @@ const CreatePost: React.FC = () => {
           margin: 2rem 0;
         }
         hr {
-          margin: 3rem 0;
+          margin: 2rem 0;
         }
         #formOptions {
           display: flex;
@@ -325,10 +401,26 @@ const CreatePost: React.FC = () => {
         .tempList {
           list-style: none;
           display: flex;
+          margin-bottom: 0.5rem;
+        }
+        .tempList h1 {
+          margin: 0;
+        }
+        .tempIngredientsList {
+          list-style: none;
+          margin-bottom: 0.5rem;
+        }
+        .tempIngredientsList h2 {
+          margin: 0;
+          font-size: 1.3rem;
+        }
+        .tempIngredientsList p {
+          font-size: 1rem;
         }
         .tempList p {
           align-self: center;
           margin-left: 0.5rem;
+          font-size: 1.2rem;
         }
         .modalFood {
           margin: 0.5rem 0;
@@ -336,7 +428,6 @@ const CreatePost: React.FC = () => {
           padding: 1rem;
           border-radius: 4px;
           box-shadow: 0 2px 14px #aaaaaa;
-
           min-height: 6rem;
         }
         .topInfo {

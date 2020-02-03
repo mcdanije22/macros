@@ -30,7 +30,7 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
           font-family: 'Darker Grotesque', sans-serif;
         }
         #pageContent {
-          padding: 8rem 1rem;
+          padding: 6rem 1rem;
           min-height: 100vh;
         }
       `}</style>

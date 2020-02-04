@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import Layout from '../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import Link from 'next/link'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'antd'
+import Router from 'next/router'
 
 const CreatePost: React.FC = () => {
   interface Post {
@@ -177,11 +179,31 @@ const CreatePost: React.FC = () => {
   const submitPost = () => {
     const url = 'http://localhost:5000'
     const user = '5e13e61fb6cf56d8cb97a0aa'
-    axios.post(`${url}/foodposts/${user}/addpost`, {
-      draftPost,
-    })
+    axios
+      .post(`${url}/foodposts/${user}/addpost`, draftPost)
+      .then(res => console.log(res))
+    Router.back()
+    clearDraft()
   }
-
+  const clearDraft = () => {
+    setDraftPost({
+      title: '',
+      tags: [],
+      summary: '',
+      ingredients: [],
+      directions: [],
+      macros: {
+        calories: 0,
+        protein: 0,
+        carbohydrates: 0,
+        fat: 0,
+      },
+    })
+    tagInputRef.current.value = ''
+    ingredientInputRef.current.value = ''
+    directionInputRef.current.value = ''
+  }
+  console.log(draftPost)
   return (
     <Layout title="New Post">
       <Modal
@@ -231,7 +253,7 @@ const CreatePost: React.FC = () => {
       </Modal>
       <div id="createPage">
         <div id="topInfo">
-          <h3>Go back</h3>
+          <h3 onClick={() => Router.back()}>Go back</h3>
         </div>
         <h1>Create New Post</h1>
         <form className="newPost">
@@ -318,7 +340,7 @@ const CreatePost: React.FC = () => {
             <button type="button" id="submitButton" onClick={submitPost}>
               Save
             </button>
-            <button type="button" id="cancelButton">
+            <button type="button" id="cancelButton" onClick={clearDraft}>
               Delete
             </button>
           </div>

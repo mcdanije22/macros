@@ -106,8 +106,11 @@ const UserPage: NextPage<any> = props => {
         </div>
       </div>
       <style jsx>{`
+        .statList p {
+          margin: 0;
+        }
         #topNav {
-          padding-bottom: 7rem;
+          padding-bottom: 4rem;
         }
         .userPage {
         }
@@ -138,7 +141,7 @@ const UserPage: NextPage<any> = props => {
           width: 10rem;
           text-align: center;
           align-self: center;
-          margin: 1rem 0 2rem 0;
+          margin: 0rem 0 2rem 0;
           padding: 0.5rem;
           border: none;
           border-radius: 2rem;

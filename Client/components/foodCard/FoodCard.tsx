@@ -19,12 +19,6 @@ interface Post {
   foodPhoto: String
 }
 
-type MacroObject = {
-  protein: Number
-  carbs: Number
-  fats: Number
-}
-
 const FoodCard: React.FC<Post> = ({
   userName,
   id,
@@ -34,22 +28,22 @@ const FoodCard: React.FC<Post> = ({
   macros,
   foodPhoto,
 }) => {
-  const { protein, fats, carbs }: any = macros
+  const { protein, fat, carbohydrates, calories }: any = macros
   return (
     <Link href={`/foodpost/${id}`}>
       <div className="cardContainer">
         <div className="topBar">
-          <p>500 Calories</p>
+          <p>{calories} Calories</p>
           <p> {saves} Saves</p>
         </div>
         <div className="mainInfo">
           <h1>{title}</h1>
-          <h2>{`${protein}p ${carbs}c ${fats}f`}</h2>
+          <h2>{`${protein}P ${carbohydrates}C ${fat}F`}</h2>
           <h5>{`by ${userName}`}</h5>
         </div>
         <div className="bottomBar">
           <div className="bottomTags">
-            {tags.map((tag, i) => {
+            {tags.slice(0, 3).map((tag, i) => {
               return (
                 <Link href="test" key={i}>
                   <button type="button">{tag}</button>

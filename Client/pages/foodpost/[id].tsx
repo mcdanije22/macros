@@ -5,7 +5,6 @@ import { NextPage, NextPageContext } from 'next'
 import Link from 'next/link'
 
 const FoodPost: NextPage<any> = props => {
-  console.log(props.data)
   const [currentInfo, setCurrentInfo] = useState<String>('overview')
   const changeView = e => {
     setCurrentInfo(e.target.id)
@@ -23,8 +22,8 @@ const FoodPost: NextPage<any> = props => {
     foodPhoto /*min-height: 400px*/,
     id,
   } = props.data
+  console.log(props.data)
   const { userName, photo } = props.data.user
-  console.log(props.data.user._id)
   return (
     <Layout title={title}>
       <div className="postContainer">
@@ -57,7 +56,7 @@ const FoodPost: NextPage<any> = props => {
         </div>
         <div className="stats">
           <h1>
-            {macros.protein}p {macros.carbs}c {macros.fats}f
+            {macros.protein}p {macros.carbohydrates}c {macros.fat}f
           </h1>
           <h1>{macros.calories} Calories</h1>
         </div>
@@ -89,7 +88,12 @@ const FoodPost: NextPage<any> = props => {
           <div className="ingredients">
             <h1>Ingredients</h1>
             {ingredients.map((ingredient, i) => {
-              return <p key={i}>{ingredient}</p>
+              return (
+                <p key={i}>
+                  {ingredient.servingSize}
+                  {ingredient.servingSizeUnit} {ingredient.description}
+                </p>
+              )
             })}
           </div>
           <div className="directions">
@@ -97,7 +101,7 @@ const FoodPost: NextPage<any> = props => {
             <ul>
               {directions.map((direction, i) => {
                 return (
-                  <li key={i}>
+                  <li key={i} className="directionList">
                     <h1>{i + 1}.</h1>
                     <p>{direction}</p>
                   </li>
@@ -196,6 +200,13 @@ const FoodPost: NextPage<any> = props => {
         }
         .ingredients p {
           margin: 1rem 0;
+        }
+
+        .directions h1 {
+          margin: 1rem 0;
+        }
+        .directionList h1 {
+          margin: 0;
         }
         .directions ul {
           list-style: none;

@@ -7,7 +7,7 @@ const FoodPostSchema: Schema = new Schema({
   },
   foodPhoto: {
     type: String,
-    defualt: "https://via.placeholder.com/400"
+    default: "https://via.placeholder.com/400"
   },
   title: {
     type: String,

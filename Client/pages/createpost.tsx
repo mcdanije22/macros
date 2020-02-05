@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
-import { Modal, Button } from 'antd'
+import { Modal, Button, Icon } from 'antd'
 import Router from 'next/router'
 
 const CreatePost: React.FC = () => {
@@ -253,6 +253,10 @@ const CreatePost: React.FC = () => {
       </Modal>
       <div id="createPage">
         <div id="topInfo">
+          <Icon
+            type="left"
+            style={{ alignSelf: 'center', marginRight: '.2rem' }}
+          />{' '}
           <h3 onClick={() => Router.back()}>Go back</h3>
         </div>
         <h1>Create New Post</h1>
@@ -350,6 +354,9 @@ const CreatePost: React.FC = () => {
         #topInfo {
           display: flex;
           color: #707070;
+        }
+        #topInfo h3 {
+          margin: 0;
         }
         .newPost {
           display: flex;

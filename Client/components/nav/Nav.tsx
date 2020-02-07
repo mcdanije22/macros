@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faSearch, faPlus } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
+import { Icon } from 'antd'
 
 const NavBar: React.FC = () => {
   const [navBarStatus, isOpen] = useState<Boolean>(false)
@@ -14,7 +13,7 @@ const NavBar: React.FC = () => {
         <ul id="navBarTop">
           <li>
             <button type="button" className="navIcon" onClick={toggleMenu}>
-              <FontAwesomeIcon icon={faBars} />
+              <Icon type="menu" />
             </button>
           </li>
           <li>
@@ -24,7 +23,7 @@ const NavBar: React.FC = () => {
           </li>
           <li>
             <button type="button" className="navIcon">
-              <FontAwesomeIcon icon={faSearch} />
+              <Icon type="search" />
             </button>
           </li>
         </ul>
@@ -40,12 +39,12 @@ const NavBar: React.FC = () => {
         <ul id="topIcons">
           <li>
             <button type="button" className="navIcon" onClick={toggleMenu}>
-              <FontAwesomeIcon icon={faBars} />
+              <Icon type="menu" />
             </button>
           </li>
           <li>
             <button type="button" className="navIcon">
-              <FontAwesomeIcon icon={faPlus} />
+              <Icon type="plus" />
             </button>
           </li>
         </ul>

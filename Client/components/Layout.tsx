@@ -32,6 +32,12 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
         #pageContent {
           padding: 6rem 1rem;
           min-height: 100vh;
+          background: rgb(243, 244, 246);
+          background: linear-gradient(
+            352deg,
+            rgba(243, 244, 246, 1) 0%,
+            rgba(255, 255, 255, 1) 100%
+          );
         }
       `}</style>
     </div>

@@ -11,15 +11,15 @@ const logIn = () => {
       </Head>
       <h1>Log into your account</h1>
       <form id="logInForm">
-        <Input placeholder="username" allowClear style={{ margin: '1rem 0' }} />
-        <Input placeholder="password" allowClear style={{ margin: '1rem 0' }} />
+        <Input placeholder="Email" allowClear style={{ margin: '1rem 0' }} />
+        <Input placeholder="Password" allowClear style={{ margin: '1rem 0' }} />
         <Button type="primary" style={{ marginTop: '1rem' }}>
           Log in
         </Button>
       </form>
       <div id="signUpOption">
         <h3>Don't have an account?</h3>
-        <Link href="">
+        <Link href="signup">
           <h3
             style={{ marginLeft: '.2rem', color: '#438EF7', cursor: 'pointer' }}
           >

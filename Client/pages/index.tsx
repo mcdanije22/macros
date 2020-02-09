@@ -25,9 +25,11 @@ const index: React.FC = () => {
               Login In
             </button>
           </Link>
-          <button type="submit" className="logButtons">
-            Sign Up
-          </button>
+          <Link href="signup">
+            <button type="submit" className="logButtons">
+              Sign Up
+            </button>
+          </Link>
         </div>
       </div>
       <style jsx>{`

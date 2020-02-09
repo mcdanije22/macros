@@ -3,8 +3,6 @@ import Layout from '../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import Link from 'next/link'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button, Icon } from 'antd'
 import Router from 'next/router'
 

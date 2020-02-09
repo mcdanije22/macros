@@ -1,9 +1,16 @@
-import React from 'react'
-import Layout from '../components/Layout'
+import React, { useState } from 'react'
+import Link from 'next/link'
+import Head from 'next/head'
 
-const index: React.FC = () => (
-  <Layout>
+const index: React.FC = () => {
+  const [toggleStatus, setToggle] = useState<String>('')
+
+  return (
+    // <Layout>
     <div id="landingPage">
+      <Head>
+        <title>Macros</title>
+      </Head>
       <div id="landingSection">
         <div id="landingHeader">
           <h1>Welcome to Macros</h1>
@@ -13,22 +20,16 @@ const index: React.FC = () => (
           </p>
         </div>
         <div id="landingButtons">
-          <button type="submit" className="logButtons">
-            Login In
-          </button>
+          <Link href="login">
+            <button type="submit" className="logButtons">
+              Login In
+            </button>
+          </Link>
           <button type="submit" className="logButtons">
             Sign Up
           </button>
         </div>
       </div>
-
-      {/* <form id="logInForm">
-        <input type="text"></input>
-        <input type="text"></input>
-        <button type="submit">Log in</button>
-      </form>
-      <h3>Don't have an account?</h3>
-      <button type="button">Sign up</button> */}
       <style jsx>{`
         #landingPage {
           display: flex;
@@ -37,7 +38,7 @@ const index: React.FC = () => (
         #landingHeader {
           text-align: center;
           font-size: 1rem;
-          margin: 8rem 0 4rem 0;
+          margin: 12rem 1rem 4rem 1rem;
           padding: 0 1rem;
         }
         #landingButtons {
@@ -55,7 +56,8 @@ const index: React.FC = () => (
         }
       `}</style>
     </div>
-  </Layout>
-)
+    // </Layout>
+  )
+}
 
 export default index

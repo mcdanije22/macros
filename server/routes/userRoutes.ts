@@ -32,7 +32,7 @@ router.get("/:userid", async (req: Request, res: Response) => {
 });
 
 //add user to collection
-router.post("/add", (req: Request, res: Response) => {
+router.post("/register", (req: Request, res: Response) => {
   UserModel.findOne({ email: req.body.email }).then(user => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
@@ -64,14 +64,15 @@ router.post("/login", (req: Request, res: Response) => {
 
   const { email, password } = req.body;
 
-  const user: any = UserModel.findOne({ email });
-  if (!user) {
-    return res.status(400).json("Incorrect email or password");
-  } else if (user.password === password) {
-    res.send(user);
-  } else {
-    return res.status(400).json("Incorrect email or password");
-  }
+  UserModel.findOne({ email }).then((user: any) => {
+    if (!user) {
+      return res.status(400).json("Incorrect email or password");
+    } else if (user.password !== password) {
+      return res.status(400).json("Incorrect email or password");
+    } else {
+      res.send(user);
+    }
+  });
 });
 
 // passport.use(

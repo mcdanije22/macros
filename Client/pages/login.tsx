@@ -1,9 +1,50 @@
 import React, { useState } from 'react'
-import { Input, Button } from 'antd'
+import { Input, Button, message } from 'antd'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
+import axios from 'axios'
+
+interface logInForm {
+  email: string
+  password: string
+}
 
 const logIn = () => {
+  const [logInForm, updateLogInForm] = useState<logInForm>({
+    email: '',
+    password: '',
+  })
+  const router = useRouter()
+
+  const handleInputChange = e => {
+    const name = e.target.name
+    updateLogInForm({
+      ...logInForm,
+      [name]: e.target.value,
+    })
+  }
+  const logIn = async (email: string, password: string) => {
+    const url = 'http://localhost:5000/'
+    try {
+      await axios.post(`${url}users/login`, {
+        email,
+        password,
+      })
+      router.push('/home')
+    } catch (error) {
+      message.error('inccorect email or password')
+      updateLogInForm({
+        email: logInForm.email,
+        password: '',
+      })
+    }
+  }
+
+  const submitLogIn = () => {
+    const { email, password } = logInForm
+    logIn(email, password)
+  }
   return (
     <div id="logInPage">
       <Head>
@@ -11,9 +52,37 @@ const logIn = () => {
       </Head>
       <h1>Log into your account</h1>
       <form id="logInForm">
-        <Input placeholder="Email" allowClear style={{ margin: '1rem 0' }} />
-        <Input placeholder="Password" allowClear style={{ margin: '1rem 0' }} />
-        <Button type="primary" style={{ marginTop: '1rem' }}>
+        <Input
+          name="email"
+          placeholder="Email"
+          allowClear
+          style={{ margin: '1rem 0' }}
+          onChange={handleInputChange}
+          value={logInForm.email}
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
+              submitLogIn()
+            }
+          }}
+        />
+        <Input
+          name="password"
+          placeholder="Password"
+          allowClear
+          style={{ margin: '1rem 0' }}
+          onChange={handleInputChange}
+          value={logInForm.password}
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
+              submitLogIn()
+            }
+          }}
+        />
+        <Button
+          type="primary"
+          style={{ marginTop: '1rem' }}
+          onClick={submitLogIn}
+        >
           Log in
         </Button>
       </form>

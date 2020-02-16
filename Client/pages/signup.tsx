@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Input, Button } from 'antd'
+import { Input, Button, message } from 'antd'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import axios from 'axios'
 
@@ -18,6 +19,7 @@ const signUp = () => {
     fullName: '',
     password: '',
   })
+  const router = useRouter()
 
   const handleInputChange = e => {
     const name = e.target.name
@@ -37,23 +39,24 @@ const signUp = () => {
       password === '' ||
       password.length < 8
     ) {
-      alert('Please fill in all fields')
+      message.error('Please fill in all fields')
     } else if (!email.includes('@')) {
-      alert('please provide valid email')
+      message.error('please provide valid email')
     } else {
       const url = 'http://localhost:5000/'
       axios
-        .post(`${url}users/add`, {
+        .post(`${url}users/register`, {
           email,
           userName,
           fullName,
           password,
         })
-        .then(res => console.log(res))
+        .then(res =>
+          message.success('Welcome to macros community, please login')
+        )
+      router.push('/login')
     }
   }
-  console.log(signUpForm)
-
   return (
     <div id="signUpPage">
       <Head>
@@ -67,6 +70,11 @@ const signUp = () => {
           allowClear
           style={{ margin: '1rem 0' }}
           onChange={handleInputChange}
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
+              submitRegistration()
+            }
+          }}
         />
         <Input
           name="userName"
@@ -74,6 +82,11 @@ const signUp = () => {
           allowClear
           style={{ margin: '1rem 0' }}
           onChange={handleInputChange}
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
+              submitRegistration()
+            }
+          }}
         />
         <Input
           name="fullName"
@@ -81,6 +94,11 @@ const signUp = () => {
           allowClear
           style={{ margin: '1rem 0' }}
           onChange={handleInputChange}
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
+              submitRegistration()
+            }
+          }}
         />
         <Input
           name="password"
@@ -88,6 +106,11 @@ const signUp = () => {
           allowClear
           style={{ margin: '1rem 0' }}
           onChange={handleInputChange}
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
+              submitRegistration()
+            }
+          }}
         />
         <Button
           type="primary"

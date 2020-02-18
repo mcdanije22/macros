@@ -43,9 +43,11 @@ const NavBar: React.FC = () => {
             </button>
           </li>
           <li>
-            <button type="button" className="navIcon">
-              <Icon type="plus" />
-            </button>
+            <Link href="/createpost">
+              <button type="button" className="navIcon">
+                <Icon type="plus" />
+              </button>
+            </Link>
           </li>
         </ul>
         <nav>
@@ -60,7 +62,7 @@ const NavBar: React.FC = () => {
               <a>Notifications</a>
             </Link>
             <Link href="/">
-              <a>Login/Sign up</a>
+              <a>Profile</a>
             </Link>
           </ul>
         </nav>

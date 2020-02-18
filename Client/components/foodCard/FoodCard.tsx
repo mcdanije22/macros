@@ -1,13 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  fab,
-  faFacebook,
-  faInstagram,
-  faTwitter,
-} from '@fortawesome/free-brands-svg-icons'
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { Icon } from 'antd'
 
 interface Post {
   id: String
@@ -53,13 +46,13 @@ const FoodCard: React.FC<Post> = ({
           </div>
           <ul className="bottomSocial">
             <li>
-              <FontAwesomeIcon icon={faFacebook} />
+              <Icon type="facebook" />
             </li>
             <li>
-              <FontAwesomeIcon icon={faInstagram} />
+              <Icon type="instagram" />
             </li>
             <li>
-              <FontAwesomeIcon icon={faTwitter} />
+              <Icon type="twitter" />
             </li>
           </ul>
         </div>

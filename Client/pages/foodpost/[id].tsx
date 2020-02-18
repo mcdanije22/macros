@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import Layout from '../../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
 import Link from 'next/link'
+import { UserContext } from '../../components/userContext'
 
 const FoodPost: NextPage<any> = props => {
+  const { user } = useContext(UserContext)
   const [currentInfo, setCurrentInfo] = useState<String>('overview')
   const changeView = e => {
     setCurrentInfo(e.target.id)
@@ -23,6 +25,7 @@ const FoodPost: NextPage<any> = props => {
     id,
   } = props.data
   console.log(props.data)
+  console.log(user)
   const { userName, photo } = props.data.user
   return (
     <Layout title={title}>

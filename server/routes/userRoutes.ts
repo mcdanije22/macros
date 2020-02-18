@@ -49,25 +49,10 @@ router.post("/register", (req: Request, res: Response) => {
 });
 
 router.post("/login", (req: Request, res: Response) => {
-  // const { email, password } = req.body;
-  // const test = async () => {
-  //   const user: any = await UserModel.findOne({ email });
-  //   if (!user) {
-  //     return res.status(400).json("Incorrect email or password");
-  //   } else if (user.password === password) {
-  //     res.send(user);
-  //   } else {
-  //     return res.status(400).json("Incorrect email or password");
-  //   }
-  // };
-  // test();
-
   const { email, password } = req.body;
 
   UserModel.findOne({ email }).then((user: any) => {
-    if (!user) {
-      return res.status(400).json("Incorrect email or password");
-    } else if (user.password !== password) {
+    if (!user || user.password !== password) {
       return res.status(400).json("Incorrect email or password");
     } else {
       res.send(user);

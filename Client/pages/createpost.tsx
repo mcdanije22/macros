@@ -176,11 +176,11 @@ const CreatePost: React.FC = () => {
   }
   const submitPost = () => {
     const url = 'http://localhost:5000'
-    const user = '5e13e61fb6cf56d8cb97a0aa'
+    const user = '5e48ec58b2be6e0d4acb388e'
     axios
       .post(`${url}/foodposts/${user}/addpost`, draftPost)
       .then(res => console.log(res))
-    Router.back()
+    Router.push('/home')
     clearDraft()
   }
   const clearDraft = () => {

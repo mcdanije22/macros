@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Input, Button, message } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import axios from 'axios'
+import { UserContext } from '../components/userContext'
 
 interface logInForm {
   email: string
   password: string
 }
-
 const logIn = () => {
+  const { user, setUser } = useContext(UserContext)
   const [logInForm, updateLogInForm] = useState<logInForm>({
     email: '',
     password: '',
@@ -27,10 +28,11 @@ const logIn = () => {
   const logIn = async (email: string, password: string) => {
     const url = 'http://localhost:5000/'
     try {
-      await axios.post(`${url}users/login`, {
+      const user = await axios.post(`${url}users/login`, {
         email,
         password,
       })
+      await setUser(user.data)
       router.push('/home')
     } catch (error) {
       message.error('inccorect email or password')
@@ -40,11 +42,11 @@ const logIn = () => {
       })
     }
   }
-
   const submitLogIn = () => {
     const { email, password } = logInForm
     logIn(email, password)
   }
+  console.log(user)
   return (
     <div id="logInPage">
       <Head>

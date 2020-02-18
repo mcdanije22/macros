@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../components/userContext'
 import axios, { AxiosResponse } from 'axios'
 import Layout from '../components/Layout'
 import FoodCard from '../components/foodCard/FoodCard'
@@ -19,6 +20,9 @@ const Home: React.FC = () => {
       console.log(error)
     }
   }, [])
+
+  const testData = useContext(UserContext)
+  console.log(testData)
   return (
     <Layout title="NewsFeed | Macros">
       <div id="cardList">

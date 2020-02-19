@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useRouter } from 'next/router'
 import { UserContext } from '../components/userContext'
 import axios, { AxiosResponse } from 'axios'
 import Layout from '../components/Layout'
 import FoodCard from '../components/foodCard/FoodCard'
 
 const Home: React.FC = () => {
+  const router = useRouter()
+  const { isUserLoggedIn } = useContext(UserContext)
   const [currentPosts, getPosts] = useState([])
   const url = 'http://localhost:5000'
   const fetchPosts = async () => {
@@ -14,6 +17,9 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
+    if (!isUserLoggedIn) {
+      router.push('/')
+    }
     try {
       fetchPosts()
     } catch (error) {
@@ -21,8 +27,6 @@ const Home: React.FC = () => {
     }
   }, [])
 
-  const testData = useContext(UserContext)
-  console.log(testData)
   return (
     <Layout title="NewsFeed | Macros">
       <div id="cardList">

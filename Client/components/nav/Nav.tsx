@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Link from 'next/link'
 import { Icon } from 'antd'
+import { UserContext } from '../../components/userContext'
 
 const NavBar: React.FC = () => {
+  const { user, isUserLoggedIn } = useContext(UserContext)
   const [navBarStatus, isOpen] = useState<Boolean>(false)
   const toggleMenu = () => {
     isOpen(navBarStatus ? false : true)
@@ -17,7 +19,7 @@ const NavBar: React.FC = () => {
             </button>
           </li>
           <li>
-            <Link href="/">
+            <Link href={isUserLoggedIn ? '/home' : '/'}>
               <a>Macro</a>
             </Link>
           </li>
@@ -52,7 +54,7 @@ const NavBar: React.FC = () => {
         </ul>
         <nav>
           <ul id="menuList">
-            <Link href="/">
+            <Link href="/home">
               <a>Home</a>
             </Link>
             <Link href="/">

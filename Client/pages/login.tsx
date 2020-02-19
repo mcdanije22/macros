@@ -11,7 +11,10 @@ interface logInForm {
   password: string
 }
 const logIn = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser, isUserLoggedIn, userLoggedIn } = useContext(
+    UserContext
+  )
+  const [loading, isLoading] = useState<Boolean>(false)
   const [logInForm, updateLogInForm] = useState<logInForm>({
     email: '',
     password: '',
@@ -32,7 +35,10 @@ const logIn = () => {
         email,
         password,
       })
+      isLoading(true)
       await setUser(user.data)
+      await userLoggedIn(true)
+      isLoading(false)
       router.push('/home')
     } catch (error) {
       message.error('inccorect email or password')
@@ -47,6 +53,7 @@ const logIn = () => {
     logIn(email, password)
   }
   console.log(user)
+  console.log(isUserLoggedIn)
   return (
     <div id="logInPage">
       <Head>
@@ -80,13 +87,17 @@ const logIn = () => {
             }
           }}
         />
-        <Button
-          type="primary"
-          style={{ marginTop: '1rem' }}
-          onClick={submitLogIn}
-        >
-          Log in
-        </Button>
+        {loading ? (
+          <p>logging in...</p>
+        ) : (
+          <Button
+            type="primary"
+            style={{ marginTop: '1rem' }}
+            onClick={submitLogIn}
+          >
+            Log in
+          </Button>
+        )}
       </form>
       <div id="signUpOption">
         <h3>Don't have an account?</h3>

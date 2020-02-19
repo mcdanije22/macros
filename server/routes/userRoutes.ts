@@ -24,7 +24,7 @@ router.get("/:userid", async (req: Request, res: Response) => {
     posts: 1,
     saves: 1,
     followingCount: 1,
-    followersCount: 1
+    followerCount: 1
   })
     .populate("posts")
     .populate("saves");

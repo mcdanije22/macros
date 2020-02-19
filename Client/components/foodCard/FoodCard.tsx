@@ -23,7 +23,8 @@ const FoodCard: React.FC<Post> = ({
 }) => {
   const { protein, fat, carbohydrates, calories }: any = macros
   return (
-    <Link href={`/foodpost/${id}`}>
+    // <Link href={`/foodpost/${id}`}>
+    <Link href="/foodpost/[id]" as={`/foodpost/${id}`}>
       <div className="cardContainer">
         <div className="topBar">
           <p>{calories} Calories</p>

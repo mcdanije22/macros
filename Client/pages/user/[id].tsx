@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import Layout from '../../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
@@ -6,8 +6,11 @@ import Link from 'next/link'
 import Head from 'next/head'
 import Nav from '../../components/nav/Nav'
 import FoodCard from '../../components/foodCard/FoodCard'
+import { UserContext } from '../../components/userContext'
 
 const UserPage: NextPage<any> = props => {
+  const { user } = useContext(UserContext)
+
   const [activeNav, setActiveNav] = useState('myPost')
   const toggleNav = e => {
     setActiveNav(e.target.id)
@@ -18,10 +21,10 @@ const UserPage: NextPage<any> = props => {
     posts,
     saves,
     followingCount,
-    followersCount,
+    followerCount,
   } = props.data
-  console.log(saves)
-
+  console.log('user page', props.data)
+  console.log('logged in user', user)
   return (
     <div className="userPage">
       <Head>
@@ -43,7 +46,7 @@ const UserPage: NextPage<any> = props => {
         <div className="profileStats">
           <ul className="statList">
             <li>
-              <p>{followersCount}</p>
+              <p>{followerCount}</p>
               <p>Followers</p>
             </li>
             <hr />

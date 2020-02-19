@@ -3,10 +3,13 @@ import 'antd/dist/antd.css'
 import { UserContext } from '../components/userContext'
 
 function MyApp({ Component, pageProps }) {
-  const [user, setUser] = useState<object>({})
+  const [user, setUser] = useState<object>(null)
+  const [isUserLoggedIn, userLoggedIn] = useState<Boolean>(false)
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, isUserLoggedIn, userLoggedIn }}
+    >
       <div>
         <Component {...pageProps} />
         <style jsx global>{`

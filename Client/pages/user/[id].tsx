@@ -1,8 +1,6 @@
-import React, { useState, useContext } from 'react'
-import Layout from '../../components/Layout'
+import React, { useState, useContext, useEffect } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
-import Link from 'next/link'
 import Head from 'next/head'
 import Nav from '../../components/nav/Nav'
 import FoodCard from '../../components/foodCard/FoodCard'
@@ -10,7 +8,6 @@ import { UserContext } from '../../components/userContext'
 
 const UserPage: NextPage<any> = props => {
   const { user } = useContext(UserContext)
-
   const [activeNav, setActiveNav] = useState('myPost')
   const toggleNav = e => {
     setActiveNav(e.target.id)
@@ -22,9 +19,9 @@ const UserPage: NextPage<any> = props => {
     saves,
     followingCount,
     followerCount,
+    _id,
   } = props.data
-  console.log('user page', props.data)
-  console.log('logged in user', user)
+
   return (
     <div className="userPage">
       <Head>
@@ -40,7 +37,11 @@ const UserPage: NextPage<any> = props => {
           alt={`${userName} profile photo`}
         />
         <h1>{userName}</h1>
-        <button className="followButton">Follow</button>
+        {user._id === _id ? (
+          ''
+        ) : (
+          <button className="followButton">Follow</button>
+        )}
       </div>
       <div className="mainSection">
         <div className="profileStats">
@@ -209,16 +210,6 @@ const UserPage: NextPage<any> = props => {
     </div>
   )
 }
-
-// UserPage.getInitialProps = async ({ query }) => {
-//   const { id } = query
-//   const url = 'http://localhost:5000'
-//   const response: AxiosResponse = await axios.get(`${url}/user/${id}`)
-//   const currentUser = await response.data
-//   return {
-//     data: currentUser,
-//   }
-// }
 
 UserPage.getInitialProps = async ({ query }) => {
   const { id } = query

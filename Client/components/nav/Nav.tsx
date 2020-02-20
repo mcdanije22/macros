@@ -58,12 +58,15 @@ const NavBar: React.FC = () => {
               <a>Home</a>
             </Link>
             <Link href="/">
-              <a>Favorites</a>
+              <a>Saves</a>
             </Link>
             <Link href="/">
               <a>Notifications</a>
             </Link>
-            <Link href="/">
+            <Link
+              href="/user/[id]"
+              as={isUserLoggedIn ? `/user/${user._id}` : '/'}
+            >
               <a>Profile</a>
             </Link>
           </ul>

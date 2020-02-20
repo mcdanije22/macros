@@ -1,48 +1,55 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import Layout from '../components/Layout'
 import axios, { AxiosResponse } from 'axios'
-import Link from 'next/link'
-
+import { UserContext } from '../components/userContext'
 import { Modal, Button, Icon } from 'antd'
 import Router from 'next/router'
+import { useRouter } from 'next/router'
+
+interface Post {
+  title: String
+  tags: Array<String>
+  summary: String
+  ingredients: Array<Object>
+  directions: Array<String>
+  macros: {
+    calories: number
+    protein: number
+    carbohydrates: number
+    fat: number
+  }
+}
+
+interface ingredientItem {
+  fdcId: number
+  description: String
+  brandOwner: String
+  labelNutrients: {
+    fat: {
+      value: number
+    }
+    carbohydrates: {
+      value: number
+    }
+    protein: {
+      value: number
+    }
+    calories: {
+      value: number
+    }
+  }
+  servingSize: number
+  servingSizeUnit: String
+}
 
 const CreatePost: React.FC = () => {
-  interface Post {
-    title: String
-    tags: Array<String>
-    summary: String
-    ingredients: Array<Object>
-    directions: Array<String>
-    macros: {
-      calories: number
-      protein: number
-      carbohydrates: number
-      fat: number
+  const { user, isUserLoggedIn } = useContext(UserContext)
+  const router = useRouter()
+  useEffect(() => {
+    if (!isUserLoggedIn) {
+      router.push('/')
     }
-  }
-
-  interface ingredientItem {
-    fdcId: number
-    description: String
-    brandOwner: String
-    labelNutrients: {
-      fat: {
-        value: number
-      }
-      carbohydrates: {
-        value: number
-      }
-      protein: {
-        value: number
-      }
-      calories: {
-        value: number
-      }
-    }
-    servingSize: number
-    servingSizeUnit: String
-  }
-
+  }, [])
   const tagInputRef = useRef<HTMLInputElement>()
   const ingredientInputRef = useRef<HTMLInputElement>()
   const directionInputRef = useRef<HTMLInputElement>()

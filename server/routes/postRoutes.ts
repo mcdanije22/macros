@@ -1,6 +1,5 @@
 import express, { Router, Response, Request } from "express";
 import mongoose, { Schema, model } from "mongoose";
-
 import FoodPostModel from "../models/FoodPostModel";
 import UserModel from "../models/UserModel";
 import CommentModel from "../models/PostCommentModel";
@@ -26,7 +25,7 @@ router.get("/:foodpostid", async (req: Request, res: Response) => {
   try {
     const currentFoodPost = await FoodPostModel.findById(foodpostid).populate({
       path: "user",
-      select: "userName photo"
+      select: "userName photo fullName"
     });
     res.send(currentFoodPost);
   } catch (error) {

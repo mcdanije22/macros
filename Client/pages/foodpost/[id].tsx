@@ -3,6 +3,7 @@ import Layout from '../../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
 import Link from 'next/link'
+import { Icon } from 'antd'
 import { UserContext } from '../../components/userContext'
 
 const FoodPost: NextPage<any> = props => {
@@ -24,16 +25,18 @@ const FoodPost: NextPage<any> = props => {
     foodPhoto /*min-height: 400px*/,
     id,
   } = props.data
-  console.log(user)
-  const { userName, photo } = props.data.user
+  const { userName, photo, fullName } = props.data.user
+  console.log(props.data.user)
   return (
     <Layout title={title}>
       <div className="postContainer">
         <div className="topInfo">
-          {/* <Link href={`/user/${props.data.user._id}`}> */}
           <Link href="/user/[id]" as={`/user/${props.data.user._id}`}>
             <div className="postArthur">
-              <img src={photo} alt={`${userName}'s profile`} />
+              <img
+                src={`https://avatars.dicebear.com/v2/initials/${fullName[0]}.svg`}
+                alt={`${userName}'s profile`}
+              />
               <h3>{userName}</h3>
             </div>
           </Link>
@@ -41,9 +44,18 @@ const FoodPost: NextPage<any> = props => {
         </div>
         <h1>{title}</h1>
         <div className="topButtons">
-          <button type="button">Save</button>
-          <button type="button">share</button>
-          <button type="button">share</button>
+          <li>
+            <Icon type="heart" theme="twoTone" twoToneColor="#eb2f96" />
+          </li>
+          <li>
+            <Icon type="facebook" style={{ color: '#4A66AD' }} />
+          </li>
+          <li>
+            <Icon type="instagram" style={{ color: '#B53E68' }} />
+          </li>
+          <li>
+            <Icon type="twitter" style={{ color: '#4B9CE8' }} />
+          </li>
         </div>
         <div className="heroImage">
           <img src={foodPhoto} alt={`${title} hero`} />
@@ -160,14 +172,12 @@ const FoodPost: NextPage<any> = props => {
           align-items: center;
         }
         .topButtons {
+          display: flex;
         }
-        .topButtons button {
-          border: 1px solid #262626;
-          background-color: transparent;
-          color: #262626;
-          width: 4rem;
-          padding: 0.2rem;
-          margin: 0 1rem 1rem 0;
+        .topButtons li {
+          list-style: none;
+          margin: 0 1rem 0.5rem 0;
+          font-size: 1.5rem;
         }
         .heroImage img {
           width: 100%;

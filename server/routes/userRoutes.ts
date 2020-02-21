@@ -20,6 +20,7 @@ router.get("/:userid", async (req: Request, res: Response) => {
   const { userid } = req.params;
   const user: any = await UserModel.findById(userid, {
     userName: 1,
+    fullName: 1,
     photo: 1,
     posts: 1,
     saves: 1,

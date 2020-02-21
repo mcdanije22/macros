@@ -20,8 +20,9 @@ const UserPage: NextPage<any> = props => {
     followingCount,
     followerCount,
     _id,
+    fullName,
   } = props.data
-
+  console.log(posts)
   return (
     <div className="userPage">
       <Head>
@@ -33,7 +34,7 @@ const UserPage: NextPage<any> = props => {
       <div className="heroHeader">
         <img
           className="heroUserImage"
-          src={photo}
+          src={`https://avatars.dicebear.com/v2/initials/${fullName[0]}.svg`}
           alt={`${userName} profile photo`}
         />
         <h1>{userName}</h1>
@@ -81,7 +82,7 @@ const UserPage: NextPage<any> = props => {
                 <FoodCard
                   key={i}
                   id={post._id}
-                  userName={post.user.userName}
+                  userName={post.userName}
                   title={post.title}
                   tags={post.tags}
                   macros={post.macros}
@@ -97,7 +98,7 @@ const UserPage: NextPage<any> = props => {
                 <FoodCard
                   key={i}
                   id={post._id}
-                  userName={post.user.userName}
+                  userName={post.userName}
                   title={post.title}
                   tags={post.tags}
                   macros={post.macros}

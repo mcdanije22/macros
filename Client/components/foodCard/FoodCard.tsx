@@ -45,7 +45,7 @@ const FoodCard: React.FC<Post> = ({
               )
             })}
           </div>
-          <ul className="bottomSocial">
+          {/* <ul className="bottomSocial">
             <li>
               <Icon type="facebook" />
             </li>
@@ -55,7 +55,7 @@ const FoodCard: React.FC<Post> = ({
             <li>
               <Icon type="twitter" />
             </li>
-          </ul>
+          </ul> */}
         </div>
         <style jsx>{`
           * {

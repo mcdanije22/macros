@@ -10,6 +10,7 @@ const Home: React.FC = () => {
   const { isUserLoggedIn } = useContext(UserContext)
   const [currentPosts, getPosts] = useState([])
   const url = 'http://localhost:5000'
+
   const fetchPosts = async () => {
     const response: AxiosResponse = await axios.get(`${url}/foodposts`)
     const postsList = await response.data
@@ -19,11 +20,12 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (!isUserLoggedIn) {
       router.push('/')
-    }
-    try {
-      fetchPosts()
-    } catch (error) {
-      console.log(error)
+    } else {
+      try {
+        fetchPosts()
+      } catch (error) {
+        console.log(error)
+      }
     }
   }, [])
 

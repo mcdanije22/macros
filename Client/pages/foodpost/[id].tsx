@@ -3,7 +3,7 @@ import Layout from '../../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
 import Link from 'next/link'
-import { Icon } from 'antd'
+import { Icon, message } from 'antd'
 import { UserContext } from '../../components/userContext'
 
 const FoodPost: NextPage<any> = props => {
@@ -22,11 +22,22 @@ const FoodPost: NextPage<any> = props => {
     macros,
     summary,
     comments,
-    foodPhoto /*min-height: 400px*/,
-    id,
+    foodPhoto,
   } = props.data
   const { userName, photo, fullName } = props.data.user
-  console.log(props.data.user)
+  console.log(props.data)
+
+  const userLikePost = async () => {
+    const url = 'http://localhost:5000'
+    try {
+      await axios.post(`${url}/users/like`, {
+        postId: props.data._id,
+        userId: props.data.user._id,
+      })
+    } catch (error) {
+      message.error('Post already saved')
+    }
+  }
   return (
     <Layout title={title}>
       <div className="postContainer">
@@ -45,7 +56,12 @@ const FoodPost: NextPage<any> = props => {
         <h1>{title}</h1>
         <div className="topButtons">
           <li>
-            <Icon type="heart" theme="twoTone" twoToneColor="#eb2f96" />
+            <Icon
+              type="heart"
+              theme="twoTone"
+              twoToneColor="#eb2f96"
+              onClick={userLikePost}
+            />
           </li>
           <li>
             <Icon type="facebook" style={{ color: '#4A66AD' }} />

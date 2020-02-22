@@ -1,5 +1,6 @@
 import express, { Application, Router, Response, Request } from "express";
 import UserModel from "../models/UserModel";
+import FoodPostModel from "../models/FoodPostModel";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
@@ -59,6 +60,21 @@ router.post("/login", (req: Request, res: Response) => {
       res.send(user);
     }
   });
+});
+
+router.post("/like", async (req: Request, res: Response) => {
+  const { postId, userId } = req.body;
+  const user: any = await UserModel.findOne({ _id: userId });
+  const post: any = await FoodPostModel.findOne({ _id: postId });
+  if (user.saves.includes(postId)) {
+    return res.status(400).json("Already saved");
+  } else {
+    user.saves.push(postId);
+    user.save();
+    post.saves++;
+    post.save();
+    console.log(user);
+  }
 });
 
 // passport.use(

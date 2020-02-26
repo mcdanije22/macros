@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import Layout from '../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { UserContext } from '../components/userContext'
-import { Modal, Button, Icon } from 'antd'
+import { Modal, Button, Icon, message } from 'antd'
 import Router from 'next/router'
 import { useRouter } from 'next/router'
 
@@ -181,15 +181,30 @@ const CreatePost: React.FC = () => {
     ingredientInputRef.current.value = ''
     toggle()
   }
-  const submitPost = () => {
+  const submitPost = async () => {
     const url = 'http://localhost:5000'
-    const user = '5e48ec58b2be6e0d4acb388e'
-    axios
-      .post(`${url}/foodposts/${user}/addpost`, draftPost)
-      .then(res => console.log(res))
-    Router.push('/home')
-    clearDraft()
+    const loggedInUser = user._id
+    try {
+      const post = await axios.post(
+        `${url}/foodposts/${loggedInUser}/addpost`,
+        draftPost
+      )
+      await message.success('Posted!')
+      await Router.push('/home')
+      clearDraft()
+    } catch (error) {
+      return message.error('Missing info')
+    }
   }
+  // const submitPost = () => {
+  //   const url = 'http://localhost:5000'
+  //   const loggedInUser = user._id
+  //   axios
+  //     .post(`${url}/foodposts/${loggedInUser}/addpost`, draftPost)
+  //     .then(res => console.log(res))
+  //   Router.push('/home')
+  //   clearDraft()
+  // }
   const clearDraft = () => {
     setDraftPost({
       title: '',
@@ -318,7 +333,6 @@ const CreatePost: React.FC = () => {
             }}
           />
           <h4 onClick={fetchFoodSearch}>+ Search new ingredient</h4>
-
           <label>Directions</label>
           {draftPost.directions.map((direction, i) => {
             return (

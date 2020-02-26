@@ -1,17 +1,21 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import Layout from '../../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
 import Link from 'next/link'
-import { Icon, message } from 'antd'
+import { Icon, message, Button, Modal } from 'antd'
 import { UserContext } from '../../components/userContext'
 
 const FoodPost: NextPage<any> = props => {
   const { user } = useContext(UserContext)
+  const url = 'http://localhost:5000'
   const [currentInfo, setCurrentInfo] = useState<String>('overview')
   const changeView = e => {
     setCurrentInfo(e.target.id)
   }
+  const [modalStatus, toggleModal] = useState<boolean>(false)
+  // const [tempComment, setcomment] = useState<String>('')
+  const commentInputRef = useRef()
 
   const {
     title,
@@ -23,21 +27,35 @@ const FoodPost: NextPage<any> = props => {
     summary,
     comments,
     foodPhoto,
+    _id,
   } = props.data
   const { userName, photo, fullName } = props.data.user
-  console.log(props.data)
+
+  const toggle = () => {
+    toggleModal(modalStatus ? false : true)
+  }
 
   const userLikePost = async () => {
-    const url = 'http://localhost:5000'
     try {
       await axios.post(`${url}/users/like`, {
         postId: props.data._id,
-        userId: props.data.user._id,
+        userId: user._id,
       })
+      message.success('Post saved!')
     } catch (error) {
       message.error('Post already saved')
     }
   }
+  const addComment = async () => {
+    try {
+      await axios.post(`${url}/foodposts/${user._id}/${_id}/addcomment`, {
+        comment: 'test',
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  console.log(commentInputRef)
   return (
     <Layout title={title}>
       <div className="postContainer">
@@ -142,7 +160,35 @@ const FoodPost: NextPage<any> = props => {
           </div>
           <div className="comments">
             <h1>Comments</h1>
-            <h3 className="noComments">No Comments</h3>
+            <h3 className="noComments">No Comments...</h3>
+            <Modal
+              title="Add comment"
+              visible={modalStatus}
+              footer={null}
+              onCancel={toggle}
+            >
+              <textarea
+                name="comment"
+                ref={commentInputRef}
+                style={{ width: '100%', height: '10rem', padding: '1rem' }}
+              />
+              <Button
+                type="primary"
+                ghost
+                style={{ marginTop: '1rem' }}
+                onClick={addComment}
+              >
+                Submit
+              </Button>
+            </Modal>
+            <Button
+              onClick={toggle}
+              type="primary"
+              ghost
+              // style={{ marginTop: '.5rem' }}
+            >
+              Add new comment
+            </Button>
             {comments.map((comment, i) => {
               return (
                 <div className="comment" key={i}>
@@ -154,6 +200,7 @@ const FoodPost: NextPage<any> = props => {
                     <h3>{comment.user.userName}</h3>
                   </div>
                   <p>{comment.comment}</p>
+                  <hr />
                 </div>
               )
             })}
@@ -249,13 +296,20 @@ const FoodPost: NextPage<any> = props => {
         }
         .noComments {
           display: ${comments.length === 0 ? '' : 'none'};
+          margin-bottom: 2rem;
         }
         .comment {
           margin-top: 2rem;
         }
         .comments p {
           margin-top: 1.5rem;
+          margin-left: 3rem;
         }
+        .comments hr {
+          color: #707070;
+          margin: 0 1rem;
+        }
+
         .overview {
           display: ${currentInfo === 'overview' ? '' : 'none'};
         }

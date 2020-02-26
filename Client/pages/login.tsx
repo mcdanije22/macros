@@ -28,7 +28,7 @@ const logIn = () => {
       [name]: e.target.value,
     })
   }
-  const logIn = async (email: string, password: string) => {
+  const logUserIn = async (email: string, password: string) => {
     const url = 'http://localhost:5000/'
     try {
       const user = await axios.post(`${url}users/login`, {
@@ -50,10 +50,9 @@ const logIn = () => {
   }
   const submitLogIn = () => {
     const { email, password } = logInForm
-    logIn(email, password)
+    logUserIn(email, password)
   }
-  console.log(user)
-  console.log(isUserLoggedIn)
+
   return (
     <div id="logInPage">
       <Head>

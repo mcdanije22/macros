@@ -7,7 +7,7 @@ import FoodCard from '../components/foodCard/FoodCard'
 
 const Home: React.FC = () => {
   const router = useRouter()
-  const { isUserLoggedIn } = useContext(UserContext)
+  const { user, isUserLoggedIn } = useContext(UserContext)
   const [currentPosts, getPosts] = useState([])
   const url = 'http://localhost:5000'
 
@@ -28,7 +28,7 @@ const Home: React.FC = () => {
       }
     }
   }, [])
-
+  console.log(user)
   return (
     <Layout title="NewsFeed | Macros">
       <div id="cardList">

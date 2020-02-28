@@ -23,6 +23,7 @@ const UserPage: NextPage<any> = props => {
     fullName,
   } = props.data
   console.log(posts)
+
   return (
     <div className="userPage">
       <Head>
@@ -34,7 +35,7 @@ const UserPage: NextPage<any> = props => {
       <div className="heroHeader">
         <img
           className="heroUserImage"
-          src={`https://avatars.dicebear.com/v2/initials/${fullName[0]}.svg`}
+          src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
           alt={`${userName} profile photo`}
         />
         <h1>{userName}</h1>

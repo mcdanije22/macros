@@ -77,6 +77,15 @@ router.post("/like", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/follow", async (req: Request, res: Response) => {
+  const { loggedUser, userId } = req.body;
+  const LoggedInUser: any = await UserModel.findOne({ _id: loggedUser });
+  const follwedUser: any = await FoodPostModel.findOne({ _id: userId });
+  LoggedInUser.following.push(userId);
+  LoggedInUser.save();
+  console.log(LoggedInUser);
+});
+
 // passport.use(
 //   new LocalStrategy((username, password, done) => {
 //     UserModel.findOne(

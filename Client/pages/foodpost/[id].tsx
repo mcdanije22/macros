@@ -14,8 +14,7 @@ const FoodPost: NextPage<any> = props => {
     setCurrentInfo(e.target.id)
   }
   const [modalStatus, toggleModal] = useState<boolean>(false)
-  // const [tempComment, setcomment] = useState<String>('')
-  const commentInputRef = useRef()
+  const commentInputRef: any = useRef()
 
   const {
     title,
@@ -49,13 +48,15 @@ const FoodPost: NextPage<any> = props => {
   const addComment = async () => {
     try {
       await axios.post(`${url}/foodposts/${user._id}/${_id}/addcomment`, {
-        comment: 'test',
+        comment: commentInputRef.current.value,
       })
+      commentInputRef.current.value = ''
+      message.success('Comment posted!')
+      toggle()
     } catch (error) {
       console.log(error)
     }
   }
-  console.log(commentInputRef)
   return (
     <Layout title={title}>
       <div className="postContainer">
@@ -63,7 +64,7 @@ const FoodPost: NextPage<any> = props => {
           <Link href="/user/[id]" as={`/user/${props.data.user._id}`}>
             <div className="postArthur">
               <img
-                src={`https://avatars.dicebear.com/v2/initials/${fullName[0]}.svg`}
+                src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
                 alt={`${userName}'s profile`}
               />
               <h3>{userName}</h3>
@@ -171,6 +172,11 @@ const FoodPost: NextPage<any> = props => {
                 name="comment"
                 ref={commentInputRef}
                 style={{ width: '100%', height: '10rem', padding: '1rem' }}
+                onKeyUp={e => {
+                  if (e.key === 'Enter') {
+                    addComment()
+                  }
+                }}
               />
               <Button
                 type="primary"
@@ -190,15 +196,18 @@ const FoodPost: NextPage<any> = props => {
               Add new comment
             </Button>
             {comments.map((comment, i) => {
+              console.log(comment)
               return (
                 <div className="comment" key={i}>
-                  <div className="postArthur">
-                    <img
-                      src={comment.user.photo}
-                      alt={`${comment.user.userName} Profile`}
-                    />
-                    <h3>{comment.user.userName}</h3>
-                  </div>
+                  <Link href="/user/[id]" as={`/user/${comment.user._id}`}>
+                    <div className="postArthur">
+                      <img
+                        src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName}.svg`}
+                        alt={`${comment.user.userName} Profile`}
+                      />
+                      <h3>{comment.user.userName}</h3>
+                    </div>
+                  </Link>
                   <p>{comment.comment}</p>
                   <hr />
                 </div>
@@ -303,11 +312,10 @@ const FoodPost: NextPage<any> = props => {
         }
         .comments p {
           margin-top: 1.5rem;
-          margin-left: 3rem;
         }
         .comments hr {
           color: #707070;
-          margin: 0 1rem;
+          margin: 0;
         }
 
         .overview {

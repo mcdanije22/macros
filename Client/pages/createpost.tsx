@@ -196,15 +196,6 @@ const CreatePost: React.FC = () => {
       return message.error('Missing info')
     }
   }
-  // const submitPost = () => {
-  //   const url = 'http://localhost:5000'
-  //   const loggedInUser = user._id
-  //   axios
-  //     .post(`${url}/foodposts/${loggedInUser}/addpost`, draftPost)
-  //     .then(res => console.log(res))
-  //   Router.push('/home')
-  //   clearDraft()
-  // }
   const clearDraft = () => {
     setDraftPost({
       title: '',

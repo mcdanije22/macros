@@ -80,10 +80,18 @@ router.post("/like", async (req: Request, res: Response) => {
 router.post("/follow", async (req: Request, res: Response) => {
   const { loggedUser, userId } = req.body;
   const LoggedInUser: any = await UserModel.findOne({ _id: loggedUser });
-  const follwedUser: any = await FoodPostModel.findOne({ _id: userId });
-  LoggedInUser.following.push(userId);
-  LoggedInUser.save();
-  console.log(LoggedInUser);
+  const followedUser: any = await UserModel.findOne({ _id: userId });
+  if (LoggedInUser.following.includes(userId)) {
+    return res.status(400).json("Already following");
+  } else {
+    LoggedInUser.following.push(userId);
+    LoggedInUser.followingCount++;
+    LoggedInUser.save();
+    followedUser.followers.push(loggedUser);
+    followedUser.followerCount++;
+    followedUser.save();
+    return res.status(200).json("Followed user");
+  }
 });
 
 // passport.use(

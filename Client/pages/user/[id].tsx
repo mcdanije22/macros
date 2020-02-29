@@ -5,9 +5,11 @@ import Head from 'next/head'
 import Nav from '../../components/nav/Nav'
 import FoodCard from '../../components/foodCard/FoodCard'
 import { UserContext } from '../../components/userContext'
+import { message } from 'antd'
 
 const UserPage: NextPage<any> = props => {
   const { user } = useContext(UserContext)
+  const url = 'http://localhost:5000'
   const [activeNav, setActiveNav] = useState('myPost')
   const toggleNav = e => {
     setActiveNav(e.target.id)
@@ -19,10 +21,24 @@ const UserPage: NextPage<any> = props => {
     saves,
     followingCount,
     followerCount,
+    following,
+    followers,
     _id,
     fullName,
   } = props.data
   console.log(posts)
+
+  const followUser = async () => {
+    try {
+      await axios.post(`${url}/users/follow`, {
+        loggedUser: user._id,
+        userId: _id,
+      })
+      message.success('Followed user!')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="userPage">
@@ -42,7 +58,18 @@ const UserPage: NextPage<any> = props => {
         {user._id === _id ? (
           ''
         ) : (
-          <button className="followButton">Follow</button>
+          <button
+            className="followButton"
+            onClick={followUser}
+            style={{
+              backgroundColor: user.following.includes(_id)
+                ? '#B1281E'
+                : '#5fc349',
+            }}
+          >
+            {/* Follow */}
+            {user.following.includes(_id) ? 'Unfollow' : 'Follow'}
+          </button>
         )}
       </div>
       <div className="mainSection">
@@ -142,7 +169,6 @@ const UserPage: NextPage<any> = props => {
           font-size: 3rem;
         }
         .followButton {
-          background-color: #5fc349;
           color: white;
           width: 10rem;
           text-align: center;

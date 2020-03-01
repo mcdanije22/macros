@@ -1,38 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { UserContext } from '../components/userContext'
+import { NextPage, NextPageContext } from 'next'
 import axios, { AxiosResponse } from 'axios'
 import Layout from '../components/Layout'
 import FoodCard from '../components/foodCard/FoodCard'
 
-const Home: React.FC = () => {
+const Home: NextPage<any> = props => {
   const router = useRouter()
   const { user, isUserLoggedIn } = useContext(UserContext)
-  const [currentPosts, getPosts] = useState([])
-  const url = 'http://localhost:5000'
-
-  const fetchPosts = async () => {
-    const response: AxiosResponse = await axios.get(`${url}/foodposts`)
-    const postsList = await response.data
-    getPosts(postsList)
-  }
 
   useEffect(() => {
     if (!isUserLoggedIn) {
       router.push('/')
-    } else {
-      try {
-        fetchPosts()
-      } catch (error) {
-        console.log(error)
-      }
     }
-  }, [])
-  console.log(user)
+  })
+  console.log(props)
   return (
     <Layout title="NewsFeed | Macros">
       <div id="cardList">
-        {currentPosts.map((post, i) => {
+        {props.data.map((post, i) => {
           return (
             <FoodCard
               key={i}
@@ -50,6 +37,16 @@ const Home: React.FC = () => {
       <style jsx>{``}</style>
     </Layout>
   )
+}
+
+Home.getInitialProps = async ({ query }) => {
+  const { id } = query
+  const url = 'http://localhost:5000'
+  const response: AxiosResponse = await axios.get(`${url}/foodposts`)
+  const allPost = await response.data
+  return {
+    data: allPost,
+  }
 }
 
 export default Home

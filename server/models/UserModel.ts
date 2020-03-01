@@ -46,6 +46,10 @@ const UserSchema: Schema = new Schema({
   startDate: {
     type: Date,
     default: Date.now()
+  },
+  notfication: {
+    type: Array,
+    default: []
   }
 });
 export default model("user", UserSchema);

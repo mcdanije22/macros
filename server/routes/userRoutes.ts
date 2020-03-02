@@ -84,36 +84,18 @@ router.post("/follow", async (req: Request, res: Response) => {
   if (LoggedInUser.following.includes(userId)) {
     return res.status(400).json("Already following");
   } else {
-    LoggedInUser.following.push(userId);
+    await LoggedInUser.following.push(userId);
     LoggedInUser.followingCount++;
-    LoggedInUser.save();
-    followedUser.followers.push(loggedUser);
+    await LoggedInUser.save();
+    await followedUser.followers.push(loggedUser);
     followedUser.followerCount++;
-    followedUser.save();
+    await followedUser.notfications.push({
+      message: `${LoggedInUser.userName} followed you`,
+      link: `http://localhost:3000/users/${LoggedInUser._id}`
+    });
+    await followedUser.save();
     return res.status(200).json("Followed user");
   }
 });
-
-// passport.use(
-//   new LocalStrategy((username, password, done) => {
-//     UserModel.findOne(
-//       {
-//         email: username
-//       },
-//       (err, user) => {
-//         if (err) {
-//           return done(err);
-//         }
-//         if (!user) {
-//           return done(null, false);
-//         }
-//         if (user.password != password) {
-//           return done(null, false);
-//         }
-//         return done(null, user);
-//       }
-//     );
-//   })
-// );
 
 export default router;

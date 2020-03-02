@@ -98,4 +98,27 @@ router.post("/follow", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/unfollow", async (req: Request, res: Response) => {
+  const { loggedUser, userId } = req.body;
+  const LoggedInUser: any = await UserModel.findOne({ _id: loggedUser });
+  const followedUser: any = await UserModel.findOne({ _id: userId });
+  if (!LoggedInUser.following.includes(userId)) {
+    return res.status(400).json("Not following user!");
+  } else {
+    await UserModel.updateOne(
+      { _id: loggedUser },
+      { $pull: { following: userId } }
+    );
+    LoggedInUser.followingCount--;
+    LoggedInUser.save();
+    await UserModel.updateOne(
+      { _id: userId },
+      { $pull: { followers: loggedUser } }
+    );
+    followedUser.followerCount--;
+    followedUser.save();
+    return res.status(200).json("Stopped following user!");
+  }
+});
+
 export default router;

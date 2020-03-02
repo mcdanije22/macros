@@ -8,9 +8,9 @@ import { UserContext } from '../../components/userContext'
 import { message } from 'antd'
 
 const UserPage: NextPage<any> = props => {
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const url = 'http://localhost:5000'
-  const [activeNav, setActiveNav] = useState('myPost')
+  const [activeNav, setActiveNav] = useState<string>('myPost')
   const toggleNav = e => {
     setActiveNav(e.target.id)
   }
@@ -28,13 +28,42 @@ const UserPage: NextPage<any> = props => {
   } = props.data
   console.log(posts)
 
+  useEffect(() => {
+    // const fetchAfter = async () => {
+    //   const response: any = await axios.get(`${url}/users/${props.data._id}`)
+    //   const currentUser = await response.data
+    //   if (user.following.includes(currentUser._id)) {
+    //     setFollow(true)
+    //   }
+    //   fetchAfter()
+    // }
+    console.log(user)
+  })
+
   const followUser = async () => {
     try {
       await axios.post(`${url}/users/follow`, {
         loggedUser: user._id,
         userId: _id,
       })
-      message.success('Followed user!')
+      message.success(`Followed ${userName}!`)
+      setUser({ ...user, following: [...user.following, _id] })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const unFollowUser = async () => {
+    try {
+      await axios.post(`${url}/users/unfollow`, {
+        loggedUser: user._id,
+        userId: _id,
+      })
+      const newFollowingList = await user.following.filter(
+        follow => follow !== _id
+      )
+      setUser({ ...user, following: newFollowingList })
+      console.log(user)
+      await message.success(`Stopped following ${userName}!`)
     } catch (error) {
       console.log(error)
     }
@@ -57,18 +86,21 @@ const UserPage: NextPage<any> = props => {
         <h1>{userName}</h1>
         {user._id === _id ? (
           ''
+        ) : user.following.includes(_id) ? (
+          <button
+            className="followButton"
+            style={{ backgroundColor: '#B1281E' }}
+            onClick={unFollowUser}
+          >
+            Unfollow
+          </button>
         ) : (
           <button
             className="followButton"
+            style={{ backgroundColor: '#5fc349' }}
             onClick={followUser}
-            style={{
-              backgroundColor: user.following.includes(_id)
-                ? '#B1281E'
-                : '#5fc349',
-            }}
           >
-            {/* Follow */}
-            {user.following.includes(_id) ? 'Unfollow' : 'Follow'}
+            Follow
           </button>
         )}
       </div>

@@ -63,17 +63,23 @@ router.post("/login", (req: Request, res: Response) => {
 });
 
 router.post("/like", async (req: Request, res: Response) => {
-  const { postId, userId } = req.body;
+  const { postId, userId, postUserId } = req.body;
   const user: any = await UserModel.findOne({ _id: userId });
   const post: any = await FoodPostModel.findOne({ _id: postId });
+  const postUser: any = await UserModel.findOne({ _id: postUserId });
   if (user.saves.includes(postId)) {
     return res.status(400).json("Already saved");
   } else {
-    user.saves.push(postId);
-    user.save();
+    await user.saves.push(postId);
+    await user.save();
     post.saves++;
-    post.save();
-    console.log(user);
+    await post.save();
+    await postUser.notfications.push({
+      message: `${user.userName} liked your ${post.title} post`,
+      link: `http://localhost:3000/foodpost/${post._id}`
+    });
+    await postUser.save();
+    res.send("Post saved");
   }
 });
 

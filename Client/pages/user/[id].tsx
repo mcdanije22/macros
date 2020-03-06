@@ -14,7 +14,7 @@ const UserPage: NextPage<any> = props => {
   const toggleNav = e => {
     setActiveNav(e.target.id)
   }
-  const {
+  let {
     userName,
     photo,
     posts,

@@ -29,7 +29,7 @@ const FoodPost: NextPage<any> = props => {
     _id,
   } = props.data
   const { userName, photo, fullName } = props.data.user
-
+  console.log(props.data.user._id)
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
   }
@@ -39,6 +39,7 @@ const FoodPost: NextPage<any> = props => {
       await axios.post(`${url}/users/like`, {
         postId: props.data._id,
         userId: user._id,
+        postUserId: props.data.user._id,
       })
       message.success('Post saved!')
     } catch (error) {

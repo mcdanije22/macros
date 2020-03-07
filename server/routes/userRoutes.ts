@@ -67,6 +67,7 @@ router.post("/like", async (req: Request, res: Response) => {
   const user: any = await UserModel.findOne({ _id: userId });
   const post: any = await FoodPostModel.findOne({ _id: postId });
   const postUser: any = await UserModel.findOne({ _id: postUserId });
+  console.log(post.user);
   if (user.saves.includes(postId)) {
     return res.status(400).json("Already saved");
   } else {
@@ -76,7 +77,8 @@ router.post("/like", async (req: Request, res: Response) => {
     await post.save();
     await postUser.notfications.push({
       message: `${user.userName} liked your ${post.title} post`,
-      link: `http://localhost:3000/foodpost/${post._id}`
+      href: `/foodpost/[id]`,
+      as: `/foodpost/${post._id}`
     });
     await postUser.save();
     res.send("Post saved");
@@ -97,7 +99,8 @@ router.post("/follow", async (req: Request, res: Response) => {
     followedUser.followerCount++;
     await followedUser.notfications.push({
       message: `${LoggedInUser.userName} followed you`,
-      link: `http://localhost:3000/users/${LoggedInUser._id}`
+      href: `/user/[id]`,
+      as: `/user/${LoggedInUser._id}`
     });
     await followedUser.save();
     return res.status(200).json("Followed user");

@@ -55,17 +55,26 @@ router.post(
   "/:userid/:postid/addcomment",
   async (req: Request, res: Response) => {
     const { userid, postid } = req.params;
+    const { postUserId } = req.body;
     const user: any = await UserModel.findById(userid, {
       userName: 1,
       photo: 1
     });
-    console.log(user);
+    const postUser: any = await UserModel.findById(postUserId);
     try {
       const newComment: any = new CommentModel(req.body);
       const currentPost: any = await FoodPostModel.findById(postid);
       newComment.user = user;
       currentPost.comments.push(newComment);
       await currentPost.save();
+      if (userid != postUserId) {
+        await postUser.notfications.push({
+          message: `${user.userName} commented on your ${currentPost.title} post`,
+          href: `/foodpost/[id]`,
+          as: `/foodpost/${currentPost._id}`
+        });
+        await postUser.save();
+      }
       res.send(currentPost);
     } catch (error) {
       console.log(error);

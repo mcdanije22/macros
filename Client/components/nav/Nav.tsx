@@ -60,7 +60,7 @@ const NavBar: React.FC = () => {
             <Link href="/">
               <a>Saves</a>
             </Link>
-            <Link href="/">
+            <Link href="/notifications">
               <a>Notifications</a>
             </Link>
             <Link

@@ -29,7 +29,7 @@ const FoodPost: NextPage<any> = props => {
     _id,
   } = props.data
   const { userName, photo, fullName } = props.data.user
-  console.log(props.data.user._id)
+  console.log(user._id)
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
   }
@@ -50,6 +50,7 @@ const FoodPost: NextPage<any> = props => {
     try {
       await axios.post(`${url}/foodposts/${user._id}/${_id}/addcomment`, {
         comment: commentInputRef.current.value,
+        postUserId: props.data.user._id,
       })
       commentInputRef.current.value = ''
       message.success('Comment posted!')

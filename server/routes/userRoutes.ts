@@ -75,7 +75,7 @@ router.post("/like", async (req: Request, res: Response) => {
     await user.save();
     post.saves++;
     await post.save();
-    await postUser.notfications.push({
+    await postUser.notifications.push({
       message: `${user.userName} liked your ${post.title} post`,
       href: `/foodpost/[id]`,
       as: `/foodpost/${post._id}`
@@ -97,7 +97,7 @@ router.post("/follow", async (req: Request, res: Response) => {
     await LoggedInUser.save();
     await followedUser.followers.push(loggedUser);
     followedUser.followerCount++;
-    await followedUser.notfications.push({
+    await followedUser.notifications.push({
       message: `${LoggedInUser.userName} followed you`,
       href: `/user/[id]`,
       as: `/user/${LoggedInUser._id}`

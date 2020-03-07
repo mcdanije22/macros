@@ -4,14 +4,14 @@ import { UserContext } from '../components/userContext'
 import axios from 'axios'
 import Layout from '../components/Layout'
 
-const Notfications = () => {
+const Notifications = () => {
   const { user } = useContext(UserContext)
   console.log(user)
   return (
     <Layout>
       <div id="notficationsPage">
         <ul>
-          {user.notfications.map((notification, i) => {
+          {user.notifications.map((notification, i) => {
             console.log(notification)
             return (
               <Link key={i} href={notification.href} as={notification.as}>
@@ -25,4 +25,4 @@ const Notfications = () => {
   )
 }
 
-export default Notfications
+export default Notifications

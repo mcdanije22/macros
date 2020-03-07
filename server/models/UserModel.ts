@@ -47,7 +47,7 @@ const UserSchema: Schema = new Schema({
     type: Date,
     default: Date.now()
   },
-  notfications: {
+  notifications: {
     type: Array,
     default: []
   }

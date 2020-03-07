@@ -68,7 +68,7 @@ router.post(
       currentPost.comments.push(newComment);
       await currentPost.save();
       if (userid != postUserId) {
-        await postUser.notfications.push({
+        await postUser.notifications.push({
           message: `${user.userName} commented on your ${currentPost.title} post`,
           href: `/foodpost/[id]`,
           as: `/foodpost/${currentPost._id}`

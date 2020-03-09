@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
 import { UserContext } from '../components/userContext'
-import axios from 'axios'
 import Layout from '../components/Layout'
 
 const Notifications = () => {

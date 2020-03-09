@@ -64,7 +64,7 @@ const FoodPost: NextPage<any> = props => {
       <div className="postContainer">
         <div className="topInfo">
           <Link href="/user/[id]" as={`/user/${props.data.user._id}`}>
-            <div className="postArthur">
+            <div className="postArthurImg">
               <img
                 src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
                 alt={`${userName}'s profile`}
@@ -189,29 +189,44 @@ const FoodPost: NextPage<any> = props => {
                 Submit
               </Button>
             </Modal>
-            <Button
+            {/* <Button
               onClick={toggle}
               type="primary"
               ghost
-              // style={{ marginTop: '.5rem' }}
+              style={{ marginBottom: '2rem' }}
             >
               Add new comment
-            </Button>
+            </Button> */}
+            <button id="commentButton" onClick={toggle}>
+              Comment
+            </button>
             {comments.map((comment, i) => {
-              console.log(comment)
               return (
-                <div className="comment" key={i}>
-                  <Link href="/user/[id]" as={`/user/${comment.user._id}`}>
-                    <div className="postArthur">
-                      <img
-                        src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName}.svg`}
-                        alt={`${comment.user.userName} Profile`}
-                      />
-                      <h3>{comment.user.userName}</h3>
+                <div className="commentContainer" key={i}>
+                  <div className="comment">
+                    <div className="commentLeftSide">
+                      <div className="commentUserInfo">
+                        <Link
+                          href="/user/[id]"
+                          as={`/user/${comment.user._id}`}
+                        >
+                          <img
+                            src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName}.svg`}
+                            alt={`${comment.user.userName} Profile`}
+                          />
+                        </Link>
+                      </div>
+                      <div className="commentMain">
+                        <h3>{comment.user.userName}</h3>
+                        <p>{comment.comment}</p>
+                      </div>
                     </div>
-                  </Link>
-                  <p>{comment.comment}</p>
-                  <hr />
+                    <div className="commentRightSide">
+                      <div className="commentDate">
+                        <p>dec 1 2020</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )
             })}
@@ -233,17 +248,37 @@ const FoodPost: NextPage<any> = props => {
           color: #262626;
           margin-bottom: 1rem;
         }
-        .postArthur {
-          display: flex;
-        }
-        .postArthur img {
-          margin-right: 1rem;
+        .postArthurImg img {
           border-radius: 2rem;
-          width: 40px;
+          width: 50px;
           border: 1px solid black;
         }
-        .postArthur {
-          align-items: center;
+        .postArthurImg {
+          margin-right: 2rem;
+          align-self: center;
+          display: flex;
+        }
+        .postArthurImg h3 {
+          align-self: center;
+          margin-left: 1rem;
+        }
+        #commentButton {
+          background-color: transparent;
+          border: 1px #4d93e8 solid;
+          color: #4d93e8;
+          width: 6rem;
+          padding: 0.5rem 1rem;
+          margin-bottom: 2rem;
+          border-radius: 0.5rem;
+        }
+        .commentUserInfo img {
+          border-radius: 2rem;
+          width: 50px;
+          border: 1px solid black;
+        }
+        .commentUserInfo {
+          margin-right: 2rem;
+          align-self: center;
         }
         .topButtons {
           display: flex;
@@ -310,16 +345,24 @@ const FoodPost: NextPage<any> = props => {
           margin-bottom: 2rem;
         }
         .comment {
-          margin-top: 2rem;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 4rem;
         }
-        .comments p {
-          margin-top: 1.5rem;
-        }
-        .comments hr {
-          color: #707070;
+        .comment h3,
+        p {
           margin: 0;
         }
-
+        .commentDate p {
+          font-size: 0.8rem;
+          align-self: center;
+        }
+        .commentMain h3 {
+          font-size: 1.4rem;
+        }
+        .commentLeftSide {
+          display: flex;
+        }
         .overview {
           display: ${currentInfo === 'overview' ? '' : 'none'};
         }

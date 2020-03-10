@@ -29,7 +29,7 @@ const FoodPost: NextPage<any> = props => {
     _id,
   } = props.data
   const { userName, photo, fullName } = props.data.user
-  console.log(user._id)
+  console.log(user)
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
   }
@@ -189,14 +189,6 @@ const FoodPost: NextPage<any> = props => {
                 Submit
               </Button>
             </Modal>
-            {/* <Button
-              onClick={toggle}
-              type="primary"
-              ghost
-              style={{ marginBottom: '2rem' }}
-            >
-              Add new comment
-            </Button> */}
             <button id="commentButton" onClick={toggle}>
               Comment
             </button>
@@ -273,12 +265,12 @@ const FoodPost: NextPage<any> = props => {
         }
         .commentUserInfo img {
           border-radius: 2rem;
-          width: 50px;
+          width: 35px;
           border: 1px solid black;
         }
         .commentUserInfo {
           margin-right: 2rem;
-          align-self: center;
+          align-self: top;
         }
         .topButtons {
           display: flex;
@@ -355,10 +347,14 @@ const FoodPost: NextPage<any> = props => {
         }
         .commentDate p {
           font-size: 0.8rem;
-          align-self: center;
         }
         .commentMain h3 {
-          font-size: 1.4rem;
+          font-size: 0.9rem;
+          color: #707070;
+        }
+        .commentMain p {
+          color: black;
+          line-height: 1.2rem;
         }
         .commentLeftSide {
           display: flex;
@@ -366,6 +362,7 @@ const FoodPost: NextPage<any> = props => {
         .overview {
           display: ${currentInfo === 'overview' ? '' : 'none'};
         }
+
         #overview {
           color: ${currentInfo === 'overview' ? 'black' : ''};
           cursor: pointer;

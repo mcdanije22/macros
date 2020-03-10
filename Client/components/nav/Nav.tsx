@@ -65,7 +65,7 @@ const NavBar: React.FC = () => {
             </Link>
             <Link
               href="/user/[id]"
-              as={isUserLoggedIn ? `/user/${user._id}` : '/'}
+              as={isUserLoggedIn ? `/user/5e48ec58b2be6e0d4acb388e` : '/'}
             >
               <a>Profile</a>
             </Link>

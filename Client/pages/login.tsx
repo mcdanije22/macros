@@ -3,7 +3,7 @@ import { Input, Button, message } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { UserContext } from '../components/userContext'
 
 interface logInForm {
@@ -31,7 +31,7 @@ const logIn = () => {
   const logUserIn = async (email: string, password: string) => {
     const url = 'http://localhost:5000/'
     try {
-      const user = await axios.post(`${url}users/login`, {
+      const user: AxiosResponse = await axios.post(`${url}users/login`, {
         email,
         password,
       })
@@ -39,7 +39,7 @@ const logIn = () => {
       await setUser(user.data)
       await userLoggedIn(true)
       isLoading(false)
-      router.push('/home')
+      await router.push(`/newsfeed/${user.data._id}`)
     } catch (error) {
       message.error('inccorect email or password')
       updateLogInForm({

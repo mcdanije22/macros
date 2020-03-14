@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useRouter } from 'next/router'
 import { UserContext } from '../../components/userContext'
 import { NextPage, NextPageContext } from 'next'
 import axios, { AxiosResponse } from 'axios'
@@ -7,7 +6,6 @@ import Layout from '../../components/Layout'
 import FoodCard from '../../components/foodCard/FoodCard'
 
 const NewsFeed: NextPage<any> = props => {
-  const router = useRouter()
   const { user, isUserLoggedIn } = useContext(UserContext)
 
   console.log(props)

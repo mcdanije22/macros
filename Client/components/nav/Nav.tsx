@@ -65,7 +65,7 @@ const NavBar: React.FC = () => {
             </Link>
             <Link
               href="/user/[id]"
-              as={isUserLoggedIn ? `/user/5e48ec58b2be6e0d4acb388e` : '/'}
+              as={isUserLoggedIn ? `/user/${user._id}` : '/'}
             >
               <a>Profile</a>
             </Link>
@@ -75,6 +75,7 @@ const NavBar: React.FC = () => {
       <style jsx>{`
         * {
           color: white;
+          z-index: 999;
         }
         #navContainer {
           background-color: #504761;

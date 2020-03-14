@@ -39,7 +39,9 @@ const logIn = () => {
       await setUser(user.data)
       await userLoggedIn(true)
       isLoading(false)
-      await router.push(`/newsfeed/${user.data._id}`)
+      // await router.push(`/newsfeed/${user.data._id}`, null, { shallow: true })
+      router.push('/home')
+      message.success('Logged in sucessfully!')
     } catch (error) {
       message.error('inccorect email or password')
       updateLogInForm({
@@ -50,6 +52,7 @@ const logIn = () => {
   }
   const submitLogIn = () => {
     const { email, password } = logInForm
+    console.log(email, password)
     logUserIn(email, password)
   }
 

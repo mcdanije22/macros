@@ -5,6 +5,7 @@ import { NextPage, NextPageContext } from 'next'
 import axios, { AxiosResponse } from 'axios'
 import Layout from '../components/Layout'
 import FoodCard from '../components/foodCard/FoodCard'
+import PostCard from '../components/PostCard'
 
 const Home: NextPage<any> = props => {
   const router = useRouter()
@@ -15,24 +16,32 @@ const Home: NextPage<any> = props => {
       router.push('/')
     }
   })
-  console.log(props)
+  console.log(user)
   return (
     <Layout title="NewsFeed | Macros">
       <div id="cardList">
-        {props.data.map((post, i) => {
-          return (
-            <FoodCard
-              key={i}
-              id={post._id}
-              userName={post.user.userName}
-              title={post.title}
-              tags={post.tags}
-              macros={post.macros}
-              saves={post.saves}
-              foodPhoto={post.foodPhoto}
-            />
-          )
-        })}
+        {props.data
+          .filter((post, i) => {
+            console.log(post)
+            return (
+              user.following.includes(post.user._id) ||
+              post.user._id === user._id
+            )
+          })
+          .map((post, i) => {
+            return (
+              <PostCard
+                key={i}
+                id={post._id}
+                userName={post.user.userName}
+                title={post.title}
+                tags={post.tags}
+                macros={post.macros}
+                saves={post.saves}
+                foodPhoto={post.foodPhoto}
+              />
+            )
+          })}
       </div>
       <style jsx>{``}</style>
     </Layout>

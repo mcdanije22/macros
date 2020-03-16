@@ -10,6 +10,7 @@ interface Post {
   saves: Number
   macros: Object
   foodPhoto: String
+  userId: String
 }
 
 const PostCard: React.FC<Post> = ({
@@ -20,6 +21,7 @@ const PostCard: React.FC<Post> = ({
   saves,
   macros,
   foodPhoto,
+  userId,
 }) => {
   const { protein, fat, carbohydrates, calories }: any = macros
   const { Meta } = Card
@@ -37,10 +39,12 @@ const PostCard: React.FC<Post> = ({
       >
         <div className="titleHeader">
           <div className="leftSideTitle">
-            <Avatar
-              src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
-              style={{ alignSelf: 'center' }}
-            />
+            <Link href="/user/[id]" as={`/user/${userId}`}>
+              <Avatar
+                src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
+                style={{ alignSelf: 'center' }}
+              />
+            </Link>
             <h2>{title}</h2>
           </div>
           <p style={{ color: 'black', alignSelf: 'center' }}>{saves} Saves</p>
@@ -50,13 +54,13 @@ const PostCard: React.FC<Post> = ({
           <h2>{calories} Calories</h2>
         </div>
         <div className="bottomTags">
-          {tags.slice(0, 3).map((tag, i) => {
+          {tags.slice(0, 2).map((tag, i) => {
             return (
               <Link href="test" key={i}>
                 <Button
                   type="primary"
                   ghost
-                  style={{ margin: '1rem .5rem 0 0' }}
+                  style={{ margin: '1rem .5rem 0 0', width: '6rem' }}
                 >
                   {tag}
                 </Button>
@@ -78,6 +82,7 @@ const PostCard: React.FC<Post> = ({
           .titleHeader {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 0.5rem;
           }
           .leftSideTitle {
             display: flex;

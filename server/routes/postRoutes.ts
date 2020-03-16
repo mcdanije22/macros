@@ -19,6 +19,17 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/random", async (req: Request, res: Response) => {
+  try {
+    const randomPost = await FoodPostModel.aggregate([
+      { $sample: { size: 1 } }
+    ]);
+    res.send(randomPost);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 //return specific food post by id
 router.get("/:foodpostid", async (req: Request, res: Response) => {
   const { foodpostid } = req.params;

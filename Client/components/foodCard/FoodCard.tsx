@@ -37,7 +37,7 @@ const FoodCard: React.FC<Post> = ({
         </div>
         <div className="bottomBar">
           <div className="bottomTags">
-            {tags.slice(0, 3).map((tag, i) => {
+            {tags.slice(0, 2).map((tag, i) => {
               return (
                 <Link href="test" key={i}>
                   <button type="button">{tag}</button>

@@ -10,19 +10,43 @@ import PostCard from '../components/PostCard'
 const Home: NextPage<any> = props => {
   const router = useRouter()
   const { user, isUserLoggedIn } = useContext(UserContext)
-
+  const [activeDisplay, setActiveDisplay] = useState<string>('feed')
+  const [randomPost, setRanomPost] = useState()
   useEffect(() => {
     if (!isUserLoggedIn) {
       router.push('/')
     }
   })
-  console.log(user)
+  const toggleDisplay = e => {
+    setActiveDisplay(e.target.id)
+  }
+  const getRandomPost = async () => {
+    try {
+      const url = 'http://localhost:5000'
+      const response: AxiosResponse = await axios.get(`${url}/foodposts/random`)
+      setRanomPost(response.data[0])
+      setActiveDisplay('discover')
+      console.log(response.data[0])
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  console.log(activeDisplay)
   return (
     <Layout title="NewsFeed | Macros">
-      <div id="cardList">
+      <ul id="feedToggle">
+        <li id="discover" onClick={getRandomPost}>
+          Discover
+          <hr />
+        </li>
+        <li id="feed" onClick={toggleDisplay}>
+          Feed
+          <hr />
+        </li>
+      </ul>
+      <div id="feedList">
         {props.data
           .filter((post, i) => {
-            console.log(post)
             return (
               user.following.includes(post.user._id) ||
               post.user._id === user._id
@@ -39,11 +63,56 @@ const Home: NextPage<any> = props => {
                 macros={post.macros}
                 saves={post.saves}
                 foodPhoto={post.foodPhoto}
+                userId={post.user._id}
               />
             )
           })}
       </div>
-      <style jsx>{``}</style>
+      <div id="discoverPost">
+        {activeDisplay === 'discover' ? (
+          <PostCard
+            id={randomPost._id}
+            userName={randomPost.user.userName}
+            title={randomPost.title}
+            tags={randomPost.tags}
+            macros={randomPost.macros}
+            saves={randomPost.saves}
+            foodPhoto={randomPost.foodPhoto}
+            userId={randomPost.user._id}
+          />
+        ) : (
+          'test'
+        )}
+      </div>
+      <style jsx>{`
+        #feedToggle {
+          list-style: none;
+          display: flex;
+          margin-bottom: 1rem;
+        }
+        #feedToggle li {
+          margin-right: 1rem;
+          font-size: 2rem;
+        }
+        li hr {
+          border: 0.5px #5fc349 solid;
+          margin-right: 1.1rem;
+        }
+        #discover hr,
+        #discoverPost {
+          display: ${activeDisplay === 'discover' ? '' : 'none'};
+        }
+        #discover {
+          color: ${activeDisplay === 'discover' ? '#5fc349' : 'black'};
+        }
+        #feed hr,
+        #feedList {
+          display: ${activeDisplay === 'feed' ? '' : 'none'};
+        }
+        #feed {
+          color: ${activeDisplay === 'feed' ? '#5fc349' : 'black'};
+        }
+      `}</style>
     </Layout>
   )
 }

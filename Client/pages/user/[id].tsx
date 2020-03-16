@@ -28,18 +28,6 @@ const UserPage: NextPage<any> = props => {
   } = props.data
   console.log(posts)
 
-  useEffect(() => {
-    // const fetchAfter = async () => {
-    //   const response: any = await axios.get(`${url}/users/${props.data._id}`)
-    //   const currentUser = await response.data
-    //   if (user.following.includes(currentUser._id)) {
-    //     setFollow(true)
-    //   }
-    //   fetchAfter()
-    // }
-    console.log(user)
-  })
-
   const followUser = async () => {
     try {
       await axios.post(`${url}/users/follow`, {

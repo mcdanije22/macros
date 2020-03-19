@@ -6,6 +6,7 @@ import axios, { AxiosResponse } from 'axios'
 import Layout from '../components/Layout'
 import FoodCard from '../components/foodCard/FoodCard'
 import PostCard from '../components/PostCard'
+import { Icon, Button } from 'antd'
 
 const Home: NextPage<any> = props => {
   const router = useRouter()
@@ -21,6 +22,21 @@ const Home: NextPage<any> = props => {
     setActiveDisplay(e.target.id)
   }
   const getRandomPost = async () => {
+    if (activeDisplay !== 'discover') {
+      try {
+        const url = 'http://localhost:5000'
+        const response: AxiosResponse = await axios.get(
+          `${url}/foodposts/random`
+        )
+        setRanomPost(response.data[0])
+        setActiveDisplay('discover')
+        console.log(response.data[0])
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+  const getRandomPostButton = async () => {
     try {
       const url = 'http://localhost:5000'
       const response: AxiosResponse = await axios.get(`${url}/foodposts/random`)
@@ -83,6 +99,12 @@ const Home: NextPage<any> = props => {
         ) : (
           'test'
         )}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button type="primary" onClick={getRandomPostButton}>
+          <Icon type="reload" />
+          Find Something New
+        </Button>
       </div>
       <style jsx>{`
         #feedToggle {

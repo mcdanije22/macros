@@ -1,13 +1,18 @@
 import React, { useState, useContext } from 'react'
 import Link from 'next/link'
-import { Icon } from 'antd'
+import { Icon, Input } from 'antd'
 import { UserContext } from '../../components/userContext'
 
 const NavBar: React.FC = () => {
   const { user, isUserLoggedIn } = useContext(UserContext)
   const [navBarStatus, isOpen] = useState<Boolean>(false)
+  const [searchBarStatus, isActive] = useState<Boolean>(false)
   const toggleMenu = () => {
     isOpen(navBarStatus ? false : true)
+  }
+  const { Search } = Input
+  const toggleSearchBar = () => {
+    isActive(searchBarStatus ? false : true)
   }
   return (
     <nav id="navContainer">
@@ -18,15 +23,29 @@ const NavBar: React.FC = () => {
               <Icon type="menu" />
             </button>
           </li>
-          <li>
+          <li style={{ display: searchBarStatus ? 'none' : '' }}>
             <Link href={isUserLoggedIn ? '/home' : '/'}>
               <a>Macro</a>
             </Link>
           </li>
           <li>
-            <button type="button" className="navIcon">
+            <button
+              type="button"
+              className="navIcon"
+              style={{ display: searchBarStatus ? 'none' : '' }}
+              onClick={toggleSearchBar}
+            >
               <Icon type="search" />
             </button>
+            <Search
+              placeholder="input search text"
+              onSearch={value => {
+                console.log(value)
+                toggleSearchBar()
+              }}
+              style={{ width: 300, display: searchBarStatus ? '' : 'none' }}
+              size="large"
+            />
           </li>
         </ul>
         {/* <ul id="navbarBottom">

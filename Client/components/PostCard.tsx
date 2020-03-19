@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { Icon, Card, Avatar, Button } from 'antd'
+import { Card, Avatar, Button } from 'antd'
 
 interface Post {
   id: String

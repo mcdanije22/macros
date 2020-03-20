@@ -30,6 +30,24 @@ router.get("/random", async (req: Request, res: Response) => {
   }
 });
 
+//search post generic
+router.get("/search/:search", async (req: Request, res: Response) => {
+  const { search } = req.params;
+  console.log(search);
+  const result = await FoodPostModel.find({
+    title: { $regex: `${search}`, $options: "-i" }
+  });
+  console.log(result);
+});
+//search for post by tag
+router.get("/search/tags/:tag", async (req: Request, res: Response) => {
+  const { tag } = req.params;
+  const result = await FoodPostModel.find({
+    tags: { $regex: `${tag}`, $options: "-i" }
+  });
+  console.log(result);
+});
+
 //return specific food post by id
 router.get("/:foodpostid", async (req: Request, res: Response) => {
   const { foodpostid } = req.params;

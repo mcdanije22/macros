@@ -100,7 +100,12 @@ const Home: NextPage<any> = props => {
           'test'
         )}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
+        style={{
+          display: activeDisplay === 'discover' ? 'flex' : 'none',
+          justifyContent: 'center',
+        }}
+      >
         <Button type="primary" onClick={getRandomPostButton}>
           <Icon type="reload" />
           Find Something New

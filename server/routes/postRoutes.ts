@@ -19,6 +19,20 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/userfeed/:userid", async (req: Request, res: Response) => {
+  const { userid } = req.params;
+  try {
+    const user: any = await UserModel.findById(userid);
+    const userFeed = await FoodPostModel.find({
+      $or: [{ user: user.following }, { user: userid }]
+    }).populate("user");
+    res.send(userFeed);
+    console.log(userFeed);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.get("/random", async (req: Request, res: Response) => {
   try {
     const randomPost = await FoodPostModel.aggregate([
@@ -37,6 +51,7 @@ router.get("/search/:search", async (req: Request, res: Response) => {
   const result = await FoodPostModel.find({
     title: { $regex: `${search}`, $options: "-i" }
   });
+  res.send(result);
   console.log(result);
 });
 //search for post by tag
@@ -45,6 +60,7 @@ router.get("/search/tags/:tag", async (req: Request, res: Response) => {
   const result = await FoodPostModel.find({
     tags: { $regex: `${tag}`, $options: "-i" }
   });
+  res.send(result);
   console.log(result);
 });
 

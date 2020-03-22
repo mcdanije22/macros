@@ -39,8 +39,8 @@ const logIn = () => {
       await setUser(user.data)
       await userLoggedIn(true)
       isLoading(false)
-      // await router.push(`/newsfeed/${user.data._id}`, null, { shallow: true })
-      router.push('/home')
+      await router.push(`/newsfeed/[id]`, `/newsfeed/${user.data._id}`)
+      // router.push('/home')
       message.success('Logged in sucessfully!')
     } catch (error) {
       message.error('inccorect email or password')

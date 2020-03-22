@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { Icon, Input } from 'antd'
+import { Icon, Input, message } from 'antd'
 import { UserContext } from '../../components/userContext'
 
 const NavBar: React.FC = () => {
@@ -11,6 +12,8 @@ const NavBar: React.FC = () => {
     isOpen(navBarStatus ? false : true)
   }
   const { Search } = Input
+  const router = useRouter()
+
   const toggleSearchBar = () => {
     isActive(searchBarStatus ? false : true)
   }
@@ -24,7 +27,10 @@ const NavBar: React.FC = () => {
             </button>
           </li>
           <li style={{ display: searchBarStatus ? 'none' : '' }}>
-            <Link href={isUserLoggedIn ? '/home' : '/'}>
+            <Link
+              href={isUserLoggedIn ? '/newsfeed/[id]' : '/'}
+              as={`/newsfeed/${user._id}`}
+            >
               <a>Macro</a>
             </Link>
           </li>
@@ -38,10 +44,15 @@ const NavBar: React.FC = () => {
               <Icon type="search" />
             </button>
             <Search
-              placeholder="input search text"
+              placeholder="Search by title..."
               onSearch={value => {
-                console.log(value)
-                toggleSearchBar()
+                if (value) {
+                  toggleSearchBar()
+                  router.push('/searchpage/[search]', `/searchpage/${value}`)
+                } else {
+                  message.error('Please enter a search term')
+                  toggleSearchBar()
+                }
               }}
               style={{ width: 300, display: searchBarStatus ? '' : 'none' }}
               size="large"

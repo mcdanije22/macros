@@ -22,7 +22,6 @@ router.get("/:userid", async (req: Request, res: Response) => {
   const user: any = await UserModel.findById(userid, {
     userName: 1,
     fullName: 1,
-    photo: 1,
     posts: 1,
     saves: 1,
     followingCount: 1,
@@ -67,11 +66,10 @@ router.post("/like", async (req: Request, res: Response) => {
   const user: any = await UserModel.findOne({ _id: userId });
   const post: any = await FoodPostModel.findOne({ _id: postId });
   const postUser: any = await UserModel.findOne({ _id: postUserId });
-  console.log(post.user);
-  if (user.saves.includes(postId)) {
+  if (user.saves.includes(post._id)) {
     return res.status(400).json("Already saved");
   } else {
-    await user.saves.push(postId);
+    await user.saves.push(post._id);
     await user.save();
     post.saves++;
     await post.save();
@@ -94,10 +92,10 @@ router.post("/follow", async (req: Request, res: Response) => {
   if (LoggedInUser.following.includes(userId)) {
     return res.status(400).json("Already following");
   } else {
-    await LoggedInUser.following.push(userId);
+    await LoggedInUser.following.push(followedUser._id);
     LoggedInUser.followingCount++;
     await LoggedInUser.save();
-    await followedUser.followers.push(loggedUser);
+    await followedUser.followers.push(LoggedInUser._id);
     followedUser.followerCount++;
     await followedUser.notifications.push({
       actionDate: new Date(),
@@ -119,14 +117,14 @@ router.post("/unfollow", async (req: Request, res: Response) => {
     return res.status(400).json("Not following user!");
   } else {
     await UserModel.updateOne(
-      { _id: loggedUser },
-      { $pull: { following: userId } }
+      { _id: LoggedInUser._id },
+      { $pull: { following: followedUser._id } }
     );
     LoggedInUser.followingCount--;
     LoggedInUser.save();
     await UserModel.updateOne(
-      { _id: userId },
-      { $pull: { followers: loggedUser } }
+      { _id: followedUser._id },
+      { $pull: { followers: LoggedInUser._id } }
     );
     followedUser.followerCount--;
     followedUser.save();

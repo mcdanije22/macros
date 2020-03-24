@@ -1,9 +1,13 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const FoodPostSchema: Schema = new Schema({
+  // user: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: "user"
+  // },
   user: {
-    type: Schema.Types.ObjectId,
-    ref: "user"
+    type: Object,
+    required: true
   },
   foodPhoto: {
     type: String,

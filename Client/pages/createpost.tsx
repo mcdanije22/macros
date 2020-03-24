@@ -214,7 +214,6 @@ const CreatePost: React.FC = () => {
     ingredientInputRef.current.value = ''
     directionInputRef.current.value = ''
   }
-  console.log(draftPost)
   return (
     <Layout title="New Post">
       <Modal

@@ -47,7 +47,7 @@ const NewsFeed: NextPage<any> = props => {
       console.log(error)
     }
   }
-  console.log(user)
+  console.log(props.data)
   return (
     <Layout title="NewsFeed | Macros">
       <ul id="feedToggle">
@@ -62,6 +62,7 @@ const NewsFeed: NextPage<any> = props => {
       </ul>
       <div id="feedList">
         {props.data.map((post, i) => {
+          console.log(post)
           return (
             <PostCard
               key={i}

@@ -16,7 +16,6 @@ const UserPage: NextPage<any> = props => {
   }
   let {
     userName,
-    photo,
     posts,
     saves,
     followingCount,
@@ -26,7 +25,7 @@ const UserPage: NextPage<any> = props => {
     _id,
     fullName,
   } = props.data
-  console.log(posts)
+  console.log(props.data)
 
   const followUser = async () => {
     try {
@@ -130,7 +129,7 @@ const UserPage: NextPage<any> = props => {
                 <FoodCard
                   key={i}
                   id={post._id}
-                  userName={post.userName}
+                  userName={post.user.userName}
                   title={post.title}
                   tags={post.tags}
                   macros={post.macros}
@@ -146,7 +145,7 @@ const UserPage: NextPage<any> = props => {
                 <FoodCard
                   key={i}
                   id={post._id}
-                  userName={post.userName}
+                  userName={post.user.userName}
                   title={post.title}
                   tags={post.tags}
                   macros={post.macros}

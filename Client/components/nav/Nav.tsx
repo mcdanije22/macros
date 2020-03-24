@@ -84,7 +84,10 @@ const NavBar: React.FC = () => {
         </ul>
         <nav>
           <ul id="menuList">
-            <Link href="/home">
+            <Link
+              href={isUserLoggedIn ? '/newsfeed/[id]' : '/'}
+              as={`/newsfeed/${user._id}`}
+            >
               <a>Home</a>
             </Link>
             <Link href="/">

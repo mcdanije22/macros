@@ -24,8 +24,8 @@ router.get("/userfeed/:userid", async (req: Request, res: Response) => {
   try {
     const user: any = await UserModel.findById(userid);
     const userFeed = await FoodPostModel.find({
-      $or: [{ user: user.following }, { user: userid }]
-    }).populate("user");
+      $or: [{ "user._id": user.following }, { "user._id": user._id }]
+    });
     res.send(userFeed);
     console.log(userFeed);
   } catch (error) {
@@ -38,6 +38,7 @@ router.get("/random", async (req: Request, res: Response) => {
     const randomPost = await FoodPostModel.aggregate([
       { $sample: { size: 1 } }
     ]);
+    console.log(randomPost);
     res.send(randomPost);
   } catch (error) {
     console.log(error);
@@ -68,10 +69,7 @@ router.get("/search/tags/:tag", async (req: Request, res: Response) => {
 router.get("/:foodpostid", async (req: Request, res: Response) => {
   const { foodpostid } = req.params;
   try {
-    const currentFoodPost = await FoodPostModel.findById(foodpostid).populate({
-      path: "user",
-      select: "userName photo fullName"
-    });
+    const currentFoodPost = await FoodPostModel.findById(foodpostid);
     res.send(currentFoodPost);
   } catch (error) {
     console.log(error);
@@ -84,8 +82,12 @@ router.post("/:userid/addpost", async (req: Request, res: Response) => {
   try {
     const newFoodPost: any = new FoodPostModel(req.body);
     const user: any = await UserModel.findById(userid);
-    newFoodPost.user = user;
-    console.log(newFoodPost.user);
+    newFoodPost.user = {
+      _id: user._id,
+      userName: user.userName,
+      following: user.following
+    };
+    console.log(newFoodPost);
     await newFoodPost.save();
     user.posts.push(newFoodPost);
     await user.save();

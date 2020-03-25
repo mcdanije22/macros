@@ -29,7 +29,7 @@ const FoodPost: NextPage<any> = props => {
     _id,
   } = props.data
   const { userName, photo, fullName } = props.data.user
-  console.log(user)
+  console.log(props.data)
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
   }

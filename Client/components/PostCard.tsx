@@ -56,7 +56,7 @@ const PostCard: React.FC<Post> = ({
         <div className="bottomTags">
           {tags.slice(0, 2).map((tag, i) => {
             return (
-              <Link href="test" key={i}>
+              <Link href="/searchtags/[tag]" as={`/searchtags/${tag}`} key={i}>
                 <Button
                   type="primary"
                   ghost

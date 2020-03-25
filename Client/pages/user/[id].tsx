@@ -25,8 +25,6 @@ const UserPage: NextPage<any> = props => {
     _id,
     fullName,
   } = props.data
-  console.log(props.data)
-
   const followUser = async () => {
     try {
       await axios.post(`${url}/users/follow`, {
@@ -250,7 +248,7 @@ const UserPage: NextPage<any> = props => {
         .postList {
           display: ${activeNav === 'myPost' ? '' : 'none'};
         }
-        .savesList {
+        .saveList {
           display: ${activeNav === 'saves' ? '' : 'none'};
         }
       `}</style>

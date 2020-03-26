@@ -40,7 +40,7 @@ SearchTags.getInitialProps = async ({ query }) => {
   const { tag } = query
   const url = 'http://localhost:5000'
   const response: AxiosResponse = await axios.get(
-    `${url}/foodposts/tags/${tag}`
+    `${url}/foodposts/search/tags/${tag}`
   )
   const searchPost = await response.data
   return {

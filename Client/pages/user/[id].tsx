@@ -25,6 +25,7 @@ const UserPage: NextPage<any> = props => {
     _id,
     fullName,
   } = props.data
+  const [followerCountUi, setFollowersUi] = useState<number>(followerCount)
   const followUser = async () => {
     try {
       await axios.post(`${url}/users/follow`, {
@@ -33,6 +34,8 @@ const UserPage: NextPage<any> = props => {
       })
       message.success(`Followed ${userName}!`)
       setUser({ ...user, following: [...user.following, _id] })
+      const newFollowerCount = followerCountUi + 1
+      setFollowersUi(newFollowerCount)
     } catch (error) {
       console.log(error)
     }
@@ -47,7 +50,8 @@ const UserPage: NextPage<any> = props => {
         follow => follow !== _id
       )
       setUser({ ...user, following: newFollowingList })
-      console.log(user)
+      const newFollowerCount = followerCountUi - 1
+      setFollowersUi(newFollowerCount)
       await message.success(`Stopped following ${userName}!`)
     } catch (error) {
       console.log(error)
@@ -93,7 +97,7 @@ const UserPage: NextPage<any> = props => {
         <div className="profileStats">
           <ul className="statList">
             <li>
-              <p>{followerCount}</p>
+              <p>{followerCountUi}</p>
               <p>Followers</p>
             </li>
             <hr />

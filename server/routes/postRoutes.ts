@@ -3,6 +3,7 @@ import mongoose, { Schema, model } from "mongoose";
 import FoodPostModel from "../models/FoodPostModel";
 import UserModel from "../models/UserModel";
 import CommentModel from "../models/PostCommentModel";
+import NotificationModel from "../models/NotificationModel";
 
 const router: Router = Router();
 
@@ -115,13 +116,14 @@ router.post(
       currentPost.comments.push(newComment);
       await currentPost.save();
       if (userid != postUserId) {
-        await postUser.notifications.push({
+        const newNotification: any = new NotificationModel({
           actionDate: new Date(),
           actionUserName: user.userName,
           message: `${user.userName} commented on your ${currentPost.title} post`,
           href: `/foodpost/[id]`,
           as: `/foodpost/${currentPost._id}`
         });
+        postUser.notifications.push(newNotification);
         await postUser.save();
       }
       res.send(currentPost);

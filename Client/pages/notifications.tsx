@@ -2,37 +2,65 @@ import React, { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
 import { UserContext } from '../components/userContext'
 import Layout from '../components/Layout'
+import { Modal, Button, Icon, message } from 'antd'
+import axios, { AxiosResponse } from 'axios'
 
 const Notifications = () => {
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
+  const url = 'http://localhost:5000'
+  const [notificationsList, setnotificationsList] = useState(user.notifications)
+
+  console.log(user.notifications)
   console.log(user)
   return (
     <Layout>
       <div id="notficationsPage">
         <ul id="notficationsList">
-          {user.notifications.map((notification, i) => {
-            console.log(notification)
+          {notificationsList.map((notification, i) => {
             return (
-              <Link key={i} href={notification.href} as={notification.as}>
-                <li>
-                  <div className="notficationCard">
-                    <div className="notificationLeftSide">
-                      <img
-                        src={`https://avatars.dicebear.com/v2/initials/${notification.actionUserName}.svg`}
-                        alt={`${notification.actionUserName}'s profile`}
-                      />
+              <li key={i}>
+                <div className="notficationCard">
+                  <Link href={notification.href} as={notification.as}>
+                    <div className="orderClass">
+                      <div className="notificationLeftSide">
+                        <img
+                          src={`https://avatars.dicebear.com/v2/initials/${notification.actionUserName}.svg`}
+                          alt={`${notification.actionUserName}'s profile`}
+                        />
+                      </div>
+                      <div className="notificationRightSide">
+                        <p>{notification.message}</p>
+                        <p style={{ color: '#707070' }}>
+                          {notification.actionDate
+                            ? notification.actionDate.slice(0, 10)
+                            : ''}
+                        </p>
+                      </div>
                     </div>
-                    <div className="notificationRightSide">
-                      <p>{notification.message}</p>
-                      <p style={{ color: '#707070' }}>
-                        {notification.actionDate
-                          ? notification.actionDate.slice(0, 10)
-                          : ''}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              </Link>
+                  </Link>
+                  <Icon
+                    type="close"
+                    onClick={async () => {
+                      try {
+                        axios.post(`${url}/users/deletenotification`, {
+                          userId: user._id,
+                          notificationId: notification._id,
+                        })
+                        const newNotificationsList = await notificationsList.filter(
+                          item => item._id !== notification._id
+                        )
+                        await setnotificationsList(newNotificationsList)
+                        await setUser({
+                          ...user,
+                          notifications: newNotificationsList,
+                        })
+                      } catch (error) {
+                        console.log(error)
+                      }
+                    }}
+                  />
+                </div>
+              </li>
             )
           })}
         </ul>
@@ -40,16 +68,20 @@ const Notifications = () => {
       <style jsx>{`
         .notficationCard {
           display: flex;
+          justify-content: space-between;
           margin: 0.5rem 0;
           border: 1px solid #e7e7e9;
           padding: 1rem;
-          border-radius: 4px;
+          border-radius: 6px;
           box-shadow: 0 2px 14px #aaaaaa;
           min-height: 6rem;
         }
+        .orderClass {
+          display: flex;
+        }
         #notficationsList li {
           list-style: none;
-          margin-bottom: 3rem;
+          margin-bottom: 1.5rem;
         }
         #notficationsList img {
           width: 40px;

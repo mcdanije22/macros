@@ -266,7 +266,7 @@ const CreatePost: React.FC = () => {
           <Icon
             type="left"
             style={{ alignSelf: 'center', marginRight: '.2rem' }}
-          />{' '}
+          />
           <h3 onClick={() => Router.back()}>Go back</h3>
         </div>
         <h1>Create New Post</h1>

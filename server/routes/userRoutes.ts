@@ -1,6 +1,7 @@
 import express, { Application, Router, Response, Request } from "express";
 import UserModel from "../models/UserModel";
 import FoodPostModel from "../models/FoodPostModel";
+import NotificationModel from "../models/NotificationModel";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
@@ -51,7 +52,6 @@ router.post("/register", (req: Request, res: Response) => {
 
 router.post("/login", (req: Request, res: Response) => {
   const { email, password } = req.body;
-
   UserModel.findOne({ email }).then((user: any) => {
     if (!user || user.password !== password) {
       return res.status(400).json("Incorrect email or password");
@@ -73,13 +73,17 @@ router.post("/like", async (req: Request, res: Response) => {
     await user.save();
     post.saves++;
     await post.save();
-    await postUser.notifications.push({
-      actionDate: new Date(),
-      actionUserName: user.userName,
-      message: `${user.userName} liked your ${post.title} post`,
-      href: `/foodpost/[id]`,
-      as: `/foodpost/${post._id}`
-    });
+
+    if (userId != postUserId) {
+      const newNotification: any = new NotificationModel({
+        actionDate: new Date(),
+        actionUserName: user.userName,
+        message: `${user.userName} liked your ${post.title} post`,
+        href: `/foodpost/[id]`,
+        as: `/foodpost/${post._id}`
+      });
+      postUser.notifications.push(newNotification);
+    }
     await postUser.save();
     res.send("Post saved");
   }
@@ -97,13 +101,14 @@ router.post("/follow", async (req: Request, res: Response) => {
     await LoggedInUser.save();
     await followedUser.followers.push(LoggedInUser._id);
     followedUser.followerCount++;
-    await followedUser.notifications.push({
+    const newNotification: any = new NotificationModel({
       actionDate: new Date(),
       actionUserName: LoggedInUser.userName,
       message: `${LoggedInUser.userName} followed you`,
       href: `/user/[id]`,
       as: `/user/${LoggedInUser._id}`
     });
+    followedUser.notifications.push(newNotification);
     await followedUser.save();
     return res.status(200).json("Followed user");
   }
@@ -129,6 +134,24 @@ router.post("/unfollow", async (req: Request, res: Response) => {
     followedUser.followerCount--;
     followedUser.save();
     return res.status(200).json("Stopped following user!");
+  }
+});
+
+router.post("/deletenotification", async (req: Request, res: Response) => {
+  const { userId, notificationId } = req.body;
+  const user: any = await UserModel.findOne({ _id: userId });
+  const notification: any = await FoodPostModel.findOne({
+    _id: notificationId
+  });
+  try {
+    await UserModel.updateOne(
+      { _id: user._id },
+      { $pull: { notifications: notification._id } }
+    );
+    await user.save();
+    return res.status(200).json("Notification deleted");
+  } catch (error) {
+    console.log(error);
   }
 });
 

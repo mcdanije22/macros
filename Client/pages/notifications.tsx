@@ -42,14 +42,16 @@ const Notifications = () => {
                     type="close"
                     onClick={async () => {
                       try {
-                        axios.post(`${url}/users/deletenotification`, {
-                          userId: user._id,
-                          notificationId: notification._id,
-                        })
                         const newNotificationsList = await notificationsList.filter(
                           item => item._id !== notification._id
                         )
-                        await setnotificationsList(newNotificationsList)
+                        axios.post(`${url}/users/deletenotification`, {
+                          // userId: user._id,
+                          // notificationId: notification._id,
+                          newNotificationsList,
+                          userId: user._id,
+                        })
+                        setnotificationsList(newNotificationsList)
                         await setUser({
                           ...user,
                           notifications: newNotificationsList,

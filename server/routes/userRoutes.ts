@@ -138,15 +138,18 @@ router.post("/unfollow", async (req: Request, res: Response) => {
 });
 
 router.post("/deletenotification", async (req: Request, res: Response) => {
-  const { userId, notificationId } = req.body;
+  // const { userId, notificationId } = req.body;
+  const { newNotificationsList, userId } = req.body;
   const user: any = await UserModel.findOne({ _id: userId });
-  const notification: any = await FoodPostModel.findOne({
-    _id: notificationId
-  });
+  // const notification: any = await UserModel.findOne({
+  //   _id: notificationId
+  // });
   try {
     await UserModel.updateOne(
       { _id: user._id },
-      { $pull: { notifications: notification._id } }
+      // { $pull: { notifications: notificationId } }
+      // { $pull: { notifications: { _id: notificationId } } }
+      { $set: { notifications: newNotificationsList } }
     );
     await user.save();
     return res.status(200).json("Notification deleted");

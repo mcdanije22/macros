@@ -66,6 +66,47 @@ router.get("/search/tags/:tag", async (req: Request, res: Response) => {
   console.log(result);
 });
 
+//search for post by menu option
+router.get("/search/category/:search", async (req: Request, res: Response) => {
+  const { search } = req.params;
+  switch (search) {
+    case "calories":
+      const caloriesResult = await FoodPostModel.find({
+        "macros.calories": {
+          $lt: 500
+        }
+      });
+      res.send(caloriesResult);
+      break;
+    case "protein":
+      const proteinResult = await FoodPostModel.find({
+        "macros.protein": {
+          $gt: 30
+        }
+      });
+      res.send(proteinResult);
+      break;
+    case "carbohydrate":
+      const carbResult = await FoodPostModel.find({
+        "macros.carbohydrates": {
+          $lt: 20
+        }
+      });
+      res.send(carbResult);
+      break;
+    case "fat":
+      const fatResult = await FoodPostModel.find({
+        "macros.fat": {
+          $lt: 5
+        }
+      });
+      res.send(fatResult);
+      break;
+    default:
+      break;
+  }
+});
+
 //return specific food post by id
 router.get("/:foodpostid", async (req: Request, res: Response) => {
   const { foodpostid } = req.params;

@@ -77,11 +77,10 @@ const NavBar: React.FC = () => {
           </li>
         </ul>
         {/* <ul id="navbarBottom">
-          <li>Top</li>
-          <li>New</li>
-          <li>Protein</li>
-          <li>Carbs</li>
-          <li>Fats</li>
+          <li>Low Calories</li>
+          <li>High Protein</li>
+          <li>Low Carbs</li>
+          <li>Low Fats</li>
         </ul> */}
       </div>
       <div id="appDrawer">
@@ -108,7 +107,16 @@ const NavBar: React.FC = () => {
               <a>Home</a>
             </Link>
             <Link href="/">
-              <a>Saves</a>
+              <a>Low Calories</a>
+            </Link>
+            <Link href="/">
+              <a>High Protein</a>
+            </Link>
+            <Link href="/">
+              <a>Low Carbs</a>
+            </Link>
+            <Link href="/">
+              <a>Low Fats</a>
             </Link>
             <Link href="/notifications">
               <a>Notifications</a>

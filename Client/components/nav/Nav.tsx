@@ -17,17 +17,18 @@ const NavBar: React.FC = () => {
   const toggleSearchBar = () => {
     isActive(searchBarStatus ? false : true)
   }
-  const searchInputRef = useRef<any>(null)
+  const searchInputRef = useRef<any>()
   const clickOutside = e => {
-    console.log(e.target)
-    // if (searchInputRef.current.contains(e.target)) {
-    //   // isActive(false)
-    //   return
-    // }
+    if (searchInputRef.current.props.id !== e.target.id) {
+      isActive(false)
+    }
   }
   console.log(searchInputRef)
   useEffect(() => {
     document.addEventListener('mousedown', clickOutside)
+    return () => {
+      document.removeEventListener('mousedown', clickOutside)
+    }
   }, [])
 
   return (
@@ -48,7 +49,7 @@ const NavBar: React.FC = () => {
             </Link>
           </li>
           <li>
-            <div ref={searchInputRef}>
+            <div>
               <button
                 type="button"
                 className="navIcon"
@@ -58,6 +59,8 @@ const NavBar: React.FC = () => {
                 <Icon type="search" />
               </button>
               <Search
+                id="test"
+                ref={searchInputRef}
                 placeholder="Search by title..."
                 onSearch={value => {
                   if (value) {
@@ -65,7 +68,6 @@ const NavBar: React.FC = () => {
                     router.push('/searchpage/[search]', `/searchpage/${value}`)
                   } else {
                     message.error('Please enter a search term')
-                    toggleSearchBar()
                   }
                 }}
                 style={{ width: 300, display: searchBarStatus ? '' : 'none' }}
@@ -129,6 +131,7 @@ const NavBar: React.FC = () => {
           background-color: #504761;
           position: fixed;
           width: 100%;
+          height: 5rem;
         }
         #navContainer a {
           text-decoration: none;

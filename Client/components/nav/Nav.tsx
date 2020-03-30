@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Icon, Input, message } from 'antd'
@@ -17,6 +17,19 @@ const NavBar: React.FC = () => {
   const toggleSearchBar = () => {
     isActive(searchBarStatus ? false : true)
   }
+  const searchInputRef = useRef<any>(null)
+  const clickOutside = e => {
+    console.log(e.target)
+    // if (searchInputRef.current.contains(e.target)) {
+    //   // isActive(false)
+    //   return
+    // }
+  }
+  console.log(searchInputRef)
+  useEffect(() => {
+    document.addEventListener('mousedown', clickOutside)
+  }, [])
+
   return (
     <nav id="navContainer">
       <div id="mobileNav">
@@ -35,28 +48,30 @@ const NavBar: React.FC = () => {
             </Link>
           </li>
           <li>
-            <button
-              type="button"
-              className="navIcon"
-              style={{ display: searchBarStatus ? 'none' : '' }}
-              onClick={toggleSearchBar}
-            >
-              <Icon type="search" />
-            </button>
-            <Search
-              placeholder="Search by title..."
-              onSearch={value => {
-                if (value) {
-                  toggleSearchBar()
-                  router.push('/searchpage/[search]', `/searchpage/${value}`)
-                } else {
-                  message.error('Please enter a search term')
-                  toggleSearchBar()
-                }
-              }}
-              style={{ width: 300, display: searchBarStatus ? '' : 'none' }}
-              size="large"
-            />
+            <div ref={searchInputRef}>
+              <button
+                type="button"
+                className="navIcon"
+                style={{ display: searchBarStatus ? 'none' : '' }}
+                onClick={toggleSearchBar}
+              >
+                <Icon type="search" />
+              </button>
+              <Search
+                placeholder="Search by title..."
+                onSearch={value => {
+                  if (value) {
+                    toggleSearchBar()
+                    router.push('/searchpage/[search]', `/searchpage/${value}`)
+                  } else {
+                    message.error('Please enter a search term')
+                    toggleSearchBar()
+                  }
+                }}
+                style={{ width: 300, display: searchBarStatus ? '' : 'none' }}
+                size="large"
+              />
+            </div>
           </li>
         </ul>
         {/* <ul id="navbarBottom">

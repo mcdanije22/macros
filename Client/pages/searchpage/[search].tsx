@@ -6,10 +6,12 @@ import PostCard from '../../components/PostCard'
 import { Icon, Button } from 'antd'
 
 const SearchPage: NextPage<any> = props => {
+  console.log(props.query)
   return (
     <Layout title="Search">
       <div id="searchPage">
         <h1>Search Page</h1>
+        <h3>Search results for "{props.query}" </h3>
         <div id="searchList">
           {props.data.map((post, i) => {
             return (
@@ -28,7 +30,8 @@ const SearchPage: NextPage<any> = props => {
           })}
         </div>
         <style jsx>{`
-          h1 {
+          h1,
+          h3 {
             margin-bottom: 2rem;
           }
         `}</style>
@@ -45,6 +48,7 @@ SearchPage.getInitialProps = async ({ query }) => {
   const searchPost = await response.data
   return {
     data: searchPost,
+    query: search,
   }
 }
 export default SearchPage

@@ -15,7 +15,6 @@ const FoodPost: NextPage<any> = props => {
   }
   const [modalStatus, toggleModal] = useState<boolean>(false)
   const commentInputRef: any = useRef()
-
   const {
     title,
     saves,
@@ -51,6 +50,13 @@ const FoodPost: NextPage<any> = props => {
       await axios.post(`${url}/foodposts/${user._id}/${_id}/addcomment`, {
         comment: commentInputRef.current.value,
         postUserId: props.data.user._id,
+      })
+      comments.push({
+        commentDate: new Date().toJSON(),
+        comment: commentInputRef.current.value,
+        user: {
+          userName: user.userName,
+        },
       })
       commentInputRef.current.value = ''
       message.success('Comment posted!')
@@ -100,8 +106,14 @@ const FoodPost: NextPage<any> = props => {
         <div className="tags">
           {tags.map((tag, i) => {
             return (
-              <Link href="/" key={i}>
-                <p>#{tag}</p>
+              <Link href="/searchtags/[tag]" as={`/searchtags/${tag}`} key={i}>
+                <Button
+                  type="primary"
+                  ghost
+                  style={{ margin: '1rem .5rem 0 0', width: '6rem' }}
+                >
+                  {tag}
+                </Button>
               </Link>
             )
           })}
@@ -192,36 +204,39 @@ const FoodPost: NextPage<any> = props => {
             <button id="commentButton" onClick={toggle}>
               Comment
             </button>
-            {comments.map((comment, i) => {
-              return (
-                <div className="commentContainer" key={i}>
-                  <div className="comment">
-                    <div className="commentLeftSide">
-                      <div className="commentUserInfo">
-                        <Link
-                          href="/user/[id]"
-                          as={`/user/${comment.user._id}`}
-                        >
-                          <img
-                            src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName}.svg`}
-                            alt={`${comment.user.userName} Profile`}
-                          />
-                        </Link>
+            {comments
+              .sort((a, b) => (a.commentDate < b.commentDate ? 1 : -1))
+              .map((comment, i) => {
+                console.log(comment)
+                return (
+                  <div className="commentContainer" key={i}>
+                    <div className="comment">
+                      <div className="commentLeftSide">
+                        <div className="commentUserInfo">
+                          <Link
+                            href="/user/[id]"
+                            as={`/user/${comment.user._id}`}
+                          >
+                            <img
+                              src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName}.svg`}
+                              alt={`${comment.user.userName} Profile`}
+                            />
+                          </Link>
+                        </div>
+                        <div className="commentMain">
+                          <h3>{comment.user.userName}</h3>
+                          <p>{comment.comment}</p>
+                        </div>
                       </div>
-                      <div className="commentMain">
-                        <h3>{comment.user.userName}</h3>
-                        <p>{comment.comment}</p>
-                      </div>
-                    </div>
-                    <div className="commentRightSide">
-                      <div className="commentDate">
-                        <p>dec 1 2020</p>
+                      <div className="commentRightSide">
+                        <div className="commentDate">
+                          <p>{comment.commentDate.slice(0, 10)}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
           </div>
         </div>
       </div>
@@ -362,7 +377,6 @@ const FoodPost: NextPage<any> = props => {
         .overview {
           display: ${currentInfo === 'overview' ? '' : 'none'};
         }
-
         #overview {
           color: ${currentInfo === 'overview' ? 'black' : ''};
           cursor: pointer;

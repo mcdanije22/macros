@@ -21,8 +21,10 @@ app.use(passport.initialize());
 
 import postsRoutes from "./routes/postRoutes";
 import userRoutes from "./routes/userRoutes";
+import searchPostsRoutes from "./routes/searchPostsRoutes";
 
 app.use("/foodposts", postsRoutes);
 app.use("/users", userRoutes);
+app.use("/searchposts", searchPostsRoutes);
 
 app.listen(PORT, () => console.log(`server started successfully on ${PORT}`));

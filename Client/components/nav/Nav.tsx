@@ -106,16 +106,25 @@ const NavBar: React.FC = () => {
             >
               <a>Home</a>
             </Link>
-            <Link href="/">
+            <Link
+              href="/searchcategory/[category]"
+              as={`/searchcategory/calories`}
+            >
               <a>Low Calories</a>
             </Link>
-            <Link href="/">
+            <Link
+              href="/searchcategory/[category]"
+              as={`/searchcategory/protein`}
+            >
               <a>High Protein</a>
             </Link>
-            <Link href="/">
+            <Link
+              href="/searchcategory/[category]"
+              as={`/searchcategory/carbohydrate`}
+            >
               <a>Low Carbs</a>
             </Link>
-            <Link href="/">
+            <Link href="/searchcategory/[category]" as={`/searchcategory/fat`}>
               <a>Low Fats</a>
             </Link>
             <Link href="/notifications">

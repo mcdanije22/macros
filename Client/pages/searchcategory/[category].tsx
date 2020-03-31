@@ -4,13 +4,11 @@ import axios, { AxiosResponse } from 'axios'
 import Layout from '../../components/Layout'
 import PostCard from '../../components/PostCard'
 
-const SearchPage: NextPage<any> = props => {
-  console.log(props.data)
+const SearchCategory: NextPage<any> = props => {
   return (
     <Layout title="Search">
       <div id="searchPage">
         <h1>Search Page</h1>
-        <h3>Search results for "{props.query}" </h3>
         <div id="searchList">
           {props.data.length === 0 ? (
             <h1>No results found...</h1>
@@ -42,16 +40,15 @@ const SearchPage: NextPage<any> = props => {
     </Layout>
   )
 }
-SearchPage.getInitialProps = async ({ query }) => {
-  const { search } = query
+SearchCategory.getInitialProps = async ({ query }) => {
+  const { category } = query
   const url = 'http://localhost:5000'
   const response: AxiosResponse = await axios.get(
-    `${url}/searchposts/${search}`
+    `${url}/searchposts/category/${category}`
   )
   const searchPost = await response.data
   return {
     data: searchPost,
-    query: search,
   }
 }
-export default SearchPage
+export default SearchCategory

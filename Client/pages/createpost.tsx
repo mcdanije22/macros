@@ -2,9 +2,13 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import Layout from '../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { UserContext } from '../components/userContext'
-import { Modal, Button, Icon, message } from 'antd'
+import { Modal, Button, Icon, message, Upload } from 'antd'
 import Router from 'next/router'
 import { useRouter } from 'next/router'
+import firebase from 'firebase'
+import firebaseConfig from '../firebase/firebase'
+
+firebase.initializeApp(firebaseConfig)
 
 interface Post {
   title: String
@@ -43,6 +47,7 @@ interface ingredientItem {
 }
 
 const CreatePost: React.FC = () => {
+  const url = 'http://localhost:5000'
   const { user, isUserLoggedIn } = useContext(UserContext)
   const router = useRouter()
   useEffect(() => {
@@ -182,7 +187,6 @@ const CreatePost: React.FC = () => {
     toggle()
   }
   const submitPost = async () => {
-    const url = 'http://localhost:5000'
     const loggedInUser = user._id
     try {
       const post = await axios.post(
@@ -214,6 +218,37 @@ const CreatePost: React.FC = () => {
     ingredientInputRef.current.value = ''
     directionInputRef.current.value = ''
   }
+  const [image, setImage] = useState(null)
+  const [imageUrl, setImageUrl] = useState(null)
+
+  const test = async e => {
+    const file = await e.target.files[0]
+    setImage(file)
+  }
+  const uploadTest = () => {
+    const uploadTask = firebase
+      .storage()
+      .ref(`images/${image.name}`)
+      .put(image)
+    uploadTask.on(
+      'state_changed',
+      snapshot => {},
+      error => {
+        console.log(error)
+      },
+      () => {
+        firebase
+          .storage()
+          .ref('images')
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+            console.log(url)
+          })
+      }
+    )
+  }
+
   return (
     <Layout title="New Post">
       <Modal
@@ -274,8 +309,12 @@ const CreatePost: React.FC = () => {
           <label>Title</label>
           <input type="text" name="title" onChange={handleInputChange} />
           <label>Cover Photo</label>
+
           <div className="imageUpload">
-            <button type="button">Upload</button>
+            <input type="file" name="file" onChange={test}></input>
+            <button type="button" onClick={uploadTest}>
+              Upload
+            </button>
           </div>
           <label>Tags</label>
           {draftPost.tags.map((tag, i) => {

@@ -14,6 +14,7 @@
     "@types/mongoose": "^5.5.38",
     "@types/passport": "^1.0.2",
     "body-parser": "^1.19.0",
+    "cloudinary": "^1.21.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.8.3",

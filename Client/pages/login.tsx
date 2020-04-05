@@ -40,7 +40,6 @@ const logIn = () => {
       await userLoggedIn(true)
       isLoading(false)
       await router.push(`/newsfeed/[id]`, `/newsfeed/${user.data._id}`)
-      // router.push('/home')
       message.success('Logged in sucessfully!')
     } catch (error) {
       message.error('inccorect email or password')

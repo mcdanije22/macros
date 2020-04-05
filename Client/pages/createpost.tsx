@@ -16,6 +16,7 @@ interface Post {
   summary: String
   ingredients: Array<Object>
   directions: Array<String>
+  foodPhoto: any
   macros: {
     calories: number
     protein: number
@@ -47,6 +48,7 @@ interface ingredientItem {
 }
 
 const CreatePost: React.FC = () => {
+  const apiKey = process.env.NUTRITION_API_KEY
   const url = 'http://localhost:5000'
   const { user, isUserLoggedIn } = useContext(UserContext)
   const router = useRouter()
@@ -71,6 +73,7 @@ const CreatePost: React.FC = () => {
       carbohydrates: 0,
       fat: 0,
     },
+    foodPhoto: '',
   })
   const [modalStatus, toggleModal] = useState<boolean>(false)
 
@@ -78,7 +81,9 @@ const CreatePost: React.FC = () => {
   const [tempIngredientValue, setTempIngredient] = useState<String>('')
   const [tempDirectionValue, setTempDirection] = useState<String>('')
   const [searchFoodList, setFoodList] = useState<ingredientItem[]>([])
-  const apiKey = process.env.NUTRITION_API_KEY
+  const [image, setImage] = useState(null)
+  const [fileImageUrl, setFileImageUrl] = useState(null)
+  const [imageFirebaseUrl, setImageFirebaseUrl] = useState(null)
 
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
@@ -187,17 +192,26 @@ const CreatePost: React.FC = () => {
     toggle()
   }
   const submitPost = async () => {
-    const loggedInUser = user._id
-    try {
-      const post = await axios.post(
-        `${url}/foodposts/${loggedInUser}/addpost`,
-        draftPost
-      )
-      await message.success('Posted!')
-      await Router.push('/home')
-      clearDraft()
-    } catch (error) {
-      return message.error('Missing info')
+    if (image !== null) {
+      uploadImg()
+      setDraftPost({
+        ...draftPost,
+        foodPhoto: imageFirebaseUrl,
+      })
+
+      const loggedInUser = await user._id
+      try {
+        const post = await axios.post(
+          `${url}/foodposts/${loggedInUser}/addpost`,
+          draftPost
+        )
+        console.log(draftPost)
+        await message.success('Posted!')
+        await router.push(`/newsfeed/[id]`, `/newsfeed/${user.data._id}`)
+        clearDraft()
+      } catch (error) {
+        return message.error('Missing info')
+      }
     }
   }
   const clearDraft = () => {
@@ -213,42 +227,47 @@ const CreatePost: React.FC = () => {
         carbohydrates: 0,
         fat: 0,
       },
+      foodPhoto: '',
     })
     tagInputRef.current.value = ''
     ingredientInputRef.current.value = ''
     directionInputRef.current.value = ''
   }
-  const [image, setImage] = useState(null)
-  const [imageUrl, setImageUrl] = useState(null)
 
-  const test = async e => {
+  const getImageFile = async e => {
     const file = await e.target.files[0]
+    const reader = new FileReader()
+    const url = reader.readAsDataURL(file)
+    reader.onloadend = e => {
+      setFileImageUrl(reader.result)
+    }
     setImage(file)
   }
-  const uploadTest = () => {
-    const uploadTask = firebase
-      .storage()
-      .ref(`images/${image.name}`)
-      .put(image)
-    uploadTask.on(
-      'state_changed',
-      snapshot => {},
-      error => {
-        console.log(error)
-      },
-      () => {
-        firebase
-          .storage()
-          .ref('images')
-          .child(image.name)
-          .getDownloadURL()
-          .then(url => {
-            console.log(url)
-          })
-      }
-    )
+  const uploadImg = async () => {
+    if (image !== null) {
+      const uploadTask = firebase
+        .storage()
+        .ref(`images/${image.name}`)
+        .put(image)
+      uploadTask.on(
+        'state_changed',
+        snapshot => {},
+        error => {
+          console.log(error)
+        },
+        async () => {
+          await firebase
+            .storage()
+            .ref('images')
+            .child(image.name)
+            .getDownloadURL()
+            .then(url => {
+              setImageFirebaseUrl(url)
+            })
+        }
+      )
+    }
   }
-
   return (
     <Layout title="New Post">
       <Modal
@@ -309,10 +328,10 @@ const CreatePost: React.FC = () => {
           <label>Title</label>
           <input type="text" name="title" onChange={handleInputChange} />
           <label>Cover Photo</label>
-
           <div className="imageUpload">
-            <input type="file" name="file" onChange={test}></input>
-            <button type="button" onClick={uploadTest}>
+            <img src={fileImageUrl} />
+            <input type="file" name="file" onChange={getImageFile}></input>
+            <button type="button" onClick={uploadImg}>
               Upload
             </button>
           </div>
@@ -410,12 +429,18 @@ const CreatePost: React.FC = () => {
           display: flex;
           flex-direction: column;
         }
+        .imageUpload img {
+          width: 100%;
+        }
         .imageUpload button {
           border: 1px #4086e7 solid;
           background-color: transparent;
           color: #4086e7;
           padding: 0.2rem 1.5rem;
           border-radius: 0.5rem;
+        }
+        .imageUpload input {
+          margin: 1.5rem 0;
         }
         h1 {
           margin-bottom: 1rem;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import Layout from '../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { UserContext } from '../components/userContext'
-import { Modal, Button, Icon, message, Upload } from 'antd'
+import { Modal, Button, Icon, message, Checkbox } from 'antd'
 import Router from 'next/router'
 import { useRouter } from 'next/router'
 import firebase from 'firebase'
@@ -60,6 +60,8 @@ const CreatePost: React.FC = () => {
   const tagInputRef = useRef<HTMLInputElement>()
   const ingredientInputRef = useRef<HTMLInputElement>()
   const directionInputRef = useRef<HTMLInputElement>()
+  const fileRef = useRef<HTMLInputElement>()
+  // const checkedBoxRef = useRef()
 
   const [draftPost, setDraftPost] = useState<Post>({
     title: '',
@@ -83,8 +85,8 @@ const CreatePost: React.FC = () => {
   const [searchFoodList, setFoodList] = useState<ingredientItem[]>([])
   const [image, setImage] = useState(null)
   const [fileImageUrl, setFileImageUrl] = useState(null)
-  // const [imageFirebaseUrl, setImageFirebaseUrl] = useState(null)
   const [isImageLoading, setImageLoading] = useState<Boolean>(false)
+  const [boxChecked, setCheckBox] = useState<Boolean>(false)
 
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
@@ -107,14 +109,18 @@ const CreatePost: React.FC = () => {
   }
 
   const addTagValue = () => {
-    const orgArray = draftPost.tags
-    const newArray = [...orgArray, tempTagValue]
-    setDraftPost({
-      ...draftPost,
-      tags: newArray,
-    })
-    tagInputRef.current.value = ''
-    setTempTag('')
+    if (tempTagValue === '') {
+      message.error('Type in a tag')
+    } else {
+      const orgArray = draftPost.tags
+      const newArray = [...orgArray, tempTagValue]
+      setDraftPost({
+        ...draftPost,
+        tags: newArray,
+      })
+      tagInputRef.current.value = ''
+      setTempTag('')
+    }
   }
 
   //logic for handling directions list
@@ -124,14 +130,18 @@ const CreatePost: React.FC = () => {
   }
 
   const addDirectionsValue = () => {
-    const orgArray = draftPost.directions
-    const newArray = [...orgArray, tempDirectionValue]
-    setDraftPost({
-      ...draftPost,
-      directions: newArray,
-    })
-    directionInputRef.current.value = ''
-    setTempDirection('')
+    if (tempDirectionValue === '') {
+      message.error('Type in a direction')
+    } else {
+      const orgArray = draftPost.directions
+      const newArray = [...orgArray, tempDirectionValue]
+      setDraftPost({
+        ...draftPost,
+        directions: newArray,
+      })
+      directionInputRef.current.value = ''
+      setTempDirection('')
+    }
   }
 
   //logic for handling Ingredients list
@@ -176,24 +186,38 @@ const CreatePost: React.FC = () => {
   const fetchFoodSearch = async () => {
     let foodOptions = []
     const search = tempIngredientValue
-    const searchList = await axios.get(
-      `https://api.nal.usda.gov/fdc/v1/search?api_key=${apiKey}&generalSearchInput=${search}`
-    )
-    searchList.data.foods.forEach(async el => {
-      const food: any = await axios.get(
-        `https://api.nal.usda.gov/fdc/v1/${el.fdcId}/?api_key=${apiKey}`
+    if (search === '') {
+      message.error('Enter a food to search for')
+    } else {
+      const searchList = await axios.get(
+        `https://api.nal.usda.gov/fdc/v1/search?api_key=${apiKey}&generalSearchInput=${search}`
       )
-      //only add item to list if it has nutrients listed
-      if (typeof food.data.labelNutrients !== 'undefined') {
-        foodOptions = [...foodOptions, food.data]
-        setFoodList(foodOptions)
-      }
-    })
-    ingredientInputRef.current.value = ''
-    toggle()
+      searchList.data.foods.forEach(async el => {
+        const food: any = await axios.get(
+          `https://api.nal.usda.gov/fdc/v1/${el.fdcId}/?api_key=${apiKey}`
+        )
+        //only add item to list if it has nutrients listed
+        if (typeof food.data.labelNutrients !== 'undefined') {
+          foodOptions = [...foodOptions, food.data]
+          setFoodList(foodOptions)
+        }
+      })
+      ingredientInputRef.current.value = ''
+      toggle()
+    }
   }
   const submitPost = async () => {
-    if (image !== null && draftPost.foodPhoto !== null) {
+    if (
+      draftPost.title === '' ||
+      draftPost.summary === '' ||
+      draftPost.ingredients.length === 0 ||
+      draftPost.directions.length === 0 ||
+      draftPost.title === ''
+    ) {
+      message.error('Please fill in all fields')
+    } else if (image !== null && draftPost.foodPhoto === null) {
+      message.error('Please upload photo')
+    } else {
       const loggedInUser = await user._id
       try {
         const post = await axios.post(
@@ -207,8 +231,6 @@ const CreatePost: React.FC = () => {
         console.log(error)
         return message.error('Missing info')
       }
-    } else {
-      message.error('Upload photo')
     }
   }
   const clearDraft = () => {
@@ -239,7 +261,9 @@ const CreatePost: React.FC = () => {
       setFileImageUrl(reader.result)
     }
     setImage(file)
+    setCheckBox(false)
   }
+
   const uploadImg = () => {
     if (image !== null || draftPost.foodPhoto) {
       setImageLoading(true)
@@ -260,19 +284,35 @@ const CreatePost: React.FC = () => {
             .child(image.name)
             .getDownloadURL()
             .then(url => {
-              // setImageFirebaseUrl(url)
               setDraftPost({
                 ...draftPost,
                 foodPhoto: url,
               })
               setImageLoading(false)
               message.success('Image Added')
+              fileRef.current.value = ''
             })
         }
       )
     }
   }
-  console.log(image)
+  const checkBoxOnChange = e => {
+    if (e.target.checked) {
+      setDraftPost({
+        ...draftPost,
+        foodPhoto: 'https://via.placeholder.com/400',
+      })
+      setCheckBox(true)
+      setFileImageUrl(null)
+    } else {
+      setDraftPost({
+        ...draftPost,
+        foodPhoto: null,
+      })
+    }
+    fileRef.current.value = ''
+  }
+
   return (
     <Layout title="New Post">
       <Modal
@@ -334,10 +374,11 @@ const CreatePost: React.FC = () => {
           <input type="text" name="title" onChange={handleInputChange} />
           <label>Cover Photo</label>
           <div className="imageUpload">
-            <img src={fileImageUrl} />
+            <img src={fileImageUrl || draftPost.foodPhoto} />
             <input
               type="file"
               name="file"
+              ref={fileRef}
               style={{
                 display:
                   image !== null && draftPost.foodPhoto !== null ? 'none' : '',
@@ -360,6 +401,7 @@ const CreatePost: React.FC = () => {
                 Upload
               </button>
             )}
+            <Checkbox onChange={checkBoxOnChange}>Use default image</Checkbox>
           </div>
           <label>Tags</label>
           {draftPost.tags.map((tag, i) => {
@@ -457,6 +499,11 @@ const CreatePost: React.FC = () => {
         }
         .imageUpload img {
           width: 100%;
+          margin-bottom: 1.5rem;
+        }
+        .imageUpload {
+          display: flex;
+          flex-direction: column;
         }
         .imageUpload button {
           border: 1px #4086e7 solid;
@@ -464,9 +511,10 @@ const CreatePost: React.FC = () => {
           color: #4086e7;
           padding: 0.2rem 1.5rem;
           border-radius: 0.5rem;
+          margin-bottom: 1.5rem;
         }
         .imageUpload input {
-          margin: 1.5rem 0;
+          margin-bottom: 1.5rem;
         }
         h1 {
           margin-bottom: 1rem;

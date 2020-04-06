@@ -76,12 +76,6 @@ const NavBar: React.FC = () => {
             </div>
           </li>
         </ul>
-        {/* <ul id="navbarBottom">
-          <li>Low Calories</li>
-          <li>High Protein</li>
-          <li>Low Carbs</li>
-          <li>Low Fats</li>
-        </ul> */}
       </div>
       <div id="appDrawer">
         <ul id="topIcons">

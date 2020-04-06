@@ -14,12 +14,6 @@ cloudinary.config({
   api_secret: process.env.API_SECRET
 });
 
-// router.post("/imageupload", async (req: Request, res: Response) => {
-//   const { file } = req.body;
-//   console.log(req.body);
-//   // cloudinary.uploader.upload("/joshmcdaniel/desktop/test.jpg");
-// });
-
 //return all food post in collection
 router.get("/", async (req: Request, res: Response) => {
   try {

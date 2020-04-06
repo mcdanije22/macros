@@ -73,7 +73,7 @@ const CreatePost: React.FC = () => {
       carbohydrates: 0,
       fat: 0,
     },
-    foodPhoto: '',
+    foodPhoto: null,
   })
   const [modalStatus, toggleModal] = useState<boolean>(false)
 
@@ -83,7 +83,8 @@ const CreatePost: React.FC = () => {
   const [searchFoodList, setFoodList] = useState<ingredientItem[]>([])
   const [image, setImage] = useState(null)
   const [fileImageUrl, setFileImageUrl] = useState(null)
-  const [imageFirebaseUrl, setImageFirebaseUrl] = useState(null)
+  // const [imageFirebaseUrl, setImageFirebaseUrl] = useState(null)
+  const [isImageLoading, setImageLoading] = useState<Boolean>(false)
 
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
@@ -192,26 +193,22 @@ const CreatePost: React.FC = () => {
     toggle()
   }
   const submitPost = async () => {
-    if (image !== null) {
-      uploadImg()
-      setDraftPost({
-        ...draftPost,
-        foodPhoto: imageFirebaseUrl,
-      })
-
+    if (image !== null && draftPost.foodPhoto !== null) {
       const loggedInUser = await user._id
       try {
         const post = await axios.post(
           `${url}/foodposts/${loggedInUser}/addpost`,
           draftPost
         )
-        console.log(draftPost)
-        await message.success('Posted!')
-        await router.push(`/newsfeed/[id]`, `/newsfeed/${user.data._id}`)
+        message.success('Posted!')
+        router.push(`/newsfeed/[id]`, `/newsfeed/${user._id}`)
         clearDraft()
       } catch (error) {
+        console.log(error)
         return message.error('Missing info')
       }
+    } else {
+      message.error('Upload photo')
     }
   }
   const clearDraft = () => {
@@ -227,7 +224,7 @@ const CreatePost: React.FC = () => {
         carbohydrates: 0,
         fat: 0,
       },
-      foodPhoto: '',
+      foodPhoto: null,
     })
     tagInputRef.current.value = ''
     ingredientInputRef.current.value = ''
@@ -243,8 +240,9 @@ const CreatePost: React.FC = () => {
     }
     setImage(file)
   }
-  const uploadImg = async () => {
-    if (image !== null) {
+  const uploadImg = () => {
+    if (image !== null || draftPost.foodPhoto) {
+      setImageLoading(true)
       const uploadTask = firebase
         .storage()
         .ref(`images/${image.name}`)
@@ -255,19 +253,26 @@ const CreatePost: React.FC = () => {
         error => {
           console.log(error)
         },
-        async () => {
-          await firebase
+        () => {
+          firebase
             .storage()
             .ref('images')
             .child(image.name)
             .getDownloadURL()
             .then(url => {
-              setImageFirebaseUrl(url)
+              // setImageFirebaseUrl(url)
+              setDraftPost({
+                ...draftPost,
+                foodPhoto: url,
+              })
+              setImageLoading(false)
+              message.success('Image Added')
             })
         }
       )
     }
   }
+  console.log(image)
   return (
     <Layout title="New Post">
       <Modal
@@ -330,10 +335,31 @@ const CreatePost: React.FC = () => {
           <label>Cover Photo</label>
           <div className="imageUpload">
             <img src={fileImageUrl} />
-            <input type="file" name="file" onChange={getImageFile}></input>
-            <button type="button" onClick={uploadImg}>
-              Upload
-            </button>
+            <input
+              type="file"
+              name="file"
+              style={{
+                display:
+                  image !== null && draftPost.foodPhoto !== null ? 'none' : '',
+              }}
+              onChange={getImageFile}
+            ></input>
+            {isImageLoading ? (
+              <h1>Uploading...</h1>
+            ) : (
+              <button
+                type="button"
+                style={{
+                  display:
+                    image === null || draftPost.foodPhoto !== null
+                      ? 'none'
+                      : '',
+                }}
+                onClick={uploadImg}
+              >
+                Upload
+              </button>
+            )}
           </div>
           <label>Tags</label>
           {draftPost.tags.map((tag, i) => {

@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import Layout from '../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { UserContext } from '../components/userContext'
-import { Modal, Button, Icon, message, Checkbox } from 'antd'
+import { Modal, Button, Icon, message, Checkbox, Pagination } from 'antd'
 import Router from 'next/router'
 import { useRouter } from 'next/router'
 import firebase from 'firebase'
 import firebaseConfig from '../firebase/firebase'
+import { start } from 'repl'
 
 firebase.initializeApp(firebaseConfig)
 
@@ -61,7 +62,6 @@ const CreatePost: React.FC = () => {
   const ingredientInputRef = useRef<HTMLInputElement>()
   const directionInputRef = useRef<HTMLInputElement>()
   const fileRef = useRef<HTMLInputElement>()
-  // const checkedBoxRef = useRef()
 
   const [draftPost, setDraftPost] = useState<Post>({
     title: '',
@@ -87,6 +87,7 @@ const CreatePost: React.FC = () => {
   const [fileImageUrl, setFileImageUrl] = useState(null)
   const [isImageLoading, setImageLoading] = useState<Boolean>(false)
   const [boxChecked, setCheckBox] = useState<Boolean>(false)
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const toggle = () => {
     toggleModal(modalStatus ? false : true)
@@ -186,16 +187,21 @@ const CreatePost: React.FC = () => {
   const fetchFoodSearch = async () => {
     let foodOptions = []
     const search = tempIngredientValue
+
+    //reset state list so if nothing is returned it clears last results
+    setFoodList([])
     if (search === '') {
       message.error('Enter a food to search for')
     } else {
       const searchList = await axios.get(
         `https://api.nal.usda.gov/fdc/v1/search?api_key=${apiKey}&generalSearchInput=${search}`
       )
+      console.log(searchList)
       searchList.data.foods.forEach(async el => {
         const food: any = await axios.get(
           `https://api.nal.usda.gov/fdc/v1/${el.fdcId}/?api_key=${apiKey}`
         )
+
         //only add item to list if it has nutrients listed
         if (typeof food.data.labelNutrients !== 'undefined') {
           foodOptions = [...foodOptions, food.data]
@@ -312,6 +318,10 @@ const CreatePost: React.FC = () => {
     }
     fileRef.current.value = ''
   }
+  const test = page => {
+    console.log(page)
+    setCurrentPage(page)
+  }
 
   return (
     <Layout title="New Post">
@@ -321,44 +331,62 @@ const CreatePost: React.FC = () => {
         footer={null}
         onCancel={toggle}
       >
-        {searchFoodList.slice(0, 5).map((ingredient, i) => {
-          const carbohydrates = Math.round(
-            ingredient.labelNutrients.carbohydrates.value
-          )
-          const protein = Math.round(ingredient.labelNutrients.protein.value)
-          const fat = Math.round(ingredient.labelNutrients.fat.value)
-          const calories = Math.round(ingredient.labelNutrients.calories.value)
-          return (
-            <li key={i} className="modalFood">
-              <div className="topInfo">
-                <div className="leftInfo">
-                  <h3>
-                    <b>{ingredient.description}</b>
-                  </h3>
-                  <p>{ingredient.brandOwner}</p>
+        {/* {searchFoodList.slice(0, 4).map((ingredient, i) => { */}
+        {searchFoodList
+          .slice((currentPage - 1) * 4, currentPage * 4)
+          .map((ingredient, i) => {
+            console.log(ingredient)
+            const carbohydrates = Math.round(
+              ingredient.labelNutrients.carbohydrates.value
+            )
+            const protein = Math.round(ingredient.labelNutrients.protein.value)
+            const fat = Math.round(ingredient.labelNutrients.fat.value)
+            const calories = Math.round(
+              ingredient.labelNutrients.calories.value
+            )
+            // const carbohydrates =
+            //   ingredient.labelNutrients.carbohydrates.value || 0
+            // const protein = ingredient.labelNutrients.protein.value || 0
+            // const fat = ingredient.labelNutrients.fat.value || 0
+            // const calories = ingredient.labelNutrients.calories.value || 0
+
+            return (
+              <li key={i} className="modalFood">
+                <div className="topInfo">
+                  <div className="leftInfo">
+                    <h3>
+                      <b>{ingredient.description}</b>
+                    </h3>
+                    <p>{ingredient.brandOwner}</p>
+                    <p>
+                      Serving size: {ingredient.servingSize}
+                      {ingredient.servingSizeUnit}
+                    </p>
+                  </div>
+                  <div className="rightInfo">
+                    <Button
+                      type="primary"
+                      onClick={() => addFoodToIngredientList(ingredient)}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                </div>
+                <div className="macroInfo">
                   <p>
-                    Serving size: {ingredient.servingSize}
-                    {ingredient.servingSizeUnit}
+                    Calories: {calories} | Protein: {protein} | Carbs:{' '}
+                    {carbohydrates} | Fats: {fat}
                   </p>
                 </div>
-                <div className="rightInfo">
-                  <Button
-                    type="primary"
-                    onClick={() => addFoodToIngredientList(ingredient)}
-                  >
-                    Add
-                  </Button>
-                </div>
-              </div>
-              <div className="macroInfo">
-                <p>
-                  Calories: {calories} | Protein: {protein} | Carbs:{' '}
-                  {carbohydrates} | Fats: {fat}
-                </p>
-              </div>
-            </li>
-          )
-        })}
+              </li>
+            )
+          })}
+        <Pagination
+          current={currentPage}
+          total={searchFoodList.length}
+          onChange={test}
+          style={{ marginTop: '1rem' }}
+        />
       </Modal>
       <div id="createPage">
         <div id="topInfo">

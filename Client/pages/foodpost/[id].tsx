@@ -5,6 +5,8 @@ import { NextPage, NextPageContext } from 'next'
 import Link from 'next/link'
 import { Icon, message, Button, Modal } from 'antd'
 import { UserContext } from '../../components/userContext'
+import Head from 'next/head'
+import Router from 'next/router'
 
 const FoodPost: NextPage<any> = props => {
   const { user } = useContext(UserContext)
@@ -67,6 +69,12 @@ const FoodPost: NextPage<any> = props => {
   }
   return (
     <Layout title={title}>
+      <Head>
+        <script
+          type="text/javascript"
+          src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e8be1c17c437f17"
+        ></script>
+      </Head>
       <div className="postContainer">
         <div className="topInfo">
           <Link href="/user/[id]" as={`/user/${props.data.user._id}`}>
@@ -81,7 +89,9 @@ const FoodPost: NextPage<any> = props => {
           <h5>{saves} Saves</h5>
         </div>
         <h1>{title}</h1>
+
         <div className="topButtons">
+          {/* <div className="addthis_inline_share_toolbox_4ba8"></div> */}
           <li>
             <Icon
               type="heart"
@@ -91,13 +101,33 @@ const FoodPost: NextPage<any> = props => {
             />
           </li>
           <li>
-            <Icon type="facebook" style={{ color: '#4A66AD' }} />
+            <a
+              href={`https://twitter.com/share?url=${url}${Router.asPath}`}
+              target="_blank"
+            >
+              <Icon type="twitter" style={{ color: '#4B9CE8' }} />
+            </a>
           </li>
           <li>
-            <Icon type="instagram" style={{ color: '#B53E68' }} />
+            <a
+              href={`http://reddit.com/submit?url=${url}${Router.asPath}`}
+              target="_blank"
+            >
+              <Icon type="reddit" style={{ color: '#FF4500' }} />
+            </a>
           </li>
           <li>
-            <Icon type="twitter" style={{ color: '#4B9CE8' }} />
+            <a
+              href={`http://www.facebook.com/sharer.php?u=${url}${Router.asPath}`}
+              target="_blank"
+            >
+              <Icon type="facebook" style={{ color: '#4A66AD' }} />
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:?Subject=${title}&Body=${url}${Router.asPath}`}>
+              <Icon type="mail" theme="twoTone" twoToneColor="#FFAE42" />
+            </a>
           </li>
         </div>
         <div className="heroImage">
@@ -292,7 +322,7 @@ const FoodPost: NextPage<any> = props => {
         }
         .topButtons li {
           list-style: none;
-          margin: 0 1rem 0.5rem 0;
+          margin: 0 0.5rem 0.5rem 0;
           font-size: 1.5rem;
         }
         .heroImage img {

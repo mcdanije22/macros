@@ -23,7 +23,6 @@ const FoodCard: React.FC<Post> = ({
 }) => {
   const { protein, fat, carbohydrates, calories }: any = macros
   return (
-    // <Link href={`/foodpost/${id}`}>
     <Link href="/foodpost/[id]" as={`/foodpost/${id}`}>
       <div className="cardContainer">
         <div className="topBar">
@@ -45,17 +44,6 @@ const FoodCard: React.FC<Post> = ({
               )
             })}
           </div>
-          {/* <ul className="bottomSocial">
-            <li>
-              <Icon type="facebook" />
-            </li>
-            <li>
-              <Icon type="instagram" />
-            </li>
-            <li>
-              <Icon type="twitter" />
-            </li>
-          </ul> */}
         </div>
         <style jsx>{`
           * {

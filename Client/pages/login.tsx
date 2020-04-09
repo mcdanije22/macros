@@ -29,13 +29,13 @@ const logIn = () => {
     })
   }
   const logUserIn = async (email: string, password: string) => {
+    isLoading(true)
     const url = 'http://localhost:5000/'
     try {
       const user: AxiosResponse = await axios.post(`${url}users/login`, {
         email,
         password,
       })
-      isLoading(true)
       await setUser(user.data)
       await userLoggedIn(true)
       isLoading(false)
@@ -47,11 +47,11 @@ const logIn = () => {
         email: logInForm.email,
         password: '',
       })
+      isLoading(false)
     }
   }
   const submitLogIn = () => {
     const { email, password } = logInForm
-    console.log(email, password)
     logUserIn(email, password)
   }
 

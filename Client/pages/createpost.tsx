@@ -7,7 +7,6 @@ import Router from 'next/router'
 import { useRouter } from 'next/router'
 import firebase from 'firebase'
 import firebaseConfig from '../firebase/firebase'
-import { start } from 'repl'
 
 firebase.initializeApp(firebaseConfig)
 
@@ -93,6 +92,7 @@ const CreatePost: React.FC = () => {
     toggleModal(modalStatus ? false : true)
     ingredientInputRef.current.value = ''
     setTempIngredient('')
+    setCurrentPage(1)
   }
 
   const handleInputChange = e => {
@@ -196,14 +196,16 @@ const CreatePost: React.FC = () => {
       const searchList = await axios.get(
         `https://api.nal.usda.gov/fdc/v1/search?api_key=${apiKey}&generalSearchInput=${search}`
       )
-      console.log(searchList)
       searchList.data.foods.forEach(async el => {
         const food: any = await axios.get(
           `https://api.nal.usda.gov/fdc/v1/${el.fdcId}/?api_key=${apiKey}`
         )
 
         //only add item to list if it has nutrients listed
-        if (typeof food.data.labelNutrients !== 'undefined') {
+        if (
+          food.data.labelNutrients &&
+          Object.getOwnPropertyNames(food.data.labelNutrients).length !== 0
+        ) {
           foodOptions = [...foodOptions, food.data]
           setFoodList(foodOptions)
         }
@@ -259,6 +261,7 @@ const CreatePost: React.FC = () => {
     directionInputRef.current.value = ''
   }
 
+  // add photo file to state for firebase and preview
   const getImageFile = async e => {
     const file = await e.target.files[0]
     const reader = new FileReader()
@@ -270,6 +273,7 @@ const CreatePost: React.FC = () => {
     setCheckBox(false)
   }
 
+  // add photo in file state to firebase
   const uploadImg = () => {
     if (image !== null || draftPost.foodPhoto) {
       setImageLoading(true)
@@ -318,8 +322,7 @@ const CreatePost: React.FC = () => {
     }
     fileRef.current.value = ''
   }
-  const test = page => {
-    console.log(page)
+  const onPageChange = page => {
     setCurrentPage(page)
   }
 
@@ -331,11 +334,9 @@ const CreatePost: React.FC = () => {
         footer={null}
         onCancel={toggle}
       >
-        {/* {searchFoodList.slice(0, 4).map((ingredient, i) => { */}
         {searchFoodList
           .slice((currentPage - 1) * 4, currentPage * 4)
           .map((ingredient, i) => {
-            console.log(ingredient)
             const carbohydrates = Math.round(
               ingredient.labelNutrients.carbohydrates.value
             )
@@ -344,11 +345,6 @@ const CreatePost: React.FC = () => {
             const calories = Math.round(
               ingredient.labelNutrients.calories.value
             )
-            // const carbohydrates =
-            //   ingredient.labelNutrients.carbohydrates.value || 0
-            // const protein = ingredient.labelNutrients.protein.value || 0
-            // const fat = ingredient.labelNutrients.fat.value || 0
-            // const calories = ingredient.labelNutrients.calories.value || 0
 
             return (
               <li key={i} className="modalFood">
@@ -381,10 +377,17 @@ const CreatePost: React.FC = () => {
               </li>
             )
           })}
+        {searchFoodList.length === 0 ? (
+          <div>
+            <h2>No search results found</h2>
+          </div>
+        ) : (
+          ''
+        )}
         <Pagination
           current={currentPage}
           total={searchFoodList.length}
-          onChange={test}
+          onChange={onPageChange}
           style={{ marginTop: '1rem' }}
         />
       </Modal>

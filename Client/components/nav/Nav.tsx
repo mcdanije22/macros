@@ -8,6 +8,7 @@ const NavBar: React.FC = () => {
   const { user, isUserLoggedIn } = useContext(UserContext)
   const [navBarStatus, isOpen] = useState<Boolean>(false)
   const [searchBarStatus, isActive] = useState<Boolean>(false)
+
   const toggleMenu = () => {
     isOpen(navBarStatus ? false : true)
   }
@@ -30,6 +31,10 @@ const NavBar: React.FC = () => {
       document.removeEventListener('mousedown', clickOutside)
     }
   }, [])
+  const logUserOut = () => {
+    message.success('Logged out')
+    router.push('/')
+  }
 
   return (
     <nav id="navContainer">
@@ -104,22 +109,22 @@ const NavBar: React.FC = () => {
               href="/searchcategory/[category]"
               as={`/searchcategory/calories`}
             >
-              <a>Low Calories</a>
+              <a onClick={toggleMenu}>Low Calories</a>
             </Link>
             <Link
               href="/searchcategory/[category]"
               as={`/searchcategory/protein`}
             >
-              <a>High Protein</a>
+              <a onClick={toggleMenu}>High Protein</a>
             </Link>
             <Link
               href="/searchcategory/[category]"
               as={`/searchcategory/carbohydrate`}
             >
-              <a>Low Carbs</a>
+              <a onClick={toggleMenu}>Low Carbs</a>
             </Link>
             <Link href="/searchcategory/[category]" as={`/searchcategory/fat`}>
-              <a>Low Fats</a>
+              <a onClick={toggleMenu}>Low Fats</a>
             </Link>
             <Link href="/notifications">
               <a>Notifications</a>
@@ -130,6 +135,7 @@ const NavBar: React.FC = () => {
             >
               <a>Profile</a>
             </Link>
+            <p onClick={logUserOut}>Log out</p>
           </ul>
         </nav>
       </div>
@@ -185,7 +191,8 @@ const NavBar: React.FC = () => {
           display: flex;
           flex-direction: column;
         }
-        #menuList a {
+        #menuList a,
+        p {
           font-size: 2rem;
           margin: 1rem 0;
         }

@@ -69,12 +69,6 @@ const FoodPost: NextPage<any> = props => {
   }
   return (
     <Layout title={title}>
-      <Head>
-        <script
-          type="text/javascript"
-          src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e8be1c17c437f17"
-        ></script>
-      </Head>
       <div className="postContainer">
         <div className="topInfo">
           <Link href="/user/[id]" as={`/user/${props.data.user._id}`}>
@@ -91,7 +85,6 @@ const FoodPost: NextPage<any> = props => {
         <h1>{title}</h1>
 
         <div className="topButtons">
-          {/* <div className="addthis_inline_share_toolbox_4ba8"></div> */}
           <li>
             <Icon
               type="heart"

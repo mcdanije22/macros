@@ -1,8 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { UserContext } from '../components/userContext'
+import { Button } from 'antd'
 
 const index: React.FC = () => {
+  const { user, setUser } = useContext(UserContext)
+  console.log(user)
+
+  useEffect(() => {
+    setUser(null)
+  }, [])
+
   return (
     <div id="landingPage">
       <Head>
@@ -18,14 +27,27 @@ const index: React.FC = () => {
         </div>
         <div id="landingButtons">
           <Link href="login">
-            <button type="submit" className="logButtons">
+            <Button type="primary" style={{ margin: '0 6rem 1.5rem 6rem' }}>
+              Log In
+            </Button>
+            {/* <button type="submit" className="logButtons">
               Login In
-            </button>
+            </button> */}
           </Link>
           <Link href="signup">
-            <button type="submit" className="logButtons">
+            <Button
+              type="primary"
+              style={{
+                margin: '0 6rem 1.5rem 6rem',
+                backgroundColor: '#504761',
+                border: 'none',
+              }}
+            >
+              Log In
+            </Button>
+            {/* <button type="submit" className="logButtons">
               Sign Up
-            </button>
+            </button> */}
           </Link>
         </div>
       </div>

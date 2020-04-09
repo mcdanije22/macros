@@ -12,7 +12,7 @@ const NewsFeed: NextPage<any> = props => {
   const router = useRouter()
   const { user, isUserLoggedIn } = useContext(UserContext)
   const [activeDisplay, setActiveDisplay] = useState<string>('feed')
-  const [randomPost, setRanomPost] = useState()
+  const [randomPost, setRanomPost] = useState(null)
   useEffect(() => {
     if (!isUserLoggedIn) {
       router.push('/')
@@ -62,7 +62,6 @@ const NewsFeed: NextPage<any> = props => {
       </ul>
       <div id="feedList">
         {props.data.map((post, i) => {
-          console.log(post)
           return (
             <PostCard
               key={i}
@@ -79,7 +78,7 @@ const NewsFeed: NextPage<any> = props => {
         })}
       </div>
       <div id="discoverPost">
-        {activeDisplay === 'discover' ? (
+        {activeDisplay === 'discover' && randomPost ? (
           <PostCard
             id={randomPost._id}
             userName={randomPost.user.userName}
@@ -91,7 +90,7 @@ const NewsFeed: NextPage<any> = props => {
             userId={randomPost.user._id}
           />
         ) : (
-          'test'
+          ''
         )}
       </div>
       <div

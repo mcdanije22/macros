@@ -19,12 +19,12 @@ const DesktopNav: React.FC = () => {
     <Menu>
       <Menu.Item>
         <Link href="/searchcategory/[category]" as={`/searchcategory/calories`}>
-          <a>Low Calories</a>
+          <a style={{ padding: '1rem 3rem' }}>Low Calories</a>
         </Link>
       </Menu.Item>
       <Menu.Item>
         <Link href="/searchcategory/[category]" as={`/searchcategory/protein`}>
-          <a>High Protein</a>
+          <a style={{ padding: '1rem 3rem' }}>High Protein</a>
         </Link>
       </Menu.Item>
       <Menu.Item>
@@ -32,12 +32,12 @@ const DesktopNav: React.FC = () => {
           href="/searchcategory/[category]"
           as={`/searchcategory/carbohydrate`}
         >
-          <a>Low Carbs</a>
+          <a style={{ padding: '1rem 3rem' }}>Low Carbs</a>
         </Link>
       </Menu.Item>
       <Menu.Item>
         <Link href="/searchcategory/[category]" as={`/searchcategory/fat`}>
-          <a>Low Fats</a>
+          <a style={{ padding: '1rem 3rem' }}>Low Fats</a>
         </Link>
       </Menu.Item>
     </Menu>
@@ -45,33 +45,33 @@ const DesktopNav: React.FC = () => {
 
   const userMenu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item style={{ padding: '1rem 3rem' }}>
         <Link href="/user/[id]" as={`/user/${user._id}`}>
           <a>Profile</a>
         </Link>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item style={{ padding: '1rem 3rem' }}>
         <p onClick={logUserOut}>Log out</p>
       </Menu.Item>
     </Menu>
   )
   const notificationsMenu = (
     <Menu>
-      {user.notifications.map((notification, i) => {
+      {user.notifications.slice(0, 8).map((notification, i) => {
         console.log(notification)
         return (
-          <Link href={notification.href} as={notification.as}>
-            <Menu.Item>
-              <p>{notification.message}</p>
-              <p style={{ color: '#707070' }}>
-                {notification.actionDate
-                  ? notification.actionDate.slice(0, 10)
-                  : ''}
-              </p>
-            </Menu.Item>
-          </Link>
+          <Menu.Item>
+            <Link href={notification.href} as={notification.as}>
+              <p style={{ padding: '.5rem 1rem' }}>{notification.message}</p>
+            </Link>
+          </Menu.Item>
         )
       })}
+      <Menu.Item>
+        <Link href="/notifications">
+          <p style={{ padding: '.5rem 1rem' }}>View more...</p>
+        </Link>
+      </Menu.Item>
     </Menu>
   )
 

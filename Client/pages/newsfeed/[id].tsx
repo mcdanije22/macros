@@ -6,7 +6,7 @@ import axios, { AxiosResponse } from 'axios'
 import Layout from '../../components/Layout'
 import FoodCard from '../../components/foodCard/FoodCard'
 import PostCard from '../../components/PostCard'
-import { Icon, Button } from 'antd'
+import { Icon, Button, Row, Col, Card } from 'antd'
 
 const NewsFeed: NextPage<any> = props => {
   const router = useRouter()
@@ -30,7 +30,6 @@ const NewsFeed: NextPage<any> = props => {
         )
         setRanomPost(response.data[0])
         setActiveDisplay('discover')
-        console.log(response.data[0])
       } catch (error) {
         console.log(error)
       }
@@ -42,69 +41,105 @@ const NewsFeed: NextPage<any> = props => {
       const response: AxiosResponse = await axios.get(`${url}/foodposts/random`)
       setRanomPost(response.data[0])
       setActiveDisplay('discover')
-      console.log(response.data[0])
     } catch (error) {
       console.log(error)
     }
   }
-  console.log(props.data)
   return (
     <Layout title="NewsFeed | Macros">
-      <ul id="feedToggle">
-        <li id="discover" onClick={getRandomPost}>
-          Discover
-          <hr />
-        </li>
-        <li id="feed" onClick={toggleDisplay}>
-          Feed
-          <hr />
-        </li>
-      </ul>
-      <div id="feedList">
-        {props.data.map((post, i) => {
-          return (
-            <PostCard
-              key={i}
-              id={post._id}
-              userName={post.user.userName}
-              title={post.title}
-              tags={post.tags}
-              macros={post.macros}
-              saves={post.saves}
-              foodPhoto={post.foodPhoto}
-              userId={post.user._id}
-            />
-          )
-        })}
+      <div id="newsfeedContainer">
+        <Row gutter={32}>
+          <Col span={8}>
+            <div id="userInfoContainer">
+              <Card
+                title="Default size card"
+                extra={<a href="#">More</a>}
+                style={{ width: 300, margin: '0 auto' }}
+              >
+                <p>Card content</p>
+                <p>Card content</p>
+                <p>Card content</p>
+              </Card>
+            </div>
+          </Col>
+          <Col span={8}>
+            <div id="feedContainer">
+              <ul id="feedToggle">
+                <li id="discover" onClick={getRandomPost}>
+                  Discover
+                  <hr />
+                </li>
+                <li id="feed" onClick={toggleDisplay}>
+                  Feed
+                  <hr />
+                </li>
+              </ul>
+              <div id="feedList">
+                {props.data.map((post, i) => {
+                  return (
+                    <PostCard
+                      key={i}
+                      id={post._id}
+                      userName={post.user.userName}
+                      title={post.title}
+                      tags={post.tags}
+                      macros={post.macros}
+                      saves={post.saves}
+                      foodPhoto={post.foodPhoto}
+                      userId={post.user._id}
+                    />
+                  )
+                })}
+              </div>
+              <div id="discoverPost">
+                {activeDisplay === 'discover' && randomPost ? (
+                  <PostCard
+                    id={randomPost._id}
+                    userName={randomPost.user.userName}
+                    title={randomPost.title}
+                    tags={randomPost.tags}
+                    macros={randomPost.macros}
+                    saves={randomPost.saves}
+                    foodPhoto={randomPost.foodPhoto}
+                    userId={randomPost.user._id}
+                  />
+                ) : (
+                  ''
+                )}
+              </div>
+              <div
+                style={{
+                  display: activeDisplay === 'discover' ? 'flex' : 'none',
+                  justifyContent: 'center',
+                }}
+              >
+                <Button type="primary" onClick={getRandomPostButton}>
+                  <Icon type="reload" />
+                  Find Something New
+                </Button>
+              </div>
+            </div>
+          </Col>
+          <Col span={8}>
+            <div id="followingListContainer">
+              <Card
+                title="Default size card"
+                extra={<a href="#">More</a>}
+                style={{ width: 300, margin: '0 auto' }}
+              >
+                <p>Card content</p>
+                <p>Card content</p>
+                <p>Card content</p>
+              </Card>
+            </div>
+          </Col>
+        </Row>
       </div>
-      <div id="discoverPost">
-        {activeDisplay === 'discover' && randomPost ? (
-          <PostCard
-            id={randomPost._id}
-            userName={randomPost.user.userName}
-            title={randomPost.title}
-            tags={randomPost.tags}
-            macros={randomPost.macros}
-            saves={randomPost.saves}
-            foodPhoto={randomPost.foodPhoto}
-            userId={randomPost.user._id}
-          />
-        ) : (
-          ''
-        )}
-      </div>
-      <div
-        style={{
-          display: activeDisplay === 'discover' ? 'flex' : 'none',
-          justifyContent: 'center',
-        }}
-      >
-        <Button type="primary" onClick={getRandomPostButton}>
-          <Icon type="reload" />
-          Find Something New
-        </Button>
-      </div>
+
       <style jsx>{`
+        @media only screen and (min-width: 992px) {
+        }
+
         #feedToggle {
           list-style: none;
           display: flex;

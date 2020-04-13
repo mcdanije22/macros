@@ -1,5 +1,6 @@
 import React from 'react'
 import Nav from './nav/Nav'
+import DesktopNav from './nav/desktopNav'
 import Head from 'next/head'
 import Footer from './Footer'
 
@@ -13,12 +14,14 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
       <Head>
         <title>{`${title} | Macros`}</title>
       </Head>
+      <DesktopNav />
       <Nav />
       <div id="pageContent">{children}</div>
       <Footer />
       <style jsx global>{`
         html,
         body {
+          cursor: pointer;
           height: 100%;
         }
         h1,

@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
 import Head from 'next/head'
 import Nav from '../../components/nav/Nav'
+import DesktopNav from '../../components/nav/desktopNav'
 import FoodCard from '../../components/foodCard/FoodCard'
 import { UserContext } from '../../components/userContext'
 import { message } from 'antd'
@@ -65,6 +66,7 @@ const UserPage: NextPage<any> = props => {
       </Head>
       <div id="topNav">
         <Nav />
+        <DesktopNav />
       </div>
       <div className="heroHeader">
         <img

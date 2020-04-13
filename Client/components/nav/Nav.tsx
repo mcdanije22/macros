@@ -140,6 +140,11 @@ const NavBar: React.FC = () => {
         </nav>
       </div>
       <style jsx>{`
+        @media only screen and (min-width: 992px) {
+          #navContainer {
+            display: none;
+          }
+        }
         * {
           color: white;
           z-index: 999;

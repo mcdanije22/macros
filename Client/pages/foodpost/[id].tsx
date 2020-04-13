@@ -225,7 +225,7 @@ const FoodPost: NextPage<any> = props => {
               </Button>
             </Modal>
             <button id="commentButton" onClick={toggle}>
-              Comment
+              Add Comment
             </button>
             {comments
               .sort((a, b) => (a.commentDate < b.commentDate ? 1 : -1))
@@ -296,7 +296,7 @@ const FoodPost: NextPage<any> = props => {
           background-color: transparent;
           border: 1px #4d93e8 solid;
           color: #4d93e8;
-          width: 6rem;
+          width: 8rem;
           padding: 0.5rem 1rem;
           margin-bottom: 2rem;
           border-radius: 0.5rem;

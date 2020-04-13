@@ -43,7 +43,7 @@ const index: React.FC = () => {
                 border: 'none',
               }}
             >
-              Log In
+              Sign Up
             </Button>
             {/* <button type="submit" className="logButtons">
               Sign Up

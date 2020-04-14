@@ -47,33 +47,51 @@ const NewsFeed: NextPage<any> = props => {
   }
   return (
     <Layout title="NewsFeed | Macros">
+      <ul id="feedToggle">
+        <li id="discover" onClick={getRandomPost}>
+          Discover
+          <hr />
+        </li>
+        <li id="feed" onClick={toggleDisplay}>
+          Feed
+          <hr />
+        </li>
+      </ul>
       <div id="newsfeedContainer">
-        <Row gutter={32}>
+        <Row>
           <Col span={8}>
             <div id="userInfoContainer">
-              <Card
-                title="Default size card"
-                extra={<a href="#">More</a>}
-                style={{ width: 300, margin: '0 auto' }}
-              >
-                <p>Card content</p>
-                <p>Card content</p>
-                <p>Card content</p>
+              <Card style={{ width: 300, margin: '0 auto' }}>
+                <div id="userInfo">
+                  <img
+                    src={`https://avatars.dicebear.com/v2/initials/${user.userName}.svg`}
+                    alt={`${user.userName}'s profile`}
+                  />
+                  <p>{user.userName}</p>
+                  <li></li>
+                  <li></li>
+                </div>
+                <ul className="statList">
+                  <li>
+                    <p>{user.followers.length}</p>
+                    <p>Followers</p>
+                  </li>
+                  <hr />
+                  <li>
+                    <p>{user.following.length}</p>
+                    <p>Following</p>
+                  </li>
+                  <hr />
+                  <li>
+                    <p>{user.posts.length}</p>
+                    <p>Post</p>
+                  </li>
+                </ul>
               </Card>
             </div>
           </Col>
-          <Col span={8}>
+          <Col sm={{ span: 24 }} lg={{ span: 8 }}>
             <div id="feedContainer">
-              <ul id="feedToggle">
-                <li id="discover" onClick={getRandomPost}>
-                  Discover
-                  <hr />
-                </li>
-                <li id="feed" onClick={toggleDisplay}>
-                  Feed
-                  <hr />
-                </li>
-              </ul>
               <div id="feedList">
                 {props.data.map((post, i) => {
                   return (
@@ -137,9 +155,43 @@ const NewsFeed: NextPage<any> = props => {
       </div>
 
       <style jsx>{`
-        @media only screen and (min-width: 992px) {
+        #userInfo {
+          display: flex;
+          justify-content: space-between;
         }
-
+        #userInfo p {
+          align-self: center;
+        }
+        #userInfo img {
+          border-radius: 2rem;
+          width: 50px;
+          border: 1px solid black;
+          margin-left: 1rem;
+          align-self: start;
+        }
+        .statList p {
+          margin: 0;
+        }
+        .statList {
+          display: flex;
+          justify-content: center;
+          list-style: none;
+        }
+        .statList li {
+          margin: 2rem 1rem;
+          text-align: center;
+        }
+        .statList hr {
+          height: 2.5rem;
+          align-self: center;
+          border: 0.5px #707070 solid;
+        }
+        #userInfoContainer {
+          display: none;
+        }
+        #followingListContainer {
+          display: none;
+        }
         #feedToggle {
           list-style: none;
           display: flex;
@@ -166,6 +218,17 @@ const NewsFeed: NextPage<any> = props => {
         }
         #feed {
           color: ${activeDisplay === 'feed' ? '#5fc349' : 'black'};
+        }
+        @media only screen and (min-width: 992px) {
+          #feedToggle {
+            justify-content: center;
+          }
+          #userInfoContainer {
+            display: block;
+          }
+          #followingListContainer {
+            display: block;
+          }
         }
       `}</style>
     </Layout>

@@ -29,7 +29,8 @@ router.get("/:userid", async (req: Request, res: Response) => {
     followerCount: 1
   })
     .populate("posts")
-    .populate("saves");
+    .populate("saves")
+    .populate("following");
   res.send(user);
 });
 

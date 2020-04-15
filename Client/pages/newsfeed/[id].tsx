@@ -6,7 +6,8 @@ import axios, { AxiosResponse } from 'axios'
 import Layout from '../../components/Layout'
 import FoodCard from '../../components/foodCard/FoodCard'
 import PostCard from '../../components/PostCard'
-import { Icon, Button, Row, Col, Card } from 'antd'
+import { Icon, Button, Row, Col, Card, List } from 'antd'
+import Link from 'next/link'
 
 const NewsFeed: NextPage<any> = props => {
   const router = useRouter()
@@ -45,6 +46,8 @@ const NewsFeed: NextPage<any> = props => {
       console.log(error)
     }
   }
+  console.log(user.following)
+
   return (
     <Layout title="NewsFeed | Macros">
       <ul id="feedToggle">
@@ -61,15 +64,24 @@ const NewsFeed: NextPage<any> = props => {
         <Row>
           <Col span={8}>
             <div id="userInfoContainer">
-              <Card style={{ width: 300, margin: '0 auto' }}>
-                <div id="userInfo">
-                  <img
-                    src={`https://avatars.dicebear.com/v2/initials/${user.userName}.svg`}
-                    alt={`${user.userName}'s profile`}
-                  />
-                  <p>{user.userName}</p>
-                  <li></li>
-                  <li></li>
+              <Card style={{ width: 400, borderRadius: '1rem' }}>
+                <div
+                  id="userInfo"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Link href="/user/[id]" as={`/user/${user._id}`}>
+                    <img
+                      src={`https://avatars.dicebear.com/v2/initials/${user.userName}.svg`}
+                      alt={`${user.userName}'s profile`}
+                      className="userImg"
+                    />
+                  </Link>
+                  <h2>{user.userName}</h2>
+                  {/* <li></li>
+                  <li></li> */}
                 </div>
                 <ul className="statList">
                   <li>
@@ -138,36 +150,52 @@ const NewsFeed: NextPage<any> = props => {
               </div>
             </div>
           </Col>
-          <Col span={8}>
+          {/* <Col span={8}>
             <div id="followingListContainer">
               <Card
-                title="Default size card"
-                extra={<a href="#">More</a>}
-                style={{ width: 300, margin: '0 auto' }}
+                style={{
+                  width: 400,
+                  borderRadius: '1rem',
+                }}
               >
-                <p>Card content</p>
-                <p>Card content</p>
-                <p>Card content</p>
+                <div className="followedUserInfo">
+                  <h1>Following</h1>
+                  {user.following.map((followedUser, i) => {
+                    return (
+                      <div key={i} className="followedUser">
+                        <Link
+                          href="/user/[id]"
+                          as={`/user/${followedUser._id}`}
+                        >
+                          <img
+                            src={`https://avatars.dicebear.com/v2/initials/${followedUser.userName}.svg`}
+                            alt={`${followedUser.userName}'s profile`}
+                            className="userImg"
+                          />
+                        </Link>
+                        <h2>{followedUser.userName}</h2>
+                      </div>
+                    )
+                  })}
+                </div>
               </Card>
             </div>
-          </Col>
+          </Col> */}
         </Row>
       </div>
-
       <style jsx>{`
+        #userInfoContainer {
+          display: none;
+        }
+        #followingListContainer {
+          display: none;
+        }
         #userInfo {
-          display: flex;
-          justify-content: space-between;
         }
-        #userInfo p {
-          align-self: center;
-        }
-        #userInfo img {
+        .userImg {
           border-radius: 2rem;
           width: 50px;
           border: 1px solid black;
-          margin-left: 1rem;
-          align-self: start;
         }
         .statList p {
           margin: 0;
@@ -186,11 +214,17 @@ const NewsFeed: NextPage<any> = props => {
           align-self: center;
           border: 0.5px #707070 solid;
         }
-        #userInfoContainer {
-          display: none;
+
+        .followedUser {
+          display: flex;
+          margin-top: 2rem;
         }
-        #followingListContainer {
-          display: none;
+        .followedUser img {
+          margin: 0;
+          margin-right: 2rem;
+        }
+        .followedUser h2 {
+          align-self: center;
         }
         #feedToggle {
           list-style: none;
@@ -224,7 +258,7 @@ const NewsFeed: NextPage<any> = props => {
             justify-content: center;
           }
           #userInfoContainer {
-            display: block;
+            display: flex;
           }
           #followingListContainer {
             display: block;

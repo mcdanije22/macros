@@ -58,9 +58,8 @@ const DesktopNav: React.FC = () => {
   const notificationsMenu = (
     <Menu>
       {user.notifications.slice(0, 8).map((notification, i) => {
-        console.log(notification)
         return (
-          <Menu.Item>
+          <Menu.Item key={i}>
             <Link href={notification.href} as={notification.as}>
               <p style={{ padding: '.5rem 1rem' }}>{notification.message}</p>
             </Link>
@@ -162,7 +161,6 @@ const DesktopNav: React.FC = () => {
           position: fixed;
           width: 100%;
           height: 5rem;
-
           display: flex;
           justify-content: space-between;
         }

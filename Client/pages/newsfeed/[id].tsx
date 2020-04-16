@@ -6,7 +6,7 @@ import axios, { AxiosResponse } from 'axios'
 import Layout from '../../components/Layout'
 import FoodCard from '../../components/foodCard/FoodCard'
 import PostCard from '../../components/PostCard'
-import { Icon, Button, Row, Col, Card, List } from 'antd'
+import { Icon, Button, Row, Col, Card } from 'antd'
 import Link from 'next/link'
 
 const NewsFeed: NextPage<any> = props => {
@@ -64,14 +64,15 @@ const NewsFeed: NextPage<any> = props => {
         <Row>
           <Col span={8}>
             <div id="userInfoContainer">
-              <Card style={{ width: 400, borderRadius: '1rem' }}>
-                <div
-                  id="userInfo"
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
+              <Card
+                style={{
+                  width: 400,
+                  borderRadius: '1rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <div id="userInfo">
                   <Link href="/user/[id]" as={`/user/${user._id}`}>
                     <img
                       src={`https://avatars.dicebear.com/v2/initials/${user.userName}.svg`}
@@ -191,11 +192,19 @@ const NewsFeed: NextPage<any> = props => {
           display: none;
         }
         #userInfo {
+          display: flex;
+        }
+        #userInfo h2 {
+          text-align: center;
+          align-self: center;
+          margin-left: 1rem;
         }
         .userImg {
-          border-radius: 2rem;
-          width: 50px;
+          border-radius: 150px;
+          width: 150px;
           border: 1px solid black;
+          margin-bottom: 1rem;
+          text-align: center;
         }
         .statList p {
           margin: 0;
@@ -214,7 +223,6 @@ const NewsFeed: NextPage<any> = props => {
           align-self: center;
           border: 0.5px #707070 solid;
         }
-
         .followedUser {
           display: flex;
           margin-top: 2rem;

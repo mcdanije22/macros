@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
 import { UserContext } from '../components/userContext'
 import Layout from '../components/Layout'
-import { Modal, Button, Icon, message } from 'antd'
+import { Modal, Button, Icon, message, Row, Col } from 'antd'
 import axios, { AxiosResponse } from 'axios'
 
 const Notifications = () => {
@@ -15,57 +15,64 @@ const Notifications = () => {
   return (
     <Layout>
       <div id="notficationsPage">
-        <ul id="notficationsList">
-          {notificationsList.map((notification, i) => {
-            return (
-              <li key={i}>
-                <div className="notficationCard">
-                  <Link href={notification.href} as={notification.as}>
-                    <div className="orderClass">
-                      <div className="notificationLeftSide">
-                        <img
-                          src={`https://avatars.dicebear.com/v2/initials/${notification.actionUserName}.svg`}
-                          alt={`${notification.actionUserName}'s profile`}
-                        />
-                      </div>
-                      <div className="notificationRightSide">
-                        <p>{notification.message}</p>
-                        <p style={{ color: '#707070' }}>
-                          {notification.actionDate
-                            ? notification.actionDate.slice(0, 10)
-                            : ''}
-                        </p>
-                      </div>
+        <Row>
+          <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
+
+          <Col sm={{ span: 24 }} lg={{ span: 8 }}>
+            <ul id="notficationsList">
+              {notificationsList.map((notification, i) => {
+                return (
+                  <li key={i}>
+                    <div className="notficationCard">
+                      <Link href={notification.href} as={notification.as}>
+                        <div className="orderClass">
+                          <div className="notificationLeftSide">
+                            <img
+                              src={`https://avatars.dicebear.com/v2/initials/${notification.actionUserName}.svg`}
+                              alt={`${notification.actionUserName}'s profile`}
+                            />
+                          </div>
+                          <div className="notificationRightSide">
+                            <p>{notification.message}</p>
+                            <p style={{ color: '#707070' }}>
+                              {notification.actionDate
+                                ? notification.actionDate.slice(0, 10)
+                                : ''}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                      <Icon
+                        type="close"
+                        onClick={async () => {
+                          try {
+                            const newNotificationsList = await notificationsList.filter(
+                              item => item._id !== notification._id
+                            )
+                            axios.post(`${url}/users/deletenotification`, {
+                              // userId: user._id,
+                              // notificationId: notification._id,
+                              newNotificationsList,
+                              userId: user._id,
+                            })
+                            setnotificationsList(newNotificationsList)
+                            await setUser({
+                              ...user,
+                              notifications: newNotificationsList,
+                            })
+                          } catch (error) {
+                            console.log(error)
+                          }
+                        }}
+                      />
                     </div>
-                  </Link>
-                  <Icon
-                    type="close"
-                    onClick={async () => {
-                      try {
-                        const newNotificationsList = await notificationsList.filter(
-                          item => item._id !== notification._id
-                        )
-                        axios.post(`${url}/users/deletenotification`, {
-                          // userId: user._id,
-                          // notificationId: notification._id,
-                          newNotificationsList,
-                          userId: user._id,
-                        })
-                        setnotificationsList(newNotificationsList)
-                        await setUser({
-                          ...user,
-                          notifications: newNotificationsList,
-                        })
-                      } catch (error) {
-                        console.log(error)
-                      }
-                    }}
-                  />
-                </div>
-              </li>
-            )
-          })}
-        </ul>
+                  </li>
+                )
+              })}
+            </ul>
+          </Col>
+          <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
+        </Row>
       </div>
       <style jsx>{`
         .notficationCard {
@@ -75,7 +82,7 @@ const Notifications = () => {
           border: 1px solid #e7e7e9;
           padding: 1rem;
           border-radius: 6px;
-          box-shadow: 0 2px 14px #aaaaaa;
+          box-shadow: 0 2px 4px #aaaaaa;
           min-height: 6rem;
         }
         .orderClass {

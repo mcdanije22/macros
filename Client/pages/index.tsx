@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { UserContext } from '../components/userContext'
-import { Button } from 'antd'
+import { Button, Row, Col } from 'antd'
 
 const index: React.FC = () => {
   const { user, setUser } = useContext(UserContext)
@@ -18,38 +18,37 @@ const index: React.FC = () => {
         <title>Macros</title>
       </Head>
       <div id="landingSection">
-        <div id="landingHeader">
-          <h1 style={{ color: 'white' }}>Welcome to Macros</h1>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt
-          </p>
-        </div>
-        <div id="landingButtons">
-          <Link href="login">
-            <Button type="primary" style={{ margin: '0 6rem 1.5rem 6rem' }}>
-              Log In
-            </Button>
-            {/* <button type="submit" className="logButtons">
-              Login In
-            </button> */}
-          </Link>
-          <Link href="signup">
-            <Button
-              type="primary"
-              style={{
-                margin: '0 6rem 1.5rem 6rem',
-                backgroundColor: '#504761',
-                border: 'none',
-              }}
-            >
-              Sign Up
-            </Button>
-            {/* <button type="submit" className="logButtons">
-              Sign Up
-            </button> */}
-          </Link>
-        </div>
+        <Row>
+          <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
+          <Col sm={{ span: 24 }} lg={{ span: 8 }}>
+            <div id="landingHeader">
+              <h1 style={{ color: 'white' }}>Welcome to Macros</h1>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt
+              </p>
+            </div>
+            <div id="landingButtons">
+              <Link href="login">
+                <Button type="primary" style={{ margin: '0 6rem 1.5rem 6rem' }}>
+                  Log In
+                </Button>
+              </Link>
+              <Link href="signup">
+                <Button
+                  type="primary"
+                  style={{
+                    margin: '0 6rem 1.5rem 6rem',
+                    backgroundColor: '#504761',
+                    border: 'none',
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
+          </Col>
+        </Row>
       </div>
       <style jsx>{`
         #landingPage {

@@ -21,7 +21,6 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
       <style jsx global>{`
         html,
         body {
-          cursor: pointer;
           height: 100%;
         }
         h1,
@@ -31,6 +30,11 @@ const Layout: React.FC<Props> = ({ children, title = 'Macros' }) => {
         h5 {
           font-weight: lighter;
           font-family: 'Darker Grotesque', sans-serif;
+        }
+        button,
+        img,
+        li {
+          cursor: pointer;
         }
         #pageContent {
           padding: 6rem 1rem;

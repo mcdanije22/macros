@@ -3,7 +3,7 @@ import Layout from '../../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage, NextPageContext } from 'next'
 import Link from 'next/link'
-import { Icon, message, Button, Modal } from 'antd'
+import { Icon, message, Button, Modal, Row, Col } from 'antd'
 import { UserContext } from '../../components/userContext'
 import Head from 'next/head'
 import Router from 'next/router'
@@ -70,198 +70,209 @@ const FoodPost: NextPage<any> = props => {
   return (
     <Layout title={title}>
       <div className="postContainer">
-        <div className="topInfo">
-          <Link href="/user/[id]" as={`/user/${props.data.user._id}`}>
-            <div className="postArthurImg">
-              <img
-                src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
-                alt={`${userName}'s profile`}
-              />
-              <h3>{userName}</h3>
-            </div>
-          </Link>
-          <h5>{saves} Saves</h5>
-        </div>
-        <h1>{title}</h1>
-
-        <div className="topButtons">
-          <li>
-            <Icon
-              type="heart"
-              theme="twoTone"
-              twoToneColor="#eb2f96"
-              onClick={userLikePost}
-            />
-          </li>
-          <li>
-            <a
-              href={`https://twitter.com/share?url=${url}${Router.asPath}`}
-              target="_blank"
-            >
-              <Icon type="twitter" style={{ color: '#4B9CE8' }} />
-            </a>
-          </li>
-          <li>
-            <a
-              href={`http://reddit.com/submit?url=${url}${Router.asPath}`}
-              target="_blank"
-            >
-              <Icon type="reddit" style={{ color: '#FF4500' }} />
-            </a>
-          </li>
-          <li>
-            <a
-              href={`http://www.facebook.com/sharer.php?u=${url}${Router.asPath}`}
-              target="_blank"
-            >
-              <Icon type="facebook" style={{ color: '#4A66AD' }} />
-            </a>
-          </li>
-          <li>
-            <a href={`mailto:?Subject=${title}&Body=${url}${Router.asPath}`}>
-              <Icon type="mail" theme="twoTone" twoToneColor="#FFAE42" />
-            </a>
-          </li>
-        </div>
-        <div className="heroImage">
-          <img src={foodPhoto} alt={`${title} hero`} />
-        </div>
-        <div className="tags">
-          {tags.map((tag, i) => {
-            return (
-              <Link href="/searchtags/[tag]" as={`/searchtags/${tag}`} key={i}>
-                <Button
-                  type="primary"
-                  ghost
-                  style={{ margin: '1rem .5rem 0 0', width: '6rem' }}
-                >
-                  {tag}
-                </Button>
+        <Row>
+          <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
+          <Col sm={{ span: 24 }} lg={{ span: 8 }}>
+            <div className="topInfo">
+              <Link href="/user/[id]" as={`/user/${props.data.user._id}`}>
+                <div className="postArthurImg">
+                  <img
+                    src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
+                    alt={`${userName}'s profile`}
+                  />
+                  <h3>{userName}</h3>
+                </div>
               </Link>
-            )
-          })}
-        </div>
-        <div className="stats">
-          <h1>
-            {macros.protein}p {macros.carbohydrates}c {macros.fat}f
-          </h1>
-          <h1>{macros.calories} Calories</h1>
-        </div>
-        <nav className="postNav">
-          <ul>
-            <li id="overview" onClick={changeView}>
-              Overview
-              <hr />
-            </li>
-            <li id="ingredients" onClick={changeView}>
-              Ingredients
-              <hr />
-            </li>
-            <li id="directions" onClick={changeView}>
-              Directions
-              <hr />
-            </li>
-            <li id="comments" onClick={changeView}>
-              Comments
-              <hr />
-            </li>
-          </ul>
-        </nav>
-        <div className="mainInfo">
-          <div className="overview">
-            <h1>Summary</h1>
-            <p>{summary}</p>
-          </div>
-          <div className="ingredients">
-            <h1>Ingredients</h1>
-            {ingredients.map((ingredient, i) => {
-              return (
-                <p key={i}>
-                  {ingredient.servingSize}
-                  {ingredient.servingSizeUnit} {ingredient.description}
-                </p>
-              )
-            })}
-          </div>
-          <div className="directions">
-            <h1>Directions</h1>
-            <ul>
-              {directions.map((direction, i) => {
+              <h5>{saves} Saves</h5>
+            </div>
+            <h1>{title}</h1>
+            <div className="topButtons">
+              <li>
+                <Icon
+                  type="heart"
+                  theme="twoTone"
+                  twoToneColor="#eb2f96"
+                  onClick={userLikePost}
+                />
+              </li>
+              <li>
+                <a
+                  href={`https://twitter.com/share?url=${url}${Router.asPath}`}
+                  target="_blank"
+                >
+                  <Icon type="twitter" style={{ color: '#4B9CE8' }} />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`http://reddit.com/submit?url=${url}${Router.asPath}`}
+                  target="_blank"
+                >
+                  <Icon type="reddit" style={{ color: '#FF4500' }} />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`http://www.facebook.com/sharer.php?u=${url}${Router.asPath}`}
+                  target="_blank"
+                >
+                  <Icon type="facebook" style={{ color: '#4A66AD' }} />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:?Subject=${title}&Body=${url}${Router.asPath}`}
+                >
+                  <Icon type="mail" theme="twoTone" twoToneColor="#FFAE42" />
+                </a>
+              </li>
+            </div>
+            <div className="heroImage">
+              <img src={foodPhoto} alt={`${title} hero`} />
+            </div>
+            <div className="tags">
+              {tags.map((tag, i) => {
                 return (
-                  <li key={i} className="directionList">
-                    <h1>{i + 1}.</h1>
-                    <p>{direction}</p>
-                  </li>
+                  <Link
+                    href="/searchtags/[tag]"
+                    as={`/searchtags/${tag}`}
+                    key={i}
+                  >
+                    <Button
+                      type="primary"
+                      ghost
+                      style={{ margin: '1rem .5rem 0 0', width: '6rem' }}
+                    >
+                      {tag}
+                    </Button>
+                  </Link>
                 )
               })}
-            </ul>
-          </div>
-          <div className="comments">
-            <h1>Comments</h1>
-            <h3 className="noComments">No Comments...</h3>
-            <Modal
-              title="Add comment"
-              visible={modalStatus}
-              footer={null}
-              onCancel={toggle}
-            >
-              <textarea
-                name="comment"
-                ref={commentInputRef}
-                style={{ width: '100%', height: '10rem', padding: '1rem' }}
-                onKeyUp={e => {
-                  if (e.key === 'Enter') {
-                    addComment()
-                  }
-                }}
-              />
-              <Button
-                type="primary"
-                ghost
-                style={{ marginTop: '1rem' }}
-                onClick={addComment}
-              >
-                Submit
-              </Button>
-            </Modal>
-            <button id="commentButton" onClick={toggle}>
-              Add Comment
-            </button>
-            {comments
-              .sort((a, b) => (a.commentDate < b.commentDate ? 1 : -1))
-              .map((comment, i) => {
-                console.log(comment)
-                return (
-                  <div className="commentContainer" key={i}>
-                    <div className="comment">
-                      <div className="commentLeftSide">
-                        <div className="commentUserInfo">
-                          <Link
-                            href="/user/[id]"
-                            as={`/user/${comment.user._id}`}
-                          >
-                            <img
-                              src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName}.svg`}
-                              alt={`${comment.user.userName} Profile`}
-                            />
-                          </Link>
-                        </div>
-                        <div className="commentMain">
-                          <h3>{comment.user.userName}</h3>
-                          <p>{comment.comment}</p>
+            </div>
+            <div className="stats">
+              <h1>
+                {macros.protein}p {macros.carbohydrates}c {macros.fat}f
+              </h1>
+              <h1>{macros.calories} Calories</h1>
+            </div>
+            <nav className="postNav">
+              <ul>
+                <li id="overview" onClick={changeView}>
+                  Overview
+                  <hr />
+                </li>
+                <li id="ingredients" onClick={changeView}>
+                  Ingredients
+                  <hr />
+                </li>
+                <li id="directions" onClick={changeView}>
+                  Directions
+                  <hr />
+                </li>
+                <li id="comments" onClick={changeView}>
+                  Comments
+                  <hr />
+                </li>
+              </ul>
+            </nav>
+            <div className="mainInfo">
+              <div className="overview">
+                <h1>Summary</h1>
+                <p>{summary}</p>
+              </div>
+              <div className="ingredients">
+                <h1>Ingredients</h1>
+                {ingredients.map((ingredient, i) => {
+                  return (
+                    <p key={i}>
+                      {ingredient.servingSize}
+                      {ingredient.servingSizeUnit} {ingredient.description}
+                    </p>
+                  )
+                })}
+              </div>
+              <div className="directions">
+                <h1>Directions</h1>
+                <ul>
+                  {directions.map((direction, i) => {
+                    return (
+                      <li key={i} className="directionList">
+                        <h1>{i + 1}.</h1>
+                        <p>{direction}</p>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+              <div className="comments">
+                <h1>Comments</h1>
+                <h3 className="noComments">No Comments...</h3>
+                <Modal
+                  title="Add comment"
+                  visible={modalStatus}
+                  footer={null}
+                  onCancel={toggle}
+                >
+                  <textarea
+                    name="comment"
+                    ref={commentInputRef}
+                    style={{ width: '100%', height: '10rem', padding: '1rem' }}
+                    onKeyUp={e => {
+                      if (e.key === 'Enter') {
+                        addComment()
+                      }
+                    }}
+                  />
+                  <Button
+                    type="primary"
+                    ghost
+                    style={{ marginTop: '1rem' }}
+                    onClick={addComment}
+                  >
+                    Submit
+                  </Button>
+                </Modal>
+                <button id="commentButton" onClick={toggle}>
+                  Add Comment
+                </button>
+                {comments
+                  .sort((a, b) => (a.commentDate < b.commentDate ? 1 : -1))
+                  .map((comment, i) => {
+                    console.log(comment)
+                    return (
+                      <div className="commentContainer" key={i}>
+                        <div className="comment">
+                          <div className="commentLeftSide">
+                            <div className="commentUserInfo">
+                              <Link
+                                href="/user/[id]"
+                                as={`/user/${comment.user._id}`}
+                              >
+                                <img
+                                  src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName}.svg`}
+                                  alt={`${comment.user.userName} Profile`}
+                                />
+                              </Link>
+                            </div>
+                            <div className="commentMain">
+                              <h3>{comment.user.userName}</h3>
+                              <p>{comment.comment}</p>
+                            </div>
+                          </div>
+                          <div className="commentRightSide">
+                            <div className="commentDate">
+                              <p>{comment.commentDate.slice(0, 10)}</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="commentRightSide">
-                        <div className="commentDate">
-                          <p>{comment.commentDate.slice(0, 10)}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-          </div>
-        </div>
+                    )
+                  })}
+              </div>
+            </div>
+          </Col>
+          <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
+        </Row>
       </div>
       <style jsx>{`
         .postContainer p,

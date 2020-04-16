@@ -18,25 +18,31 @@ const DesktopNav: React.FC = () => {
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link href="/searchcategory/[category]" as={`/searchcategory/calories`}>
+        <Link
+          href="/searchcategory/[category]"
+          as={`/searchcategory/low calories`}
+        >
           <a style={{ padding: '1rem 3rem' }}>Low Calories</a>
         </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link href="/searchcategory/[category]" as={`/searchcategory/protein`}>
+        <Link
+          href="/searchcategory/[category]"
+          as={`/searchcategory/high protein`}
+        >
           <a style={{ padding: '1rem 3rem' }}>High Protein</a>
         </Link>
       </Menu.Item>
       <Menu.Item>
         <Link
           href="/searchcategory/[category]"
-          as={`/searchcategory/carbohydrate`}
+          as={`/searchcategory/low carbohydrate`}
         >
           <a style={{ padding: '1rem 3rem' }}>Low Carbs</a>
         </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link href="/searchcategory/[category]" as={`/searchcategory/fat`}>
+        <Link href="/searchcategory/[category]" as={`/searchcategory/low fat`}>
           <a style={{ padding: '1rem 3rem' }}>Low Fats</a>
         </Link>
       </Menu.Item>

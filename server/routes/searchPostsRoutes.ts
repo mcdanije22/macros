@@ -28,7 +28,7 @@ router.get("/tags/:tag", async (req: Request, res: Response) => {
 router.get("/category/:search", async (req: Request, res: Response) => {
   const { search } = req.params;
   switch (search) {
-    case "calories":
+    case "low calories":
       const caloriesResult = await FoodPostModel.find({
         "macros.calories": {
           $lt: 500
@@ -36,7 +36,7 @@ router.get("/category/:search", async (req: Request, res: Response) => {
       });
       res.send(caloriesResult);
       break;
-    case "protein":
+    case "high protein":
       const proteinResult = await FoodPostModel.find({
         "macros.protein": {
           $gt: 30
@@ -44,7 +44,7 @@ router.get("/category/:search", async (req: Request, res: Response) => {
       });
       res.send(proteinResult);
       break;
-    case "carbohydrate":
+    case "low carbohydrate":
       const carbResult = await FoodPostModel.find({
         "macros.carbohydrates": {
           $lt: 20
@@ -52,7 +52,7 @@ router.get("/category/:search", async (req: Request, res: Response) => {
       });
       res.send(carbResult);
       break;
-    case "fat":
+    case "low fat":
       const fatResult = await FoodPostModel.find({
         "macros.fat": {
           $lt: 5

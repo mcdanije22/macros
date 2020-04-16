@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { Icon, Input, message } from 'antd'
+import { Icon, Input, message, Menu } from 'antd'
 import { UserContext } from '../../components/userContext'
 
 const NavBar: React.FC = () => {
+  const { SubMenu } = Menu
   const { user, isUserLoggedIn } = useContext(UserContext)
   const [navBarStatus, isOpen] = useState<Boolean>(false)
   const [searchBarStatus, isActive] = useState<Boolean>(false)
@@ -107,23 +108,26 @@ const NavBar: React.FC = () => {
             </Link>
             <Link
               href="/searchcategory/[category]"
-              as={`/searchcategory/calories`}
+              as={`/searchcategory/low calories`}
             >
               <a onClick={toggleMenu}>Low Calories</a>
             </Link>
             <Link
               href="/searchcategory/[category]"
-              as={`/searchcategory/protein`}
+              as={`/searchcategory/high protein`}
             >
               <a onClick={toggleMenu}>High Protein</a>
             </Link>
             <Link
               href="/searchcategory/[category]"
-              as={`/searchcategory/carbohydrate`}
+              as={`/searchcategory/low carbohydrate`}
             >
               <a onClick={toggleMenu}>Low Carbs</a>
             </Link>
-            <Link href="/searchcategory/[category]" as={`/searchcategory/fat`}>
+            <Link
+              href="/searchcategory/[category]"
+              as={`/searchcategory/low fat`}
+            >
               <a onClick={toggleMenu}>Low Fats</a>
             </Link>
             <Link href="/notifications">

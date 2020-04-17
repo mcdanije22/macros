@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Input, Button, message } from 'antd'
+import { Input, Button, message, Row, Col } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -64,61 +64,66 @@ const signUp = () => {
       </Head>
       <h1>Create an account</h1>
       <form id="signUpForm">
-        <Input
-          name="email"
-          placeholder="Email"
-          allowClear
-          style={{ margin: '1rem 0' }}
-          onChange={handleInputChange}
-          onKeyUp={e => {
-            if (e.key === 'Enter') {
-              submitRegistration()
-            }
-          }}
-        />
-        <Input
-          name="userName"
-          placeholder="Username"
-          allowClear
-          style={{ margin: '1rem 0' }}
-          onChange={handleInputChange}
-          onKeyUp={e => {
-            if (e.key === 'Enter') {
-              submitRegistration()
-            }
-          }}
-        />
-        <Input
-          name="fullName"
-          placeholder="Full Name"
-          allowClear
-          style={{ margin: '1rem 0' }}
-          onChange={handleInputChange}
-          onKeyUp={e => {
-            if (e.key === 'Enter') {
-              submitRegistration()
-            }
-          }}
-        />
-        <Input
-          name="password"
-          placeholder="Password"
-          allowClear
-          style={{ margin: '1rem 0' }}
-          onChange={handleInputChange}
-          onKeyUp={e => {
-            if (e.key === 'Enter') {
-              submitRegistration()
-            }
-          }}
-        />
-        <Button
-          type="primary"
-          style={{ marginTop: '1rem' }}
-          onClick={submitRegistration}
-        >
-          Sign up
-        </Button>
+        <Row>
+          <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
+          <Col sm={{ span: 24 }} lg={{ span: 8 }}>
+            <Input
+              name="email"
+              placeholder="Email"
+              allowClear
+              style={{ margin: '1rem 0' }}
+              onChange={handleInputChange}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  submitRegistration()
+                }
+              }}
+            />
+            <Input
+              name="userName"
+              placeholder="Username"
+              allowClear
+              style={{ margin: '1rem 0' }}
+              onChange={handleInputChange}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  submitRegistration()
+                }
+              }}
+            />
+            <Input
+              name="fullName"
+              placeholder="Full Name"
+              allowClear
+              style={{ margin: '1rem 0' }}
+              onChange={handleInputChange}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  submitRegistration()
+                }
+              }}
+            />
+            <Input
+              name="password"
+              placeholder="Password"
+              allowClear
+              style={{ margin: '1rem 0' }}
+              onChange={handleInputChange}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  submitRegistration()
+                }
+              }}
+            />
+            <Button
+              type="primary"
+              style={{ marginTop: '1rem', width: '100%' }}
+              onClick={submitRegistration}
+            >
+              Sign up
+            </Button>
+          </Col>
+        </Row>
       </form>
       <div id="logInOption">
         <h3>Already have an account?</h3>

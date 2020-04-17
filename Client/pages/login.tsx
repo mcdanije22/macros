@@ -97,7 +97,7 @@ const logIn = () => {
             ) : (
               <Button
                 type="primary"
-                style={{ marginTop: '1rem' }}
+                style={{ marginTop: '1rem', width: '100%' }}
                 onClick={submitLogIn}
               >
                 Log in

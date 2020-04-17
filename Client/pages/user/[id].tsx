@@ -114,50 +114,52 @@ const UserPage: NextPage<any> = props => {
             </li>
           </ul>
         </div>
-        <nav className="profileNav">
-          <ul className="navList">
-            <li id="myPost" onClick={toggleNav}>
-              My Post
-              <hr id="myPost" />
-            </li>
-            <li id="saves" onClick={toggleNav}>
-              Saves
-              <hr id="myPost" />
-            </li>
-          </ul>
-        </nav>
-        <div className="galleryList">
-          <div className="postList">
-            {posts.map((post, i) => {
-              return (
-                <FoodCard
-                  key={i}
-                  id={post._id}
-                  userName={post.user.userName}
-                  title={post.title}
-                  tags={post.tags}
-                  macros={post.macros}
-                  saves={post.saves}
-                  foodPhoto={post.foodPhoto}
-                />
-              )
-            })}
-          </div>
-          <div className="saveList">
-            {saves.map((post, i) => {
-              return (
-                <FoodCard
-                  key={i}
-                  id={post._id}
-                  userName={post.user.userName}
-                  title={post.title}
-                  tags={post.tags}
-                  macros={post.macros}
-                  saves={post.saves}
-                  foodPhoto={post.foodPhoto}
-                />
-              )
-            })}
+        <div>
+          <nav className="profileNav">
+            <ul className="navList">
+              <li id="myPost" onClick={toggleNav}>
+                My Post
+                <hr id="myPost" />
+              </li>
+              <li id="saves" onClick={toggleNav}>
+                Saves
+                <hr id="myPost" />
+              </li>
+            </ul>
+          </nav>
+          <div className="galleryList">
+            <div className="postList">
+              {posts.map((post, i) => {
+                return (
+                  <FoodCard
+                    key={i}
+                    id={post._id}
+                    userName={post.user.userName}
+                    title={post.title}
+                    tags={post.tags}
+                    macros={post.macros}
+                    saves={post.saves}
+                    foodPhoto={post.foodPhoto}
+                  />
+                )
+              })}
+            </div>
+            <div className="saveList">
+              {saves.map((post, i) => {
+                return (
+                  <FoodCard
+                    key={i}
+                    id={post._id}
+                    userName={post.user.userName}
+                    title={post.title}
+                    tags={post.tags}
+                    macros={post.macros}
+                    saves={post.saves}
+                    foodPhoto={post.foodPhoto}
+                  />
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -233,6 +235,12 @@ const UserPage: NextPage<any> = props => {
         }
         .navList li hr {
           margin: 0 1rem 0 0;
+        }
+        @media only screen and (min-width: 992px) {
+          .postList,
+          .saveList {
+            display: flex;
+          }
         }
         #myPost {
           color: ${activeNav === 'myPost' ? ' #5fc349' : '#707070'};

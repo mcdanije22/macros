@@ -65,7 +65,6 @@ const NavBar: React.FC = () => {
                 <Icon type="search" />
               </button>
               <Search
-                id="test"
                 ref={searchInputRef}
                 placeholder="Search by title..."
                 onSearch={value => {

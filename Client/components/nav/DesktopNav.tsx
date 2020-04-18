@@ -132,13 +132,18 @@ const DesktopNav: React.FC = () => {
         </li>
       </ul>
       <ul id="navBarRight">
+        <li style={{ alignSelf: 'center', marginRight: '.5rem' }}>
+          <Link href="/createpost">
+            <button type="button" className="navIcon">
+              <Icon type="plus" />
+            </button>
+          </Link>
+        </li>
         <Dropdown overlay={notificationsMenu}>
           <li style={{ alignSelf: 'center' }}>
             <Icon type="bell" />
           </li>
         </Dropdown>
-        {/* <Link href="/user/[id]" as={`/user/${user._id}`}> */}
-
         <li>
           <Dropdown overlay={userMenu}>
             <div id="userButton">
@@ -148,16 +153,10 @@ const DesktopNav: React.FC = () => {
               />
             </div>
           </Dropdown>
-          {/* </Link> */}
         </li>
       </ul>
 
       <style jsx>{`
-        @media only screen and (max-width: 991px) {
-          #navContainer {
-            display: none;
-          }
-        }
         * {
           color: white;
           z-index: 999;
@@ -173,7 +172,11 @@ const DesktopNav: React.FC = () => {
         #navContainer a {
           text-decoration: none;
         }
-
+        .navIcon {
+          border: none;
+          background-color: #504761;
+          font-size: 1.5rem;
+        }
         #navBarleft {
           display: flex;
           justify-content: space-between;
@@ -197,6 +200,11 @@ const DesktopNav: React.FC = () => {
           border: 1px solid black;
           margin-left: 1rem;
           align-self: start;
+        }
+        @media only screen and (max-width: 991px) {
+          #navContainer {
+            display: none;
+          }
         }
       `}</style>
     </nav>

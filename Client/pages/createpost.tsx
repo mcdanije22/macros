@@ -2,7 +2,16 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import Layout from '../components/Layout'
 import axios, { AxiosResponse } from 'axios'
 import { UserContext } from '../components/userContext'
-import { Modal, Button, Icon, message, Checkbox, Pagination } from 'antd'
+import {
+  Modal,
+  Button,
+  Icon,
+  message,
+  Checkbox,
+  Pagination,
+  Col,
+  Row,
+} from 'antd'
 import Router from 'next/router'
 import { useRouter } from 'next/router'
 import firebase from 'firebase'
@@ -392,129 +401,140 @@ const CreatePost: React.FC = () => {
         />
       </Modal>
       <div id="createPage">
-        <div id="topInfo">
-          <Icon
-            type="left"
-            style={{ alignSelf: 'center', marginRight: '.2rem' }}
-          />
-          <h3 onClick={() => Router.back()}>Go back</h3>
-        </div>
-        <h1>Create New Post</h1>
-        <form className="newPost">
-          <label>Title</label>
-          <input type="text" name="title" onChange={handleInputChange} />
-          <label>Cover Photo</label>
-          <div className="imageUpload">
-            <img src={fileImageUrl || draftPost.foodPhoto} />
-            <input
-              type="file"
-              name="file"
-              ref={fileRef}
-              style={{
-                display:
-                  image !== null && draftPost.foodPhoto !== null ? 'none' : '',
-              }}
-              onChange={getImageFile}
-            ></input>
-            {isImageLoading ? (
-              <h1>Uploading...</h1>
-            ) : (
-              <button
-                type="button"
-                style={{
-                  display:
-                    image === null || draftPost.foodPhoto !== null
-                      ? 'none'
-                      : '',
+        <Row>
+          <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
+          <Col sm={{ span: 24 }} lg={{ span: 8 }}>
+            <div id="topInfo">
+              <Icon
+                type="left"
+                style={{ alignSelf: 'center', marginRight: '.2rem' }}
+              />
+              <h3 onClick={() => Router.back()}>Go back</h3>
+            </div>
+            <h1>Create New Post</h1>
+            <form className="newPost">
+              <label>Title</label>
+              <input type="text" name="title" onChange={handleInputChange} />
+              <label>Cover Photo</label>
+              <div className="imageUpload">
+                <img src={fileImageUrl || draftPost.foodPhoto} />
+                <input
+                  type="file"
+                  name="file"
+                  ref={fileRef}
+                  style={{
+                    display:
+                      image !== null && draftPost.foodPhoto !== null
+                        ? 'none'
+                        : '',
+                    border: 'none',
+                    padding: '0',
+                  }}
+                  onChange={getImageFile}
+                ></input>
+                {isImageLoading ? (
+                  <h1>Uploading...</h1>
+                ) : (
+                  <button
+                    type="button"
+                    style={{
+                      display:
+                        image === null || draftPost.foodPhoto !== null
+                          ? 'none'
+                          : '',
+                    }}
+                    onClick={uploadImg}
+                  >
+                    Upload
+                  </button>
+                )}
+                <Checkbox onChange={checkBoxOnChange}>
+                  Use default image
+                </Checkbox>
+              </div>
+              <label>Tags</label>
+              {draftPost.tags.map((tag, i) => {
+                return (
+                  <p key={i} className="tagList">
+                    #{tag}
+                  </p>
+                )
+              })}
+              <input
+                type="text"
+                name="tags"
+                onChange={handleTempTagValue}
+                ref={tagInputRef}
+                onKeyUp={e => {
+                  if (e.key === 'Enter') {
+                    addTagValue()
+                  }
                 }}
-                onClick={uploadImg}
-              >
-                Upload
-              </button>
-            )}
-            <Checkbox onChange={checkBoxOnChange}>Use default image</Checkbox>
-          </div>
-          <label>Tags</label>
-          {draftPost.tags.map((tag, i) => {
-            return (
-              <p key={i} className="tagList">
-                #{tag}
-              </p>
-            )
-          })}
-          <input
-            type="text"
-            name="tags"
-            onChange={handleTempTagValue}
-            ref={tagInputRef}
-            onKeyUp={e => {
-              if (e.key === 'Enter') {
-                addTagValue()
-              }
-            }}
-          />
-          <h4 onClick={addTagValue}>+ Add tag</h4>
-          <label>Summary</label>
-          <textarea name="summary" onChange={handleInputChange} />
-          <label>Ingredients</label>
-          {draftPost.ingredients.map((ingredient: ingredientItem, i) => {
-            return (
-              <li className="tempIngredientsList" key={i}>
-                <h2>{ingredient.description}</h2>
-                <p>
-                  {ingredient.brandOwner}, {ingredient.servingSize}
-                  {ingredient.servingSizeUnit}
-                </p>
-              </li>
-            )
-          })}
-          <input
-            type="text"
-            name="ingredient"
-            ref={ingredientInputRef}
-            onChange={handleTempIngredientValue}
-            onKeyUp={e => {
-              if (e.key === 'Enter') {
-                fetchFoodSearch()
-              }
-            }}
-          />
-          <h4 onClick={fetchFoodSearch}>+ Search new ingredient</h4>
-          <label>Directions</label>
-          {draftPost.directions.map((direction, i) => {
-            return (
-              <li className="tempList" key={i}>
-                <h1>{i + 1}.</h1>
-                <p>{direction}</p>
-              </li>
-            )
-          })}
-          <input
-            type="text"
-            name="direction"
-            ref={directionInputRef}
-            onChange={handleTempDirectionsValue}
-            onKeyUp={e => {
-              if (e.key === 'Enter') {
-                addDirectionsValue()
-              }
-            }}
-          />
-          <h4 onClick={addDirectionsValue}>+ Add direction</h4>
-          <h2>
-            {draftPost.macros.calories} Calories {draftPost.macros.protein}P{' '}
-            {draftPost.macros.carbohydrates}C {draftPost.macros.fat}F
-          </h2>
-          <hr />
-          <div id="formButtons">
-            <button type="button" id="submitButton" onClick={submitPost}>
-              Save
-            </button>
-            <button type="button" id="cancelButton" onClick={clearDraft}>
-              Delete
-            </button>
-          </div>
-        </form>
+              />
+              <h4 onClick={addTagValue}>+ Add tag</h4>
+              <label>Summary</label>
+              <textarea name="summary" onChange={handleInputChange} />
+              <label>Ingredients</label>
+              {draftPost.ingredients.map((ingredient: ingredientItem, i) => {
+                return (
+                  <li className="tempIngredientsList" key={i}>
+                    <h2>{ingredient.description}</h2>
+                    <p>
+                      {ingredient.brandOwner}, {ingredient.servingSize}
+                      {ingredient.servingSizeUnit}
+                    </p>
+                  </li>
+                )
+              })}
+              <input
+                type="text"
+                name="ingredient"
+                ref={ingredientInputRef}
+                onChange={handleTempIngredientValue}
+                onKeyUp={e => {
+                  if (e.key === 'Enter') {
+                    fetchFoodSearch()
+                  }
+                }}
+              />
+              <h4 onClick={fetchFoodSearch}>+ Search new ingredient</h4>
+              <label>Directions</label>
+              {draftPost.directions.map((direction, i) => {
+                return (
+                  <li className="tempList" key={i}>
+                    <h1>{i + 1}.</h1>
+                    <p>{direction}</p>
+                  </li>
+                )
+              })}
+              <input
+                type="text"
+                name="direction"
+                ref={directionInputRef}
+                onChange={handleTempDirectionsValue}
+                onKeyUp={e => {
+                  if (e.key === 'Enter') {
+                    addDirectionsValue()
+                  }
+                }}
+              />
+              <h4 onClick={addDirectionsValue}>+ Add direction</h4>
+              <h2>
+                {draftPost.macros.calories} Calories {draftPost.macros.protein}P{' '}
+                {draftPost.macros.carbohydrates}C {draftPost.macros.fat}F
+              </h2>
+              <hr />
+              <div id="formButtons">
+                <button type="button" id="submitButton" onClick={submitPost}>
+                  Save
+                </button>
+                <button type="button" id="cancelButton" onClick={clearDraft}>
+                  Delete
+                </button>
+              </div>
+            </form>
+          </Col>
+        </Row>
       </div>
       <style jsx>{`
         #topInfo {

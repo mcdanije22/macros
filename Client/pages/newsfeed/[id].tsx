@@ -66,8 +66,8 @@ const NewsFeed: NextPage<any> = props => {
             <div id="userInfoContainer">
               <Card
                 style={{
-                  width: 400,
-                  borderRadius: '1rem',
+                  width: 300,
+                  borderRadius: '.5rem',
                   display: 'flex',
                   justifyContent: 'center',
                 }}
@@ -267,6 +267,7 @@ const NewsFeed: NextPage<any> = props => {
           }
           #userInfoContainer {
             display: flex;
+            justify-content: center;
           }
           #followingListContainer {
             display: block;

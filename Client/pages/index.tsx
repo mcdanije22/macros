@@ -58,7 +58,7 @@ const index: React.FC = () => {
               rgba(0, 0, 0, 0.5),
               rgba(0, 0, 0, 0.5)
             ),
-            url('https://images.unsplash.com/photo-1493770348161-369560ae357d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+            url('/static/images/landing.jpg');
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;

@@ -2,8 +2,6 @@ import express, { Application, Router, Response, Request } from "express";
 import UserModel from "../models/UserModel";
 import FoodPostModel from "../models/FoodPostModel";
 import NotificationModel from "../models/NotificationModel";
-import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
 
 const router: Router = Router();
 

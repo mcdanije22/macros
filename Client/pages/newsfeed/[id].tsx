@@ -151,37 +151,6 @@ const NewsFeed: NextPage<any> = props => {
               </div>
             </div>
           </Col>
-          {/* <Col span={8}>
-            <div id="followingListContainer">
-              <Card
-                style={{
-                  width: 400,
-                  borderRadius: '1rem',
-                }}
-              >
-                <div className="followedUserInfo">
-                  <h1>Following</h1>
-                  {user.following.map((followedUser, i) => {
-                    return (
-                      <div key={i} className="followedUser">
-                        <Link
-                          href="/user/[id]"
-                          as={`/user/${followedUser._id}`}
-                        >
-                          <img
-                            src={`https://avatars.dicebear.com/v2/initials/${followedUser.userName}.svg`}
-                            alt={`${followedUser.userName}'s profile`}
-                            className="userImg"
-                          />
-                        </Link>
-                        <h2>{followedUser.userName}</h2>
-                      </div>
-                    )
-                  })}
-                </div>
-              </Card>
-            </div>
-          </Col> */}
         </Row>
       </div>
       <style jsx>{`

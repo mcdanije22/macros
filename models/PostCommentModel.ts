@@ -1,8 +1,8 @@
-// import mongoose, { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
-const CommentSchema: any = new mongoose.Schema({
+const CommentSchema: any = new Schema({
   user: {
     type: Object,
     required: true
@@ -17,4 +17,4 @@ const CommentSchema: any = new mongoose.Schema({
   }
 });
 
-export default mongoose.model("comment", CommentSchema);
+export default model("comment", CommentSchema);

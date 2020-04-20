@@ -1,16 +1,20 @@
-// import express, { Router, any, any } from "express";
-// import mongoose, { Schema, model } from "mongoose";
+import express, { Router, Request, Response } from "express";
+import mongoose, { Schema, model } from "mongoose";
 import FoodPostModel from "../models/FoodPostModel";
 import UserModel from "../models/UserModel";
 import CommentModel from "../models/PostCommentModel";
 import NotificationModel from "../models/NotificationModel";
 
-// const router: Router = Router();
+const router: Router = Router();
 
-const express = require("express");
-const mongoose = require("mongoose");
+// const express = require("express");
+// const mongoose = require("mongoose");
+// const UserModel = require("../models/UserModel");
+// const FoodPostModel = require("../models/FoodPostModel");
+// const NotificationModel = require("../models/NotificationModel");
+// const CommentModel = require("../models/PostCommentModel");
 
-const router = express.Router();
+// const router = express.Router();
 
 //return all food post in collection
 router.get("/", async (req: any, res: any) => {

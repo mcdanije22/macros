@@ -1,11 +1,12 @@
-// import express, { Router, any, any } from "express";
-// import mongoose, { Schema, model } from "mongoose";
+import express, { Router, Request, Response } from "express";
+import mongoose, { Schema, model } from "mongoose";
 import FoodPostModel from "../models/FoodPostModel";
 
-const express = require("express");
-const mongoose = require("mongoose");
+// const express = require("express");
+// const mongoose = require("mongoose");
+// const FoodPostModel = require("../models/FoodPostModel");
 
-const router = express.Router();
+const router: Router = Router();
 
 //search post generic
 router.get("/:search", async (req: any, res: any) => {

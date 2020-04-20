@@ -1,8 +1,8 @@
-// import mongoose, { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
-const UserSchema: any = new mongoose.Schema({
+const UserSchema: any = new Schema({
   fullName: {
     type: String,
     required: true
@@ -54,4 +54,4 @@ const UserSchema: any = new mongoose.Schema({
     default: []
   }
 });
-export default mongoose.model("user", UserSchema);
+export default model("user", UserSchema);

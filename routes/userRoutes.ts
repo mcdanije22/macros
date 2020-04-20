@@ -1,12 +1,16 @@
-// import express, { Application, Router, any, any } from "express";
+import express, { Application, Router, Request, Response } from "express";
 import UserModel from "../models/UserModel";
 import FoodPostModel from "../models/FoodPostModel";
 import NotificationModel from "../models/NotificationModel";
 
-// const router: Router = Router();
-const express = require("express");
+const router: Router = Router();
 
-const router = express.Router();
+// const express = require("express");
+// const UserModel = require("../models/UserModel");
+// const FoodPostModel = require("../models/FoodPostModel");
+// const NotificationModel = require("../models/NotificationModel");
+
+// const router = express.Router();
 
 //get all users in collection
 router.get("/", async (req: any, res: any) => {

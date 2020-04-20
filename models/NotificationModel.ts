@@ -1,6 +1,8 @@
 import mongoose, { model, Schema } from "mongoose";
 
-const NotificationSchema: Schema = new Schema({
+// const mongoose = require("mongoose");
+
+const NotificationSchema: any = new Schema({
   actionDate: {
     type: Date,
     default: Date.now()

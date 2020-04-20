@@ -1,8 +1,8 @@
-import mongoose, { model, Schema } from "mongoose";
+// import mongoose, { model, Schema } from "mongoose";
 
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-const NotificationSchema: any = new Schema({
+const NotificationSchema = new mongoose.Schema({
   actionDate: {
     type: Date,
     default: Date.now()
@@ -25,4 +25,4 @@ const NotificationSchema: any = new Schema({
   }
 });
 
-export default model("notification", NotificationSchema);
+module.exports = mongoose.model("notification", NotificationSchema);

@@ -1,23 +1,22 @@
-import express, { Router, Request, Response } from "express";
-import mongoose, { Schema, model } from "mongoose";
-import FoodPostModel from "../models/FoodPostModel";
-import UserModel from "../models/UserModel";
-import CommentModel from "../models/PostCommentModel";
-import NotificationModel from "../models/NotificationModel";
+// import express, { Router, Request, Response } from "express";
+// import mongoose, { Schema, model } from "mongoose";
+// import FoodPostModel from "../models/FoodPostModel";
+// import UserModel from "../models/UserModel";
+// import CommentModel from "../models/PostCommentModel";
+// import NotificationModel from "../models/NotificationModel";
 
-const router: Router = Router();
+// const router: Router = Router();
 
-// const express = require("express");
-// const mongoose = require("mongoose");
-// const UserModel = require("../models/UserModel");
-// const FoodPostModel = require("../models/FoodPostModel");
-// const NotificationModel = require("../models/NotificationModel");
-// const CommentModel = require("../models/PostCommentModel");
+const express = require("express");
+const UserModel = require("../models/UserModel");
+const FoodPostModel = require("../models/FoodPostModel");
+const NotificationModel = require("../models/NotificationModel");
+const CommentModel = require("../models/PostCommentModel");
 
-// const router = express.Router();
+const router = express.Router();
 
 //return all food post in collection
-router.get("/", async (req: any, res: any) => {
+router.get("/", async (req, res) => {
   try {
     const allFoodPosts = await FoodPostModel.find().populate({
       path: "user",
@@ -29,10 +28,10 @@ router.get("/", async (req: any, res: any) => {
   }
 });
 
-router.get("/userfeed/:userid", async (req: any, res: any) => {
+router.get("/userfeed/:userid", async (req, res) => {
   const { userid } = req.params;
   try {
-    const user: any = await UserModel.findById(userid);
+    const user = await UserModel.findById(userid);
     const userFeed = await FoodPostModel.find({
       $or: [{ "user._id": user.following }, { "user._id": user._id }]
     });
@@ -43,7 +42,7 @@ router.get("/userfeed/:userid", async (req: any, res: any) => {
   }
 });
 
-router.get("/random", async (req: any, res: any) => {
+router.get("/random", async (req, res) => {
   try {
     const randomPost = await FoodPostModel.aggregate([
       { $sample: { size: 1 } }
@@ -56,7 +55,7 @@ router.get("/random", async (req: any, res: any) => {
 });
 
 //return specific food post by id
-router.get("/:foodpostid", async (req: any, res: any) => {
+router.get("/:foodpostid", async (req, res) => {
   const { foodpostid } = req.params;
   try {
     const currentFoodPost = await FoodPostModel.findById(foodpostid);
@@ -67,11 +66,11 @@ router.get("/:foodpostid", async (req: any, res: any) => {
 });
 
 //add food post from specific user using user id
-router.post("/:userid/addpost", async (req: any, res: any) => {
+router.post("/:userid/addpost", async (req, res) => {
   const { userid } = req.params;
   try {
-    const newFoodPost: any = new FoodPostModel(req.body);
-    const user: any = await UserModel.findById(userid);
+    const newFoodPost = new FoodPostModel(req.body);
+    const user = await UserModel.findById(userid);
     newFoodPost.user = {
       _id: user._id,
       userName: user.userName,
@@ -88,22 +87,22 @@ router.post("/:userid/addpost", async (req: any, res: any) => {
 });
 
 //add new comment to food post
-router.post("/:userid/:postid/addcomment", async (req: any, res: any) => {
+router.post("/:userid/:postid/addcomment", async (req, res) => {
   const { userid, postid } = req.params;
   const { postUserId } = req.body;
-  const user: any = await UserModel.findById(userid, {
+  const user = await UserModel.findById(userid, {
     userName: 1,
     photo: 1
   });
-  const postUser: any = await UserModel.findById(postUserId);
+  const postUser = await UserModel.findById(postUserId);
   try {
-    const newComment: any = new CommentModel(req.body);
-    const currentPost: any = await FoodPostModel.findById(postid);
+    const newComment = new CommentModel(req.body);
+    const currentPost = await FoodPostModel.findById(postid);
     newComment.user = user;
     currentPost.comments.push(newComment);
     await currentPost.save();
     if (userid != postUserId) {
-      const newNotification: any = new NotificationModel({
+      const newNotification = new NotificationModel({
         actionDate: new Date(),
         actionUserName: user.userName,
         message: `${user.userName} commented on your ${currentPost.title} post`,
@@ -119,4 +118,4 @@ router.post("/:userid/:postid/addcomment", async (req: any, res: any) => {
   }
 });
 
-export default router;
+module.exports = router;

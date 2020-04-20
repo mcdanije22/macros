@@ -1,19 +1,19 @@
-import express, { Application, Router, Request, Response } from "express";
-import UserModel from "../models/UserModel";
-import FoodPostModel from "../models/FoodPostModel";
-import NotificationModel from "../models/NotificationModel";
+// import express, { Application, Router, Request, Response } from "express";
+// import UserModel from "../models/UserModel";
+// import FoodPostModel from "../models/FoodPostModel";
+// import NotificationModel from "../models/NotificationModel";
 
-const router: Router = Router();
+// const router: Router = Router();
 
-// const express = require("express");
-// const UserModel = require("../models/UserModel");
-// const FoodPostModel = require("../models/FoodPostModel");
-// const NotificationModel = require("../models/NotificationModel");
+const express = require("express");
+const UserModel = require("../models/UserModel");
+const FoodPostModel = require("../models/FoodPostModel");
+const NotificationModel = require("../models/NotificationModel");
 
-// const router = express.Router();
+const router = express.Router();
 
 //get all users in collection
-router.get("/", async (req: any, res: any) => {
+router.get("/", async (req, res) => {
   try {
     const allUsers = await UserModel.find();
     res.send(allUsers);
@@ -23,9 +23,9 @@ router.get("/", async (req: any, res: any) => {
 });
 
 //get specific user
-router.get("/:userid", async (req: any, res: any) => {
+router.get("/:userid", async (req, res) => {
   const { userid } = req.params;
-  const user: any = await UserModel.findById(userid, {
+  const user = await UserModel.findById(userid, {
     userName: 1,
     fullName: 1,
     posts: 1,
@@ -40,8 +40,8 @@ router.get("/:userid", async (req: any, res: any) => {
 });
 
 //add user to collection
-router.post("/register", (req: any, res: any) => {
-  UserModel.findOne({ email: req.body.email }).then((user: any) => {
+router.post("/register", (req, res) => {
+  UserModel.findOne({ email: req.body.email }).then(user => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
@@ -56,9 +56,9 @@ router.post("/register", (req: any, res: any) => {
   });
 });
 
-router.post("/login", (req: any, res: any) => {
+router.post("/login", (req, res) => {
   const { email, password } = req.body;
-  UserModel.findOne({ email }).then((user: any) => {
+  UserModel.findOne({ email }).then(user => {
     if (!user || user.password !== password) {
       return res.status(400).json("Incorrect email or password");
     } else {
@@ -67,11 +67,11 @@ router.post("/login", (req: any, res: any) => {
   });
 });
 
-router.post("/like", async (req: any, res: any) => {
+router.post("/like", async (req, res) => {
   const { postId, userId, postUserId } = req.body;
-  const user: any = await UserModel.findOne({ _id: userId });
-  const post: any = await FoodPostModel.findOne({ _id: postId });
-  const postUser: any = await UserModel.findOne({ _id: postUserId });
+  const user = await UserModel.findOne({ _id: userId });
+  const post = await FoodPostModel.findOne({ _id: postId });
+  const postUser = await UserModel.findOne({ _id: postUserId });
   if (user.saves.includes(post._id)) {
     return res.status(400).json("Already saved");
   } else {
@@ -81,7 +81,7 @@ router.post("/like", async (req: any, res: any) => {
     await post.save();
 
     if (userId != postUserId) {
-      const newNotification: any = new NotificationModel({
+      const newNotification = new NotificationModel({
         actionDate: new Date(),
         actionUserName: user.userName,
         message: `${user.userName} liked your ${post.title} post`,
@@ -95,10 +95,10 @@ router.post("/like", async (req: any, res: any) => {
   }
 });
 
-router.post("/follow", async (req: any, res: any) => {
+router.post("/follow", async (req, res) => {
   const { loggedUser, userId } = req.body;
-  const LoggedInUser: any = await UserModel.findOne({ _id: loggedUser });
-  const followedUser: any = await UserModel.findOne({ _id: userId });
+  const LoggedInUser = await UserModel.findOne({ _id: loggedUser });
+  const followedUser = await UserModel.findOne({ _id: userId });
   if (LoggedInUser.following.includes(userId)) {
     return res.status(400).json("Already following");
   } else {
@@ -107,7 +107,7 @@ router.post("/follow", async (req: any, res: any) => {
     await LoggedInUser.save();
     await followedUser.followers.push(LoggedInUser._id);
     followedUser.followerCount++;
-    const newNotification: any = new NotificationModel({
+    const newNotification = new NotificationModel({
       actionDate: new Date(),
       actionUserName: LoggedInUser.userName,
       message: `${LoggedInUser.userName} followed you`,
@@ -120,10 +120,10 @@ router.post("/follow", async (req: any, res: any) => {
   }
 });
 
-router.post("/unfollow", async (req: any, res: any) => {
+router.post("/unfollow", async (req, res) => {
   const { loggedUser, userId } = req.body;
-  const LoggedInUser: any = await UserModel.findOne({ _id: loggedUser });
-  const followedUser: any = await UserModel.findOne({ _id: userId });
+  const LoggedInUser = await UserModel.findOne({ _id: loggedUser });
+  const followedUser = await UserModel.findOne({ _id: userId });
   if (!LoggedInUser.following.includes(userId)) {
     return res.status(400).json("Not following user!");
   } else {
@@ -143,11 +143,11 @@ router.post("/unfollow", async (req: any, res: any) => {
   }
 });
 
-router.post("/deletenotification", async (req: any, res: any) => {
+router.post("/deletenotification", async (req, res) => {
   // const { userId, notificationId } = req.body;
   const { newNotificationsList, userId } = req.body;
-  const user: any = await UserModel.findOne({ _id: userId });
-  // const notification: any = await UserModel.findOne({
+  const user = await UserModel.findOne({ _id: userId });
+  // const notification = await UserModel.findOne({
   //   _id: notificationId
   // });
   try {
@@ -164,4 +164,4 @@ router.post("/deletenotification", async (req: any, res: any) => {
   }
 });
 
-export default router;
+module.exports = router;

@@ -1,11 +1,14 @@
-import express, { Router, Response, Request } from "express";
-import mongoose, { Schema, model } from "mongoose";
+// import express, { Router, any, any } from "express";
+// import mongoose, { Schema, model } from "mongoose";
 import FoodPostModel from "../models/FoodPostModel";
 
-const router: Router = Router();
+const express = require("express");
+const mongoose = require("mongoose");
+
+const router = express.Router();
 
 //search post generic
-router.get("/:search", async (req: Request, res: Response) => {
+router.get("/:search", async (req: any, res: any) => {
   const { search } = req.params;
   console.log(search);
   const result = await FoodPostModel.find({
@@ -15,7 +18,7 @@ router.get("/:search", async (req: Request, res: Response) => {
   console.log(result);
 });
 //search for post by tag
-router.get("/tags/:tag", async (req: Request, res: Response) => {
+router.get("/tags/:tag", async (req: any, res: any) => {
   const { tag } = req.params;
   const result = await FoodPostModel.find({
     tags: { $regex: `${tag}`, $options: "-i" }
@@ -25,7 +28,7 @@ router.get("/tags/:tag", async (req: Request, res: Response) => {
 });
 
 //search for post by menu option
-router.get("/category/:search", async (req: Request, res: Response) => {
+router.get("/category/:search", async (req: any, res: any) => {
   const { search } = req.params;
   switch (search) {
     case "low calories":

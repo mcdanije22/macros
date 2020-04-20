@@ -1,21 +1,19 @@
-import express, { Router, Response, Request } from "express";
-import mongoose, { Schema, model } from "mongoose";
+// import express, { Router, any, any } from "express";
+// import mongoose, { Schema, model } from "mongoose";
 import FoodPostModel from "../models/FoodPostModel";
 import UserModel from "../models/UserModel";
 import CommentModel from "../models/PostCommentModel";
 import NotificationModel from "../models/NotificationModel";
 
-const router: Router = Router();
+// const router: Router = Router();
 
-// var cloudinary: any = require("cloudinary").v2;
-// cloudinary.config({
-//   cloud_name: process.env.CLOUD_NAME,
-//   api_key: process.env.API_KEY,
-//   api_secret: process.env.API_SECRET
-// });
+const express = require("express");
+const mongoose = require("mongoose");
+
+const router = express.Router();
 
 //return all food post in collection
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", async (req: any, res: any) => {
   try {
     const allFoodPosts = await FoodPostModel.find().populate({
       path: "user",
@@ -27,7 +25,7 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/userfeed/:userid", async (req: Request, res: Response) => {
+router.get("/userfeed/:userid", async (req: any, res: any) => {
   const { userid } = req.params;
   try {
     const user: any = await UserModel.findById(userid);
@@ -41,7 +39,7 @@ router.get("/userfeed/:userid", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/random", async (req: Request, res: Response) => {
+router.get("/random", async (req: any, res: any) => {
   try {
     const randomPost = await FoodPostModel.aggregate([
       { $sample: { size: 1 } }
@@ -54,7 +52,7 @@ router.get("/random", async (req: Request, res: Response) => {
 });
 
 //return specific food post by id
-router.get("/:foodpostid", async (req: Request, res: Response) => {
+router.get("/:foodpostid", async (req: any, res: any) => {
   const { foodpostid } = req.params;
   try {
     const currentFoodPost = await FoodPostModel.findById(foodpostid);
@@ -65,7 +63,7 @@ router.get("/:foodpostid", async (req: Request, res: Response) => {
 });
 
 //add food post from specific user using user id
-router.post("/:userid/addpost", async (req: Request, res: Response) => {
+router.post("/:userid/addpost", async (req: any, res: any) => {
   const { userid } = req.params;
   try {
     const newFoodPost: any = new FoodPostModel(req.body);
@@ -86,38 +84,35 @@ router.post("/:userid/addpost", async (req: Request, res: Response) => {
 });
 
 //add new comment to food post
-router.post(
-  "/:userid/:postid/addcomment",
-  async (req: Request, res: Response) => {
-    const { userid, postid } = req.params;
-    const { postUserId } = req.body;
-    const user: any = await UserModel.findById(userid, {
-      userName: 1,
-      photo: 1
-    });
-    const postUser: any = await UserModel.findById(postUserId);
-    try {
-      const newComment: any = new CommentModel(req.body);
-      const currentPost: any = await FoodPostModel.findById(postid);
-      newComment.user = user;
-      currentPost.comments.push(newComment);
-      await currentPost.save();
-      if (userid != postUserId) {
-        const newNotification: any = new NotificationModel({
-          actionDate: new Date(),
-          actionUserName: user.userName,
-          message: `${user.userName} commented on your ${currentPost.title} post`,
-          href: `/foodpost/[id]`,
-          as: `/foodpost/${currentPost._id}`
-        });
-        postUser.notifications.push(newNotification);
-        await postUser.save();
-      }
-      res.send(currentPost);
-    } catch (error) {
-      console.log(error);
+router.post("/:userid/:postid/addcomment", async (req: any, res: any) => {
+  const { userid, postid } = req.params;
+  const { postUserId } = req.body;
+  const user: any = await UserModel.findById(userid, {
+    userName: 1,
+    photo: 1
+  });
+  const postUser: any = await UserModel.findById(postUserId);
+  try {
+    const newComment: any = new CommentModel(req.body);
+    const currentPost: any = await FoodPostModel.findById(postid);
+    newComment.user = user;
+    currentPost.comments.push(newComment);
+    await currentPost.save();
+    if (userid != postUserId) {
+      const newNotification: any = new NotificationModel({
+        actionDate: new Date(),
+        actionUserName: user.userName,
+        message: `${user.userName} commented on your ${currentPost.title} post`,
+        href: `/foodpost/[id]`,
+        as: `/foodpost/${currentPost._id}`
+      });
+      postUser.notifications.push(newNotification);
+      await postUser.save();
     }
+    res.send(currentPost);
+  } catch (error) {
+    console.log(error);
   }
-);
+});
 
 export default router;

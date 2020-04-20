@@ -1,12 +1,15 @@
-import express, { Application, Router, Response, Request } from "express";
+// import express, { Application, Router, any, any } from "express";
 import UserModel from "../models/UserModel";
 import FoodPostModel from "../models/FoodPostModel";
 import NotificationModel from "../models/NotificationModel";
 
-const router: Router = Router();
+// const router: Router = Router();
+const express = require("express");
+
+const router = express.Router();
 
 //get all users in collection
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", async (req: any, res: any) => {
   try {
     const allUsers = await UserModel.find();
     res.send(allUsers);
@@ -16,7 +19,7 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 //get specific user
-router.get("/:userid", async (req: Request, res: Response) => {
+router.get("/:userid", async (req: any, res: any) => {
   const { userid } = req.params;
   const user: any = await UserModel.findById(userid, {
     userName: 1,
@@ -33,8 +36,8 @@ router.get("/:userid", async (req: Request, res: Response) => {
 });
 
 //add user to collection
-router.post("/register", (req: Request, res: Response) => {
-  UserModel.findOne({ email: req.body.email }).then(user => {
+router.post("/register", (req: any, res: any) => {
+  UserModel.findOne({ email: req.body.email }).then((user: any) => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
@@ -49,7 +52,7 @@ router.post("/register", (req: Request, res: Response) => {
   });
 });
 
-router.post("/login", (req: Request, res: Response) => {
+router.post("/login", (req: any, res: any) => {
   const { email, password } = req.body;
   UserModel.findOne({ email }).then((user: any) => {
     if (!user || user.password !== password) {
@@ -60,7 +63,7 @@ router.post("/login", (req: Request, res: Response) => {
   });
 });
 
-router.post("/like", async (req: Request, res: Response) => {
+router.post("/like", async (req: any, res: any) => {
   const { postId, userId, postUserId } = req.body;
   const user: any = await UserModel.findOne({ _id: userId });
   const post: any = await FoodPostModel.findOne({ _id: postId });
@@ -88,7 +91,7 @@ router.post("/like", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/follow", async (req: Request, res: Response) => {
+router.post("/follow", async (req: any, res: any) => {
   const { loggedUser, userId } = req.body;
   const LoggedInUser: any = await UserModel.findOne({ _id: loggedUser });
   const followedUser: any = await UserModel.findOne({ _id: userId });
@@ -113,7 +116,7 @@ router.post("/follow", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/unfollow", async (req: Request, res: Response) => {
+router.post("/unfollow", async (req: any, res: any) => {
   const { loggedUser, userId } = req.body;
   const LoggedInUser: any = await UserModel.findOne({ _id: loggedUser });
   const followedUser: any = await UserModel.findOne({ _id: userId });
@@ -136,7 +139,7 @@ router.post("/unfollow", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/deletenotification", async (req: Request, res: Response) => {
+router.post("/deletenotification", async (req: any, res: any) => {
   // const { userId, notificationId } = req.body;
   const { newNotificationsList, userId } = req.body;
   const user: any = await UserModel.findOne({ _id: userId });

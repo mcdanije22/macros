@@ -1,6 +1,8 @@
-import mongoose, { Schema, model } from "mongoose";
+// import mongoose, { Schema, model } from "mongoose";
 
-const FoodPostSchema: Schema = new Schema({
+const mongoose = require("mongoose");
+
+const FoodPostSchema: any = new mongoose.Schema({
   // user: {
   //   type: Schema.Types.ObjectId,
   //   ref: "user"
@@ -51,4 +53,4 @@ const FoodPostSchema: Schema = new Schema({
   }
 });
 
-export default model("foodPost", FoodPostSchema);
+export default mongoose.model("foodPost", FoodPostSchema);

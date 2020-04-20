@@ -1,6 +1,8 @@
-import mongoose, { model, Schema } from "mongoose";
+// import mongoose, { model, Schema } from "mongoose";
 
-const UserSchema: Schema = new Schema({
+const mongoose = require("mongoose");
+
+const UserSchema: any = new mongoose.Schema({
   fullName: {
     type: String,
     required: true
@@ -18,10 +20,10 @@ const UserSchema: Schema = new Schema({
     required: true
   },
   posts: {
-    type: [{ type: Schema.Types.ObjectId, ref: "foodPost" }]
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "foodPost" }]
   },
   saves: {
-    type: [{ type: Schema.Types.ObjectId, ref: "foodPost" }]
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "foodPost" }]
   },
   photo: {
     type: String,
@@ -52,4 +54,4 @@ const UserSchema: Schema = new Schema({
     default: []
   }
 });
-export default model("user", UserSchema);
+export default mongoose.model("user", UserSchema);

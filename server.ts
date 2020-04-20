@@ -1,8 +1,14 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import mongoose from "mongoose";
-import path from "path";
+// import express from "express";
+// import bodyParser from "body-parser";
+// import cors from "cors";
+// import mongoose from "mongoose";
+// import path from "path";
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const path = require("path");
 
 mongoose.connect(
   "mongodb+srv://josh:josh123@macrosocial-yeplw.mongodb.net/test?retryWrites=true&w=majority",
@@ -30,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("client/build"));
 
-  app.get("*", (req, res) => {
+  app.get("*", (req: any, res: any) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import Nav from './nav/Nav'
-import DesktopNav from './nav/desktopNav'
+import DesktopNav from './nav/DesktopNav'
 import Head from 'next/head'
 import Footer from './Footer'
 

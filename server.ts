@@ -2,7 +2,6 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
-import passport from "passport";
 import path from "path";
 
 mongoose.connect(
@@ -18,7 +17,6 @@ const PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(passport.initialize());
 
 import postsRoutes from "./routes/postRoutes";
 import userRoutes from "./routes/userRoutes";

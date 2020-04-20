@@ -52,7 +52,7 @@ const DesktopNav: React.FC = () => {
   const userMenu = (
     <Menu>
       <Menu.Item style={{ padding: '1rem 3rem' }}>
-        <Link href="/user/[id]" as={`/user/${user._id}`}>
+        <Link href="/user/[id]" as={`/user/${isUserLoggedIn ? user._id : ''}`}>
           <a>Profile</a>
         </Link>
       </Menu.Item>
@@ -63,15 +63,19 @@ const DesktopNav: React.FC = () => {
   )
   const notificationsMenu = (
     <Menu>
-      {user.notifications.slice(0, 8).map((notification, i) => {
-        return (
-          <Menu.Item key={i}>
-            <Link href={notification.href} as={notification.as}>
-              <p style={{ padding: '.5rem 1rem' }}>{notification.message}</p>
-            </Link>
-          </Menu.Item>
-        )
-      })}
+      {user !== null
+        ? user.notifications.slice(0, 8).map((notification, i) => {
+            return (
+              <Menu.Item key={i}>
+                <Link href={notification.href} as={notification.as}>
+                  <p style={{ padding: '.5rem 1rem' }}>
+                    {notification.message}
+                  </p>
+                </Link>
+              </Menu.Item>
+            )
+          })
+        : []}
       <Menu.Item>
         <Link href="/notifications">
           <p style={{ padding: '.5rem 1rem' }}>View more...</p>
@@ -86,7 +90,7 @@ const DesktopNav: React.FC = () => {
         <li>
           <Link
             href={isUserLoggedIn ? '/newsfeed/[id]' : '/'}
-            as={`/newsfeed/${user._id}`}
+            as={`/newsfeed/${isUserLoggedIn ? user._id : ''}`}
           >
             <a>Macro</a>
           </Link>
@@ -148,8 +152,10 @@ const DesktopNav: React.FC = () => {
           <Dropdown overlay={userMenu}>
             <div id="userButton">
               <img
-                src={`https://avatars.dicebear.com/v2/initials/${user.userName}.svg`}
-                alt={`${user.userName}'s profile`}
+                src={`https://avatars.dicebear.com/v2/initials/${
+                  isUserLoggedIn ? user.userName : ''
+                }.svg`}
+                alt={`${isUserLoggedIn ? user.userName : ''}'s profile`}
               />
             </div>
           </Dropdown>

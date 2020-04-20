@@ -49,7 +49,7 @@ const NavBar: React.FC = () => {
           <li style={{ display: searchBarStatus ? 'none' : '' }}>
             <Link
               href={isUserLoggedIn ? '/newsfeed/[id]' : '/'}
-              as={`/newsfeed/${user._id}`}
+              as={`/newsfeed/${isUserLoggedIn ? user._id : ''}`}
             >
               <a>Macro</a>
             </Link>
@@ -101,7 +101,7 @@ const NavBar: React.FC = () => {
           <ul id="menuList">
             <Link
               href={isUserLoggedIn ? '/newsfeed/[id]' : '/'}
-              as={`/newsfeed/${user._id}`}
+              as={`/newsfeed/${isUserLoggedIn ? user._id : ''}`}
             >
               <a>Home</a>
             </Link>

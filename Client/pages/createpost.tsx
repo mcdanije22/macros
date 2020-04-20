@@ -407,9 +407,15 @@ const CreatePost: React.FC = () => {
             <div id="topInfo">
               <Icon
                 type="left"
-                style={{ alignSelf: 'center', marginRight: '.2rem' }}
+                style={{
+                  alignSelf: 'center',
+                  marginRight: '.2rem',
+                  cursor: 'pointer',
+                }}
               />
-              <h3 onClick={() => Router.back()}>Go back</h3>
+              <h3 style={{ cursor: 'pointer' }} onClick={() => Router.back()}>
+                Go back
+              </h3>
             </div>
             <h1>Create New Post</h1>
             <form className="newPost">

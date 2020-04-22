@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon node server.js & next ",
     "build": "next build",
-    "start": "server.js"
+    "start": "next start sever.js"
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",

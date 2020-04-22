@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const path = require('path')
+const next = require('next')
 
 mongoose.connect(
   'mongodb+srv://josh:josh123@macrosocial-yeplw.mongodb.net/test?retryWrites=true&w=majority',
@@ -20,6 +21,7 @@ mongoose.connect(
 
 const app = express()
 const PORT = process.env.PORT || 5000
+const next = next({ dev })
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -32,18 +34,20 @@ const postsRoutes = require('./routes/postRoutes')
 const userRoutes = require('./routes/userRoutes')
 const searchPostsRoutes = require('./routes/searchPostsRoutes')
 
-app.use('/foodposts', postsRoutes)
-app.use('/users', userRoutes)
-app.use('/searchposts', searchPostsRoutes)
+app.prepare().then(() => {
+  app.use('/foodposts', postsRoutes)
+  app.use('/users', userRoutes)
+  app.use('/searchposts', searchPostsRoutes)
 
-// // Serve static assets if in production
-// if (process.env.NODE_ENV === 'production') {
-//   // Set static folder
-//   app.use(express.static('client/build'))
+  // // Serve static assets if in production
+  // if (process.env.NODE_ENV === 'production') {
+  //   // Set static folder
+  //   app.use(express.static('client/build'))
 
-//   app.get('*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-//   })
-// }
+  //   app.get('*', (req, res) => {
+  //     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  //   })
+  // }
 
-app.listen(PORT, () => console.log(`server started successfully on ${PORT}`))
+  app.listen(PORT, () => console.log(`server started successfully on ${PORT}`))
+})

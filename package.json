@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon node server.js & next ",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js -p $PORT"
+    "start": "next start -p $PORT"
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",

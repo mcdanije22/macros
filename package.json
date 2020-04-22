@@ -2,7 +2,11 @@
   "name": "macro_project",
   "version": "1.0.0",
   "private": true,
-  "scripts": {
+  "engines": {
+    "node": "12.16.x",
+    "npm": "6.x"
+  },
+  "scripts": {k
     "dev": "nodemon node server.js & next ",
     "build": "next build",
     "start": "npm run build && next start"

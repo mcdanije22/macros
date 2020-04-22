@@ -14,5 +14,8 @@ heroku ps:scale web=1
 # Add a mongodb database
 heroku addons:create mongolab:sandbox
 
+# find your mongodb uri
+heroku config:get MONGODB_URI
+
 git push heroku master
 ```

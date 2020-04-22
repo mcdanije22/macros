@@ -10,13 +10,13 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const path = require('path')
 
-mongoose.connect(
-  'mongodb+srv://josh:josh123@macrosocial-yeplw.mongodb.net/test?retryWrites=true&w=majority',
-  { useNewUrlParser: true },
-  () => {
-    console.log('db connected')
-  }
-)
+const dburl =
+  process.env.MONGODB_URI ||
+  'mongodb+srv://josh:josh123@macrosocial-yeplw.mongodb.net/test?retryWrites=true&w=majority'
+
+mongoose.connect(dburl, { useNewUrlParser: true }, () => {
+  console.log('db connected')
+})
 
 const app = express()
 const PORT = process.env.PORT || 5000

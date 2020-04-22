@@ -30,7 +30,7 @@ const logIn = () => {
   }
   const logUserIn = async (email: string, password: string) => {
     isLoading(true)
-    const url = 'http://localhost:5000/'
+    const url = 'https://macros.now.sh/'
     try {
       const user: AxiosResponse = await axios.post(`${url}users/login`, {
         email,

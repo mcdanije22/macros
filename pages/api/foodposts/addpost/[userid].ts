@@ -4,7 +4,6 @@ const FoodPostModel = model('foodPost')
 const UserModel = model('user')
 
 const addNewFoodPost = async (req, res) => {
-  res.send(req.body)
   const {
     query: { userid },
   } = req

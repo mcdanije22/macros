@@ -1,17 +1,8 @@
-// const withFonts = require('next-fonts')
-// require('dotenv').config()
-
-// module.exports = withFonts({
-//   webpack(config, options) {
-//     return config
-//   },
-//   env: {
-//     NUTRITION_API_KEY: process.env.NUTRITION_API_KEY,
-//   },
-// })
 const withCss = require('@zeit/next-css')
 const withFonts = require('next-fonts')
 require('dotenv').config()
+require('./models')
+require('./database')
 
 module.exports = withCss({
   env: {

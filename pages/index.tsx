@@ -4,6 +4,8 @@ import Head from 'next/head'
 import { UserContext } from '../components/userContext'
 import { Button, Row, Col } from 'antd'
 
+import axios from 'axios'
+
 const index: React.FC = () => {
   const { user, setUser } = useContext(UserContext)
   console.log(user)
@@ -71,7 +73,6 @@ const index: React.FC = () => {
           padding: 0 1rem;
           color: white;
         }
-
         #landingButtons {
           display: flex;
           flex-direction: column;

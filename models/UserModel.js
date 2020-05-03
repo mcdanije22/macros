@@ -1,57 +1,55 @@
-// import mongoose, { model, Schema } from "mongoose";
-
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
   fullName: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   userName: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   posts: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "foodPost" }]
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'foodPost' }],
   },
   saves: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "foodPost" }]
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'foodPost' }],
   },
   photo: {
     type: String,
-    default: "https://via.placeholder.com/400"
+    default: 'https://via.placeholder.com/400',
   },
   followingCount: {
     type: Number,
-    default: 0
+    default: 0,
   },
   followerCount: {
     type: Number,
-    default: 0
+    default: 0,
   },
   following: {
     type: Array,
-    default: []
+    default: [],
   },
   followers: {
     type: Array,
-    default: []
+    default: [],
   },
   startDate: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
   notifications: {
     type: Array,
-    default: []
-  }
-});
-module.exports = mongoose.model("user", UserSchema);
+    default: [],
+  },
+})
+module.exports = mongoose.model('user', UserSchema)

@@ -1,52 +1,52 @@
 // import mongoose, { Schema, model } from "mongoose";
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const FoodPostSchema = new mongoose.Schema({
   user: {
     type: Object,
-    required: true
+    required: true,
   },
   foodPhoto: {
     type: String,
-    default: "https://via.placeholder.com/400"
+    default: 'https://via.placeholder.com/400',
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   tags: {
     type: Array,
-    default: []
+    default: [],
   },
   saves: {
     type: Number,
-    default: 0
+    default: 0,
   },
   macros: {
     type: Object,
-    required: true
+    required: true,
   },
   ingredients: {
     type: Array,
-    required: true
+    required: true,
   },
   directions: {
     type: Array,
-    required: true
+    required: true,
   },
   comments: {
     type: Array,
-    default: []
+    default: [],
   },
   summary: {
     type: String,
-    required: true
+    required: true,
   },
   dateCreated: {
     type: Date,
-    default: Date.now()
-  }
-});
+    default: Date.now(),
+  },
+})
 
-module.exports = mongoose.model("foodPost", FoodPostSchema);
+module.exports = mongoose.model('foodPost', FoodPostSchema)

@@ -11,7 +11,6 @@ const SearchTags: NextPage<any> = props => {
       <div id="searchPage">
         <Row>
           <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
-
           <Col sm={{ span: 24 }} lg={{ span: 8 }}>
             <h1>Search Page</h1>
             <h3>Search results for "{props.query}" tags </h3>
@@ -45,9 +44,9 @@ const SearchTags: NextPage<any> = props => {
 }
 SearchTags.getInitialProps = async ({ query }) => {
   const { tag } = query
-  const url = 'http://localhost:5000'
+  const url = 'http://localhost:3000'
   const response: AxiosResponse = await axios.get(
-    `${url}/searchposts/tags/${tag}`
+    `${url}/api/searchposts/tags/${tag}`
   )
   const searchPost = await response.data
   return {

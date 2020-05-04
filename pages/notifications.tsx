@@ -7,7 +7,7 @@ import axios, { AxiosResponse } from 'axios'
 
 const Notifications = () => {
   const { user, setUser } = useContext(UserContext)
-  const url = 'http://localhost:5000'
+  const url = 'http://localhost:3000'
   const [notificationsList, setnotificationsList] = useState(null)
   if (user) {
     setnotificationsList(user.notifications)
@@ -50,10 +50,13 @@ const Notifications = () => {
                                 const newNotificationsList = await notificationsList.filter(
                                   item => item._id !== notification._id
                                 )
-                                axios.post(`${url}/users/deletenotification`, {
-                                  newNotificationsList,
-                                  userId: user._id,
-                                })
+                                axios.post(
+                                  `${url}/api/users/deletenotification`,
+                                  {
+                                    newNotificationsList,
+                                    userId: user._id,
+                                  }
+                                )
                                 setnotificationsList(newNotificationsList)
                                 await setUser({
                                   ...user,

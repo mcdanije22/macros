@@ -11,6 +11,7 @@ interface logInForm {
   password: string
 }
 const logIn = () => {
+  const url = 'http://localhost:3000'
   const { user, setUser, isUserLoggedIn, userLoggedIn } = useContext(
     UserContext
   )
@@ -30,9 +31,8 @@ const logIn = () => {
   }
   const logUserIn = async (email: string, password: string) => {
     isLoading(true)
-    const url = 'https://macros.now.sh/'
     try {
-      const user: AxiosResponse = await axios.post(`${url}users/login`, {
+      const user: AxiosResponse = await axios.post(`${url}/api/users/login`, {
         email,
         password,
       })

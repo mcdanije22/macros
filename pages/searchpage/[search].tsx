@@ -50,9 +50,9 @@ const SearchPage: NextPage<any> = props => {
 }
 SearchPage.getInitialProps = async ({ query }) => {
   const { search } = query
-  const url = 'http://localhost:5000'
+  const url = 'http://localhost:3000'
   const response: AxiosResponse = await axios.get(
-    `${url}/searchposts/${search}`
+    `${url}/api/searchposts/${search}`
   )
   const searchPost = await response.data
   return {

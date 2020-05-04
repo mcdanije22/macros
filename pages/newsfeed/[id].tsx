@@ -11,6 +11,7 @@ import Link from 'next/link'
 
 const NewsFeed: NextPage<any> = props => {
   const router = useRouter()
+  const url = 'http://localhost:3000'
   const { user, isUserLoggedIn } = useContext(UserContext)
   const [activeDisplay, setActiveDisplay] = useState<string>('feed')
   const [randomPost, setRanomPost] = useState(null)
@@ -25,9 +26,8 @@ const NewsFeed: NextPage<any> = props => {
   const getRandomPost = async () => {
     if (activeDisplay !== 'discover') {
       try {
-        const url = 'http://localhost:5000'
         const response: AxiosResponse = await axios.get(
-          `${url}/foodposts/random`
+          `${url}/api/foodposts/random`
         )
         setRanomPost(response.data[0])
         setActiveDisplay('discover')
@@ -38,8 +38,9 @@ const NewsFeed: NextPage<any> = props => {
   }
   const getRandomPostButton = async () => {
     try {
-      const url = 'http://localhost:5000'
-      const response: AxiosResponse = await axios.get(`${url}/foodposts/random`)
+      const response: AxiosResponse = await axios.get(
+        `${url}/api/foodposts/random`
+      )
       setRanomPost(response.data[0])
       setActiveDisplay('discover')
     } catch (error) {
@@ -249,9 +250,9 @@ const NewsFeed: NextPage<any> = props => {
 
 NewsFeed.getInitialProps = async ({ query }) => {
   const { id } = query
-  const url = 'http://localhost:5000'
+  const url = 'http://localhost:3000'
   const response: AxiosResponse = await axios.get(
-    `${url}/foodposts/userfeed/${id}`
+    `${url}/api/users/userfeed/${id}`
   )
   const allPost = await response.data
   return {

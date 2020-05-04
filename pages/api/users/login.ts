@@ -9,6 +9,7 @@ const logUserIn = async (req, res) => {
       return res.status(400).json('Incorrect email or password')
     } else {
       res.send(user)
+      console.log(user)
     }
   })
 }

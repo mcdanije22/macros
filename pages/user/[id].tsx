@@ -10,7 +10,7 @@ import { message } from 'antd'
 
 const UserPage: NextPage<any> = props => {
   const { user, setUser } = useContext(UserContext)
-  const url = 'http://localhost:5000'
+  const url = 'http://localhost:3000'
   const [activeNav, setActiveNav] = useState<string>('myPost')
   const toggleNav = e => {
     setActiveNav(e.target.id)
@@ -29,7 +29,7 @@ const UserPage: NextPage<any> = props => {
   const [followerCountUi, setFollowersUi] = useState<number>(followerCount)
   const followUser = async () => {
     try {
-      await axios.post(`${url}/users/follow`, {
+      await axios.post(`${url}/api/users/follow`, {
         loggedUser: user._id,
         userId: _id,
       })
@@ -43,7 +43,7 @@ const UserPage: NextPage<any> = props => {
   }
   const unFollowUser = async () => {
     try {
-      await axios.post(`${url}/users/unfollow`, {
+      await axios.post(`${url}/api/users/unfollow`, {
         loggedUser: user._id,
         userId: _id,
       })
@@ -272,8 +272,8 @@ const UserPage: NextPage<any> = props => {
 
 UserPage.getInitialProps = async ({ query }) => {
   const { id } = query
-  const url = 'http://localhost:5000'
-  const response: AxiosResponse = await axios.get(`${url}/users/${id}`)
+  const url = 'http://localhost:3000'
+  const response: AxiosResponse = await axios.get(`${url}/api/users/${id}`)
   const currentUser = await response.data
   return {
     data: currentUser,

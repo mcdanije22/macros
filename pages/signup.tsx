@@ -13,6 +13,7 @@ interface signUpFormData {
 }
 
 const signUp = () => {
+  const url = 'https://macros-social.herokuapp.com/'
   const [signUpForm, updateSignUpForm] = useState<signUpFormData>({
     email: '',
     userName: '',
@@ -44,7 +45,7 @@ const signUp = () => {
       message.error('please provide valid email')
     } else {
       axios
-        .post(`/api/users/register`, {
+        .post(`${url}/api/users/register`, {
           email,
           userName,
           fullName,

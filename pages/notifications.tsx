@@ -1,13 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import Link from 'next/link'
 import { UserContext } from '../components/userContext'
 import Layout from '../components/Layout'
-import { Modal, Button, Icon, message, Row, Col } from 'antd'
-import axios, { AxiosResponse } from 'axios'
+import { Icon, Row, Col } from 'antd'
+import axios from 'axios'
 
 const Notifications = () => {
   const { user, setUser } = useContext(UserContext)
-  const url = 'http://localhost:3000'
   const [notificationsList, setnotificationsList] = useState(null)
   if (user) {
     setnotificationsList(user.notifications)
@@ -50,13 +49,10 @@ const Notifications = () => {
                                 const newNotificationsList = await notificationsList.filter(
                                   item => item._id !== notification._id
                                 )
-                                axios.post(
-                                  `${url}/api/users/deletenotification`,
-                                  {
-                                    newNotificationsList,
-                                    userId: user._id,
-                                  }
-                                )
+                                axios.post(`/api/users/deletenotification`, {
+                                  newNotificationsList,
+                                  userId: user._id,
+                                })
                                 setnotificationsList(newNotificationsList)
                                 await setUser({
                                   ...user,

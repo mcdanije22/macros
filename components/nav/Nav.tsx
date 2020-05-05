@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { Icon, Input, message, Menu } from 'antd'
+import { Icon, Input, message } from 'antd'
 import { UserContext } from '../../components/userContext'
 
 const NavBar: React.FC = () => {
-  const { SubMenu } = Menu
   const { user, isUserLoggedIn } = useContext(UserContext)
   const [navBarStatus, isOpen] = useState<Boolean>(false)
   const [searchBarStatus, isActive] = useState<Boolean>(false)

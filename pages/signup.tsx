@@ -13,7 +13,6 @@ interface signUpFormData {
 }
 
 const signUp = () => {
-  const url = 'http://localhost:3000/'
   const [signUpForm, updateSignUpForm] = useState<signUpFormData>({
     email: '',
     userName: '',
@@ -45,7 +44,7 @@ const signUp = () => {
       message.error('please provide valid email')
     } else {
       axios
-        .post(`${url}/api/users/register`, {
+        .post(`/api/users/register`, {
           email,
           userName,
           fullName,

@@ -24,7 +24,6 @@ const PostCard: React.FC<Post> = ({
   userId,
 }) => {
   const { protein, fat, carbohydrates, calories }: any = macros
-  const { Meta } = Card
   return (
     <Link href="/foodpost/[id]" as={`/foodpost/${id}`}>
       <Card

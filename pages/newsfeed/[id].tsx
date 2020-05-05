@@ -11,7 +11,6 @@ import Link from 'next/link'
 
 const NewsFeed: NextPage<any> = props => {
   const router = useRouter()
-  const url = 'http://localhost:3000'
   const { user, isUserLoggedIn } = useContext(UserContext)
   const [activeDisplay, setActiveDisplay] = useState<string>('feed')
   const [randomPost, setRanomPost] = useState(null)
@@ -26,9 +25,7 @@ const NewsFeed: NextPage<any> = props => {
   const getRandomPost = async () => {
     if (activeDisplay !== 'discover') {
       try {
-        const response: AxiosResponse = await axios.get(
-          `${url}/api/foodposts/random`
-        )
+        const response: AxiosResponse = await axios.get(`/api/foodposts/random`)
         setRanomPost(response.data[0])
         setActiveDisplay('discover')
       } catch (error) {
@@ -38,17 +35,13 @@ const NewsFeed: NextPage<any> = props => {
   }
   const getRandomPostButton = async () => {
     try {
-      const response: AxiosResponse = await axios.get(
-        `${url}/api/foodposts/random`
-      )
+      const response: AxiosResponse = await axios.get(`/api/foodposts/random`)
       setRanomPost(response.data[0])
       setActiveDisplay('discover')
     } catch (error) {
       console.log(error)
     }
   }
-  console.log(user.following)
-
   return (
     <Layout title="NewsFeed | Macros">
       <ul id="feedToggle">
@@ -82,8 +75,6 @@ const NewsFeed: NextPage<any> = props => {
                     />
                   </Link>
                   <h2>{user.userName}</h2>
-                  {/* <li></li>
-                  <li></li> */}
                 </div>
                 <ul className="statList">
                   <li>
@@ -250,10 +241,7 @@ const NewsFeed: NextPage<any> = props => {
 
 NewsFeed.getInitialProps = async ({ query }) => {
   const { id } = query
-  const url = 'http://localhost:3000'
-  const response: AxiosResponse = await axios.get(
-    `${url}/api/users/userfeed/${id}`
-  )
+  const response: AxiosResponse = await axios.get(`/api/users/userfeed/${id}`)
   const allPost = await response.data
   return {
     data: allPost,

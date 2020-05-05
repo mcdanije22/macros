@@ -4,12 +4,9 @@ import Head from 'next/head'
 import { UserContext } from '../components/userContext'
 import { Button, Row, Col } from 'antd'
 
-import axios from 'axios'
-
 const index: React.FC = () => {
   const { user, setUser } = useContext(UserContext)
   console.log(user)
-
   useEffect(() => {
     setUser(null)
   }, [])
@@ -26,8 +23,8 @@ const index: React.FC = () => {
             <div id="landingHeader">
               <h1 style={{ color: 'white' }}>Welcome to Macros</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt
+                Join a community and take control of your nutrition with the
+                help and support of others.
               </p>
             </div>
             <div id="landingButtons">

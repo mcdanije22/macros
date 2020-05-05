@@ -1,16 +1,15 @@
 import React, { useState, useContext, useRef } from 'react'
 import Layout from '../../components/Layout'
 import axios, { AxiosResponse } from 'axios'
-import { NextPage, NextPageContext } from 'next'
+import { NextPage } from 'next'
 import Link from 'next/link'
 import { Icon, message, Button, Modal, Row, Col } from 'antd'
 import { UserContext } from '../../components/userContext'
-import Head from 'next/head'
 import Router from 'next/router'
 
 const FoodPost: NextPage<any> = props => {
   const { user } = useContext(UserContext)
-  const url = 'http://localhost:3000'
+  const url = 'https://macros-social.herokuapp.com/'
   const [currentInfo, setCurrentInfo] = useState<String>('overview')
   const changeView = e => {
     setCurrentInfo(e.target.id)
@@ -37,7 +36,7 @@ const FoodPost: NextPage<any> = props => {
 
   const userLikePost = async () => {
     try {
-      await axios.post(`${url}/api/users/savepost`, {
+      await axios.post(`/api/users/savepost`, {
         postId: props.data._id,
         userId: user._id,
         postUserId: props.data.user._id,
@@ -49,7 +48,7 @@ const FoodPost: NextPage<any> = props => {
   }
   const addComment = async () => {
     try {
-      await axios.post(`${url}/api/foodposts/addcomment/${user._id}`, {
+      await axios.post(`/api/foodposts/addcomment/${user._id}`, {
         comment: commentInputRef.current.value,
         postUserId: props.data.user._id,
         postid: _id,
@@ -456,8 +455,7 @@ const FoodPost: NextPage<any> = props => {
 
 FoodPost.getInitialProps = async ({ query }) => {
   const { id } = query
-  const url = 'http://localhost:3000'
-  const response: AxiosResponse = await axios.get(`${url}/api/foodposts/${id}`)
+  const response: AxiosResponse = await axios.get(`/api/foodposts/${id}`)
   const currentPost = await response.data
   return {
     data: currentPost,

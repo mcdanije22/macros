@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import axios, { AxiosResponse } from 'axios'
-import { NextPage, NextPageContext } from 'next'
+import { NextPage } from 'next'
 import Head from 'next/head'
 import Nav from '../../components/nav/Nav'
 import DesktopNav from '../../components/nav/DesktopNav'
@@ -10,7 +10,6 @@ import { message } from 'antd'
 
 const UserPage: NextPage<any> = props => {
   const { user, setUser } = useContext(UserContext)
-  const url = 'http://localhost:3000'
   const [activeNav, setActiveNav] = useState<string>('myPost')
   const toggleNav = e => {
     setActiveNav(e.target.id)
@@ -29,7 +28,7 @@ const UserPage: NextPage<any> = props => {
   const [followerCountUi, setFollowersUi] = useState<number>(followerCount)
   const followUser = async () => {
     try {
-      await axios.post(`${url}/api/users/follow`, {
+      await axios.post(`/api/users/follow`, {
         loggedUser: user._id,
         userId: _id,
       })
@@ -43,7 +42,7 @@ const UserPage: NextPage<any> = props => {
   }
   const unFollowUser = async () => {
     try {
-      await axios.post(`${url}/api/users/unfollow`, {
+      await axios.post(`/api/users/unfollow`, {
         loggedUser: user._id,
         userId: _id,
       })
@@ -272,8 +271,7 @@ const UserPage: NextPage<any> = props => {
 
 UserPage.getInitialProps = async ({ query }) => {
   const { id } = query
-  const url = 'http://localhost:3000'
-  const response: AxiosResponse = await axios.get(`${url}/api/users/${id}`)
+  const response: AxiosResponse = await axios.get(`/api/users/${id}`)
   const currentUser = await response.data
   return {
     data: currentUser,

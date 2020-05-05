@@ -23,10 +23,6 @@ const UserSchema = new mongoose.Schema({
   saves: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'foodPost' }],
   },
-  photo: {
-    type: String,
-    default: 'https://via.placeholder.com/400',
-  },
   followingCount: {
     type: Number,
     default: 0,

@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import { Icon } from 'antd'
 
 interface Post {
   id: String
@@ -67,7 +66,6 @@ const FoodCard: React.FC<Post> = ({
             padding: 0.5rem;
             box-shadow: 0 6px 14px #aaaaaa;
             margin: 1rem 0;
-
             width: 100%;
             margin-right: 2rem;
           }

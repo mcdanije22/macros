@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { NextPage, NextPageContext } from 'next'
+import React from 'react'
+import { NextPage } from 'next'
 import axios, { AxiosResponse } from 'axios'
 import Layout from '../../components/Layout'
 import PostCard from '../../components/PostCard'
@@ -11,7 +11,6 @@ const SearchPage: NextPage<any> = props => {
       <div id="searchPage">
         <Row>
           <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
-
           <Col sm={{ span: 24 }} lg={{ span: 8 }}>
             <h1>Search Page</h1>
             <h3>Search results for "{props.query}" </h3>
@@ -50,10 +49,7 @@ const SearchPage: NextPage<any> = props => {
 }
 SearchPage.getInitialProps = async ({ query }) => {
   const { search } = query
-  const url = 'http://localhost:3000'
-  const response: AxiosResponse = await axios.get(
-    `${url}/api/searchposts/${search}`
-  )
+  const response: AxiosResponse = await axios.get(`/api/searchposts/${search}`)
   const searchPost = await response.data
   return {
     data: searchPost,

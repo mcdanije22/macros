@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { NextPage, NextPageContext } from 'next'
+import React from 'react'
+import { NextPage } from 'next'
 import axios, { AxiosResponse } from 'axios'
 import Layout from '../../components/Layout'
 import PostCard from '../../components/PostCard'
@@ -49,9 +49,8 @@ const SearchCategory: NextPage<any> = props => {
 }
 SearchCategory.getInitialProps = async ({ query }) => {
   const { category } = query
-  const url = 'http://localhost:3000'
   const response: AxiosResponse = await axios.get(
-    `${url}/api/searchposts/category/${category}`
+    `/api/searchposts/category/${category}`
   )
   const searchPost = await response.data
   return {

@@ -58,7 +58,6 @@ interface ingredientItem {
 
 const CreatePost: React.FC = () => {
   const apiKey = process.env.NUTRITION_API_KEY
-  const url = 'http://localhost:5000'
   const { user, isUserLoggedIn } = useContext(UserContext)
   const router = useRouter()
   useEffect(() => {
@@ -202,7 +201,7 @@ const CreatePost: React.FC = () => {
     if (search === '') {
       message.error('Enter a food to search for')
     } else {
-      const searchList = await axios.get(
+      const searchList: AxiosResponse = await axios.get(
         `https://api.nal.usda.gov/fdc/v1/search?api_key=${apiKey}&generalSearchInput=${search}`
       )
       searchList.data.foods.forEach(async el => {
@@ -238,7 +237,7 @@ const CreatePost: React.FC = () => {
       const loggedInUser = await user._id
       try {
         const post = await axios.post(
-          `${url}/foodposts/${loggedInUser}/addpost`,
+          `/foodposts/${loggedInUser}/addpost`,
           draftPost
         )
         message.success('Posted!')

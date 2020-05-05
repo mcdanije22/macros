@@ -49,7 +49,10 @@ const SearchPage: NextPage<any> = props => {
 }
 SearchPage.getInitialProps = async ({ query }) => {
   const { search } = query
-  const response: AxiosResponse = await axios.get(`/api/searchposts/${search}`)
+  const url = process.env.DOMAIN_URL
+  const response: AxiosResponse = await axios.get(
+    `${url}/api/searchposts/${search}`
+  )
   const searchPost = await response.data
   return {
     data: searchPost,

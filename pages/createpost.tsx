@@ -57,6 +57,7 @@ interface ingredientItem {
 }
 
 const CreatePost: React.FC = () => {
+  const url = process.env.DOMAIN_URL
   const apiKey = process.env.NUTRITION_API_KEY
   const { user, isUserLoggedIn } = useContext(UserContext)
   const router = useRouter()
@@ -237,7 +238,7 @@ const CreatePost: React.FC = () => {
       const loggedInUser = await user._id
       try {
         const post = await axios.post(
-          `/foodposts/${loggedInUser}/addpost`,
+          `${url}/foodposts/${loggedInUser}/addpost`,
           draftPost
         )
         message.success('Posted!')

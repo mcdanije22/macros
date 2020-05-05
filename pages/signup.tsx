@@ -13,7 +13,7 @@ interface signUpFormData {
 }
 
 const signUp = () => {
-  const url = 'https://macros-social.herokuapp.com/'
+  const url = process.env.DOMAIN_URL
   const [signUpForm, updateSignUpForm] = useState<signUpFormData>({
     email: '',
     userName: '',

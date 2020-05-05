@@ -23,7 +23,7 @@ const index: React.FC = () => {
             <div id="landingHeader">
               <h1 style={{ color: 'white' }}>Welcome to Macros</h1>
               <p>
-                Join a community and take control of your nutrition with the
+                Join the community and take control of your nutrition with the
                 help and support of others.
               </p>
             </div>

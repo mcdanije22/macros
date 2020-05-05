@@ -44,8 +44,9 @@ const SearchTags: NextPage<any> = props => {
 }
 SearchTags.getInitialProps = async ({ query }) => {
   const { tag } = query
+  const url = process.env.DOMAIN_URL
   const response: AxiosResponse = await axios.get(
-    `/api/searchposts/tags/${tag}`
+    `${url}/api/searchposts/tags/${tag}`
   )
   const searchPost = await response.data
   return {

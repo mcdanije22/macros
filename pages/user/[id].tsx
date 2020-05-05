@@ -9,6 +9,7 @@ import { UserContext } from '../../components/userContext'
 import { message } from 'antd'
 
 const UserPage: NextPage<any> = props => {
+  const url = process.env.DOMAIN_URL
   const { user, setUser } = useContext(UserContext)
   const [activeNav, setActiveNav] = useState<string>('myPost')
   const toggleNav = e => {
@@ -28,7 +29,7 @@ const UserPage: NextPage<any> = props => {
   const [followerCountUi, setFollowersUi] = useState<number>(followerCount)
   const followUser = async () => {
     try {
-      await axios.post(`/api/users/follow`, {
+      await axios.post(`${url}/api/users/follow`, {
         loggedUser: user._id,
         userId: _id,
       })
@@ -42,7 +43,7 @@ const UserPage: NextPage<any> = props => {
   }
   const unFollowUser = async () => {
     try {
-      await axios.post(`/api/users/unfollow`, {
+      await axios.post(`${url}/api/users/unfollow`, {
         loggedUser: user._id,
         userId: _id,
       })
@@ -271,7 +272,8 @@ const UserPage: NextPage<any> = props => {
 
 UserPage.getInitialProps = async ({ query }) => {
   const { id } = query
-  const response: AxiosResponse = await axios.get(`/api/users/${id}`)
+  const url = process.env.DOMAIN_URL
+  const response: AxiosResponse = await axios.get(`${url}/api/users/${id}`)
   const currentUser = await response.data
   return {
     data: currentUser,

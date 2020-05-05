@@ -11,7 +11,7 @@ interface logInForm {
   password: string
 }
 const logIn = () => {
-  const url = 'http://localhost:3000'
+  const url = process.env.DOMAIN_URL
   const { user, setUser, isUserLoggedIn, userLoggedIn } = useContext(
     UserContext
   )

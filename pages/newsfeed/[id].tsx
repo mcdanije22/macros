@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { UserContext } from '../../components/userContext'
-import { NextPage, NextPageContext } from 'next'
+import { NextPage } from 'next'
 import axios, { AxiosResponse } from 'axios'
 import Layout from '../../components/Layout'
-import FoodCard from '../../components/foodCard/FoodCard'
 import PostCard from '../../components/PostCard'
 import { Icon, Button, Row, Col, Card } from 'antd'
 import Link from 'next/link'
 
 const NewsFeed: NextPage<any> = props => {
+  const url = process.env.DOMAIN_URL
   const router = useRouter()
   const { user, isUserLoggedIn } = useContext(UserContext)
   const [activeDisplay, setActiveDisplay] = useState<string>('feed')
@@ -25,7 +25,9 @@ const NewsFeed: NextPage<any> = props => {
   const getRandomPost = async () => {
     if (activeDisplay !== 'discover') {
       try {
-        const response: AxiosResponse = await axios.get(`/api/foodposts/random`)
+        const response: AxiosResponse = await axios.get(
+          `${url}/api/foodposts/random`
+        )
         setRanomPost(response.data[0])
         setActiveDisplay('discover')
       } catch (error) {
@@ -35,7 +37,9 @@ const NewsFeed: NextPage<any> = props => {
   }
   const getRandomPostButton = async () => {
     try {
-      const response: AxiosResponse = await axios.get(`/api/foodposts/random`)
+      const response: AxiosResponse = await axios.get(
+        `${url}/api/foodposts/random`
+      )
       setRanomPost(response.data[0])
       setActiveDisplay('discover')
     } catch (error) {
@@ -56,7 +60,7 @@ const NewsFeed: NextPage<any> = props => {
       </ul>
       <div id="newsfeedContainer">
         <Row>
-          <Col span={8}>
+          <Col sm={{ span: 0 }} lg={{ span: 8 }}>
             <div id="userInfoContainer">
               <Card
                 style={{
@@ -98,21 +102,42 @@ const NewsFeed: NextPage<any> = props => {
           <Col sm={{ span: 24 }} lg={{ span: 8 }}>
             <div id="feedContainer">
               <div id="feedList">
-                {props.data.map((post, i) => {
-                  return (
-                    <PostCard
-                      key={i}
-                      id={post._id}
-                      userName={post.user.userName}
-                      title={post.title}
-                      tags={post.tags}
-                      macros={post.macros}
-                      saves={post.saves}
-                      foodPhoto={post.foodPhoto}
-                      userId={post.user._id}
-                    />
-                  )
-                })}
+                {props.data.length === 0 ? (
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: ' center',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <h1 style={{ textAlign: 'center' }}>
+                      You're not following anyone or haven't posted anything...
+                    </h1>
+                    <Button
+                      type="primary"
+                      style={{ margin: '0 6rem' }}
+                      onClick={() => setActiveDisplay('discover')}
+                    >
+                      Discover something new
+                    </Button>
+                  </div>
+                ) : (
+                  props.data.map((post, i) => {
+                    return (
+                      <PostCard
+                        key={i}
+                        id={post._id}
+                        userName={post.user.userName}
+                        title={post.title}
+                        tags={post.tags}
+                        macros={post.macros}
+                        saves={post.saves}
+                        foodPhoto={post.foodPhoto}
+                        userId={post.user._id}
+                      />
+                    )
+                  })
+                )}
               </div>
               <div id="discoverPost">
                 {activeDisplay === 'discover' && randomPost ? (
@@ -241,7 +266,10 @@ const NewsFeed: NextPage<any> = props => {
 
 NewsFeed.getInitialProps = async ({ query }) => {
   const { id } = query
-  const response: AxiosResponse = await axios.get(`/api/users/userfeed/${id}`)
+  const url = process.env.DOMAIN_URL
+  const response: AxiosResponse = await axios.get(
+    `${url}/api/users/userfeed/${id}`
+  )
   const allPost = await response.data
   return {
     data: allPost,

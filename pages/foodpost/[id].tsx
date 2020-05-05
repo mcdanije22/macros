@@ -9,7 +9,7 @@ import Router from 'next/router'
 
 const FoodPost: NextPage<any> = props => {
   const { user } = useContext(UserContext)
-  const url = 'https://macros-social.herokuapp.com/'
+  const url = process.env.DOMAIN_URL
   const [currentInfo, setCurrentInfo] = useState<String>('overview')
   const changeView = e => {
     setCurrentInfo(e.target.id)
@@ -36,7 +36,7 @@ const FoodPost: NextPage<any> = props => {
 
   const userLikePost = async () => {
     try {
-      await axios.post(`/api/users/savepost`, {
+      await axios.post(`${url}/api/users/savepost`, {
         postId: props.data._id,
         userId: user._id,
         postUserId: props.data.user._id,
@@ -455,7 +455,8 @@ const FoodPost: NextPage<any> = props => {
 
 FoodPost.getInitialProps = async ({ query }) => {
   const { id } = query
-  const response: AxiosResponse = await axios.get(`/api/foodposts/${id}`)
+  const url = process.env.DOMAIN_URL
+  const response: AxiosResponse = await axios.get(`${url}/api/foodposts/${id}`)
   const currentPost = await response.data
   return {
     data: currentPost,

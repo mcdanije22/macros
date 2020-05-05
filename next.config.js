@@ -7,6 +7,7 @@ require('./database')
 module.exports = withCss({
   env: {
     NUTRITION_API_KEY: process.env.NUTRITION_API_KEY,
+    DOMAIN_URL: process.env.DOMAIN_URL,
   },
   webpack: (config, { isServer }) => {
     if (isServer) {

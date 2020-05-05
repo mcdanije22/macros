@@ -49,8 +49,9 @@ const SearchCategory: NextPage<any> = props => {
 }
 SearchCategory.getInitialProps = async ({ query }) => {
   const { category } = query
+  const url = process.env.DOMAIN_URL
   const response: AxiosResponse = await axios.get(
-    `/api/searchposts/category/${category}`
+    `${url}/api/searchposts/category/${category}`
   )
   const searchPost = await response.data
   return {

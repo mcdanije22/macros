@@ -77,7 +77,10 @@ const FoodPost: NextPage<any> = props => {
               <Link href="/user/[id]" as={`/user/${props.data.user._id}`}>
                 <div className="postArthurImg">
                   <img
-                    src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
+                    src={`https://avatars.dicebear.com/v2/initials/${userName.substring(
+                      0,
+                      2
+                    )}.svg`}
                     alt={`${userName}'s profile`}
                   />
                   <h3>{userName}</h3>

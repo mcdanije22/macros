@@ -73,7 +73,10 @@ const NewsFeed: NextPage<any> = props => {
                 <div id="userInfo">
                   <Link href="/user/[id]" as={`/user/${user._id}`}>
                     <img
-                      src={`https://avatars.dicebear.com/v2/initials/${user.userName}.svg`}
+                      src={`https://avatars.dicebear.com/v2/initials/${user.userName.substring(
+                        0,
+                        2
+                      )}.svg`}
                       alt={`${user.userName}'s profile`}
                       className="userImg"
                     />

@@ -71,7 +71,10 @@ const UserPage: NextPage<any> = props => {
       <div className="heroHeader">
         <img
           className="heroUserImage"
-          src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
+          src={`https://avatars.dicebear.com/v2/initials/${userName.substring(
+            0,
+            2
+          )}.svg`}
           alt={`${userName} profile photo`}
         />
         <h1>{userName}</h1>

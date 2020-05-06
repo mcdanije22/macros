@@ -15,6 +15,7 @@ const DesktopNav: React.FC = () => {
     message.success('Logged out')
     router.push('/')
   }
+
   const menu = (
     <Menu>
       <Menu.Item>
@@ -153,7 +154,7 @@ const DesktopNav: React.FC = () => {
             <div id="userButton">
               <img
                 src={`https://avatars.dicebear.com/v2/initials/${
-                  isUserLoggedIn ? user.userName : ''
+                  isUserLoggedIn ? user.userName.substring(0, 2) : ''
                 }.svg`}
                 alt={`${isUserLoggedIn ? user.userName : ''}'s profile`}
               />

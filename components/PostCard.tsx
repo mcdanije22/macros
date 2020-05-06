@@ -40,7 +40,10 @@ const PostCard: React.FC<Post> = ({
           <div className="leftSideTitle">
             <Link href="/user/[id]" as={`/user/${userId}`}>
               <Avatar
-                src={`https://avatars.dicebear.com/v2/initials/${userName}.svg`}
+                src={`https://avatars.dicebear.com/v2/initials/${userName.substring(
+                  0,
+                  2
+                )}.svg`}
                 style={{ alignSelf: 'center' }}
               />
             </Link>

@@ -102,6 +102,7 @@ const FoodCard: React.FC<Post> = ({
             margin-right: 0.5rem;
             color: white;
             padding: 0.2rem;
+            cursor: pointer;
           }
         `}</style>
       </div>

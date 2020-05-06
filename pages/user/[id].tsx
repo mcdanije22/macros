@@ -231,6 +231,7 @@ const UserPage: NextPage<any> = props => {
           display: flex;
           list-style: none;
           margin: 0 1rem;
+          cursor: pointer;
         }
         .navList li {
           margin: 0 1rem;
@@ -264,9 +265,11 @@ const UserPage: NextPage<any> = props => {
         }
         .postList {
           display: ${activeNav === 'myPost' ? '' : 'none'};
+          cursor: pointer;
         }
         .saveList {
           display: ${activeNav === 'saves' ? '' : 'none'};
+          cursor: pointer;
         }
       `}</style>
     </div>

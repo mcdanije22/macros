@@ -238,7 +238,7 @@ const CreatePost: React.FC = () => {
       const loggedInUser = await user._id
       try {
         const post = await axios.post(
-          `${url}/foodposts/${loggedInUser}/addpost`,
+          `${url}/foodposts/addpost/${loggedInUser}`,
           draftPost
         )
         message.success('Posted!')

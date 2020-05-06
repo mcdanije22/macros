@@ -195,14 +195,14 @@ const NavBar: React.FC = () => {
           font-size: 1.5rem;
         }
         #menuList {
-          padding: 2rem 0 2rem 1rem;
+          padding: 0 0 2rem 1rem;
           display: flex;
           flex-direction: column;
         }
         #menuList a,
         p {
           font-size: 2rem;
-          margin: 1rem 0;
+          margin: 0.5rem 0;
         }
       `}</style>
     </nav>

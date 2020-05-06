@@ -297,7 +297,7 @@ const FoodPost: NextPage<any> = props => {
         }
         .postArthurImg img {
           border-radius: 2rem;
-          width: 50px;
+          width: 3rem;
           border: 1px solid black;
         }
         .postArthurImg {

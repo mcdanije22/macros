@@ -97,7 +97,7 @@ const FoodCard: React.FC<Post> = ({
           .bottomTags button {
             border: 1px solid white;
             background-color: transparent;
-            width: 4rem;
+            width: 8rem;
             text-align: center;
             margin-right: 0.5rem;
             color: white;

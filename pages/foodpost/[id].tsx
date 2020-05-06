@@ -252,7 +252,10 @@ const FoodPost: NextPage<any> = props => {
                                 as={`/user/${comment.user._id}`}
                               >
                                 <img
-                                  src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName}.svg`}
+                                  src={`https://avatars.dicebear.com/v2/initials/${comment.user.userName.substring(
+                                    0,
+                                    2
+                                  )}.svg`}
                                   alt={`${comment.user.userName} Profile`}
                                 />
                               </Link>
@@ -322,7 +325,7 @@ const FoodPost: NextPage<any> = props => {
         }
         .commentUserInfo {
           margin-right: 2rem;
-          align-self: top;
+          align-self: center;
         }
         .topButtons {
           display: flex;

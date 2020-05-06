@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer: React.FC = () => (
   <div id="footerContainter">
-    <p>©2019 Macros</p>
+    <p>©2020 Macros</p>
     <style jsx>{`
       #footerContainter {
         text-align: center;

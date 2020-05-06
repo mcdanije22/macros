@@ -8,7 +8,7 @@ import axios from 'axios'
 const Notifications = () => {
   const url = process.env.DOMAIN_URL
   const { user, setUser } = useContext(UserContext)
-  const [notificationsList, setnotificationsList] = useState(null)
+  const [notificationsList, setnotificationsList] = useState([])
 
   useEffect(() => {
     if (user) {
@@ -23,7 +23,7 @@ const Notifications = () => {
           <Col sm={{ span: 0 }} lg={{ span: 8 }}></Col>
           <Col sm={{ span: 24 }} lg={{ span: 8 }}>
             <ul id="notficationsList">
-              {user && user.notifications.length !== 0 ? (
+              {user && notificationsList.length !== 0 ? (
                 notificationsList.map((notification, i) => {
                   return (
                     <li key={i}>
@@ -32,7 +32,10 @@ const Notifications = () => {
                           <div className="orderClass">
                             <div className="notificationLeftSide">
                               <img
-                                src={`https://avatars.dicebear.com/v2/initials/${notification.actionUserName}.svg`}
+                                src={`https://avatars.dicebear.com/v2/initials/${notification.actionUserName.substring(
+                                  0,
+                                  2
+                                )}.svg`}
                                 alt={`${notification.actionUserName}'s profile`}
                               />
                             </div>

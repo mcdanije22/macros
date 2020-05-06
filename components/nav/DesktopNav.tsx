@@ -93,7 +93,7 @@ const DesktopNav: React.FC = () => {
             href={isUserLoggedIn ? '/newsfeed/[id]' : '/'}
             as={`/newsfeed/${isUserLoggedIn ? user._id : ''}`}
           >
-            <a>Macro</a>
+            <a>Macros</a>
           </Link>
         </li>
         <li>
